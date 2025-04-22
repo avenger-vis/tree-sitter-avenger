@@ -1,0 +1,13 @@
+[project]
+authors = ["Jon Mease <jonmmease@gmail.com>"]
+channels = ["conda-forge"]
+name = "tree-sitter-avenger"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+tree-sitter-cli = ">=0.25.3,<0.26"
+nodejs = ">=22.13.0,<22.14"
+python = ">=3.13.3,<3.14"

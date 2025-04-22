@@ -45,3 +45,7 @@ zig-out/
 *.tar.gz
 *.tgz
 *.zip
+
+# pixi environments
+.pixi
+*.egg-info
