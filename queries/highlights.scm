@@ -24,10 +24,29 @@
 (keyword_then) @conditional
 (keyword_else) @conditional
 
+;; Variable references (like @pi)
+(parameter) @variable.special
+
+;; Table references with variable (like @data_0 in FROM @data_0)
+(table_ref_with_var "@" @variable.special)
+(table_ref_with_var ref: (object_reference name: (table_identifier) @variable.special.reference))
+
 (identifier) @variable
 (field name: (identifier) @field)
 
 (pascal_identifier) @type
+
+;; Property type keywords with distinct stylings
+(expr_prop "expr" @keyword.storage.type)
+(val_prop "val" @keyword.storage.type)
+(dataset_prop "dataset" @keyword.storage.type)
+(comp_prop "comp" @keyword.storage.type)
+
+;; Type annotation
+(type) @type.annotation
+
+;; Property qualifier
+(prop_qualifier) @keyword.directive
 
 "+" @operator
 "-" @operator
@@ -48,7 +67,12 @@
 
 "(" @punctuation.bracket
 ")" @punctuation.bracket
+"{" @punctuation.bracket
+"}" @punctuation.bracket
+"<" @punctuation.bracket
+">" @punctuation.bracket
 
 ";" @punctuation.delimiter
 "," @punctuation.delimiter
 "." @punctuation.delimiter
+":" @punctuation.delimiter

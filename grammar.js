@@ -1058,7 +1058,8 @@ module.exports = grammar({
         choice(
           $.subquery,
           $.invocation,
-          seq(optional('@'), $.object_reference),
+          $.table_ref_with_var,
+          $.object_reference,
           wrapped_in_parenthesis($.values),
         ),
         optional(
@@ -1068,6 +1069,11 @@ module.exports = grammar({
           ),
         ),
       ),
+    ),
+    
+    table_ref_with_var: $ => seq(
+      '@', 
+      field("ref", $.object_reference)
     ),
 
     values: $ => seq(

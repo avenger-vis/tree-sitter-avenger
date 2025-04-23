@@ -2199,6 +2199,10 @@
           "named": true
         },
         {
+          "type": "table_ref_with_var",
+          "named": true
+        },
+        {
           "type": "values",
           "named": true
         }
@@ -2557,6 +2561,22 @@
         "types": [
           {
             "type": "sql_expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "table_ref_with_var",
+    "named": true,
+    "fields": {
+      "ref": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "object_reference",
             "named": true
           }
         ]

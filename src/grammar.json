@@ -6895,25 +6895,12 @@
                 "name": "invocation"
               },
               {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "@"
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "object_reference"
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "table_ref_with_var"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "object_reference"
               },
               {
                 "type": "SEQ",
@@ -6970,6 +6957,23 @@
           }
         ]
       }
+    },
+    "table_ref_with_var": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "@"
+        },
+        {
+          "type": "FIELD",
+          "name": "ref",
+          "content": {
+            "type": "SYMBOL",
+            "name": "object_reference"
+          }
+        }
+      ]
     },
     "values": {
       "type": "SEQ",
