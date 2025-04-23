@@ -717,7 +717,18 @@
   {
     "type": "comp_prop",
     "named": true,
-    "fields": {},
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -728,10 +739,6 @@
         },
         {
           "type": "prop_qualifier",
-          "named": true
-        },
-        {
-          "type": "type",
           "named": true
         }
       ]
@@ -805,7 +812,18 @@
   {
     "type": "dataset_prop",
     "named": true,
-    "fields": {},
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -1029,7 +1047,18 @@
   {
     "type": "expr_prop",
     "named": true,
-    "fields": {},
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -1975,7 +2004,7 @@
         "required": true,
         "types": [
           {
-            "type": "identifier",
+            "type": "table_identifier",
             "named": true
           }
         ]
@@ -1985,7 +2014,7 @@
         "required": false,
         "types": [
           {
-            "type": "identifier",
+            "type": "table_identifier",
             "named": true
           }
         ]
@@ -2752,7 +2781,18 @@
   {
     "type": "val_prop",
     "named": true,
-    "fields": {},
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -3087,6 +3127,10 @@
   },
   {
     "type": ">=",
+    "named": false
+  },
+  {
+    "type": "@",
     "named": false
   },
   {
@@ -3629,6 +3673,10 @@
   },
   {
     "type": "pascal_identifier",
+    "named": true
+  },
+  {
+    "type": "table_identifier",
     "named": true
   },
   {

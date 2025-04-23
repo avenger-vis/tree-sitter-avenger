@@ -56,6 +56,38 @@
       "type": "PATTERN",
       "value": "[A-Z][a-zA-Z0-9_]*"
     },
+    "table_identifier": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[a-zA-Z][a-zA-Z0-9_]*"
+        }
+      }
+    },
+    "variable_reference": {
+      "type": "PATTERN",
+      "value": "@[a-z][a-zA-Z0-9_]*"
+    },
+    "boolean_literal": {
+      "type": "PREC",
+      "value": 5,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "keyword_true"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "keyword_false"
+          }
+        ]
+      }
+    },
     "type": {
       "type": "SEQ",
       "members": [
@@ -91,11 +123,11 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "sql_expression"
+          "name": "sql_query"
         },
         {
           "type": "SYMBOL",
-          "name": "sql_query"
+          "name": "sql_expression"
         }
       ]
     },
@@ -129,6 +161,14 @@
               "type": "BLANK"
             }
           ]
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
         },
         {
           "type": "STRING",
@@ -176,6 +216,14 @@
           ]
         },
         {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
+        },
+        {
           "type": "STRING",
           "value": ":"
         },
@@ -221,6 +269,14 @@
           ]
         },
         {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
+        },
+        {
           "type": "STRING",
           "value": ":"
         },
@@ -254,16 +310,12 @@
           "value": "comp"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "type"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
         },
         {
           "type": "STRING",
@@ -272,10 +324,6 @@
         {
           "type": "SYMBOL",
           "name": "comp_instance"
-        },
-        {
-          "type": "STRING",
-          "value": ";"
         }
       ]
     },
@@ -5624,7 +5672,7 @@
                   "name": "schema",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "identifier"
+                    "name": "table_identifier"
                   }
                 },
                 {
@@ -5643,7 +5691,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "table_identifier"
           }
         }
       ]
@@ -5746,7 +5794,7 @@
     },
     "parameter": {
       "type": "PATTERN",
-      "value": "\\?|(\\$[0-9]+)"
+      "value": "\\?|(\\$[0-9]+)|(@[a-z][a-zA-Z0-9_]*)"
     },
     "case": {
       "type": "SEQ",
@@ -6843,8 +6891,25 @@
                 "name": "invocation"
               },
               {
-                "type": "SYMBOL",
-                "name": "object_reference"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": "@"
+                      },
+                      {
+                        "type": "BLANK"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "object_reference"
+                  }
+                ]
               },
               {
                 "type": "SEQ",
@@ -9157,7 +9222,7 @@
     },
     "literal": {
       "type": "PREC",
-      "value": 2,
+      "value": 5,
       "content": {
         "type": "CHOICE",
         "members": [
@@ -9229,10 +9294,6 @@
           {
             "type": "SYMBOL",
             "name": "_double_quote_string"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_dollar_quoted_string"
           }
         ]
       }
@@ -9359,8 +9420,8 @@
   ],
   "conflicts": [
     [
-      "object_reference",
-      "_qualified_field"
+      "boolean_literal",
+      "table_identifier"
     ],
     [
       "object_reference"
@@ -9368,6 +9429,10 @@
     [
       "between_expression",
       "binary_expression"
+    ],
+    [
+      "list",
+      "sql_expression"
     ]
   ],
   "precedences": [
@@ -9430,20 +9495,7 @@
       }
     ]
   ],
-  "externals": [
-    {
-      "type": "SYMBOL",
-      "name": "_dollar_quoted_string_start_tag"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "_dollar_quoted_string_end_tag"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "_dollar_quoted_string"
-    }
-  ],
+  "externals": [],
   "inline": [],
   "supertypes": [],
   "reserved": {}
