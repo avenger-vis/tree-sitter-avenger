@@ -6,13 +6,13 @@ module.exports = grammar({
     /\s/,
     $.comment,
     $.marginalia,
+    $.slash_comment,
   ],
 
   conflicts: $ => [
     [$.boolean_literal, $.table_identifier],
     [$.object_reference],
     [$.between_expression, $.binary_expression],
-    [$.list, $.sql_expression],
   ],
 
   precedences: $ => [
@@ -676,6 +676,7 @@ module.exports = grammar({
     ),
 
     comment: _ => /--.*/,
+    slash_comment: _ => /\/\/.*/,
     // https://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment
     marginalia: _ => /\/\*[^*]*\*+(?:[^/*][^*]*\*+)*\//,
 

@@ -3676,6 +3676,11 @@
     "named": true
   },
   {
+    "type": "slash_comment",
+    "named": true,
+    "extra": true
+  },
+  {
     "type": "table_identifier",
     "named": true
   },

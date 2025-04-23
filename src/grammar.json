@@ -5155,6 +5155,10 @@
       "type": "PATTERN",
       "value": "--.*"
     },
+    "slash_comment": {
+      "type": "PATTERN",
+      "value": "\\/\\/.*"
+    },
     "marginalia": {
       "type": "PATTERN",
       "value": "\\/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*\\/"
@@ -9416,6 +9420,10 @@
     {
       "type": "SYMBOL",
       "name": "marginalia"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "slash_comment"
     }
   ],
   "conflicts": [
@@ -9429,10 +9437,6 @@
     [
       "between_expression",
       "binary_expression"
-    ],
-    [
-      "list",
-      "sql_expression"
     ]
   ],
   "precedences": [
