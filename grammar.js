@@ -1,3 +1,4 @@
+// SQL portions of the grammar adapted from https://github.com/DerekStride/tree-sitter-sql
 module.exports = grammar({
   name: 'avenger',
 
