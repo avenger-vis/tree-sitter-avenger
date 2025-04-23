@@ -8,17 +8,11 @@ module.exports = grammar({
     $.marginalia,
   ],
 
-
-  externals: $ => [
-    $._dollar_quoted_string_start_tag,
-    $._dollar_quoted_string_end_tag,
-    $._dollar_quoted_string,
-  ],
-
   conflicts: $ => [
-    [$.object_reference, $._qualified_field],
+    [$.boolean_literal, $.table_identifier],
     [$.object_reference],
     [$.between_expression, $.binary_expression],
+    [$.list, $.sql_expression],
   ],
 
   precedences: $ => [
@@ -56,6 +50,12 @@ module.exports = grammar({
     // Basic elements
     identifier: $ => /[a-z][a-zA-Z0-9_]*/,
     pascal_identifier: $ => /[A-Z][a-zA-Z0-9_]*/,
+    table_identifier: $ => {
+      const tableIdentPattern = /[a-zA-Z][a-zA-Z0-9_]*/;
+      return token(prec(1, tableIdentPattern));
+    },
+    variable_reference: $ => /@[a-z][a-zA-Z0-9_]*/,
+    boolean_literal: $ => prec(5, choice($.keyword_true, $.keyword_false)),
     
     type: $ => seq(
       '<',
@@ -67,8 +67,8 @@ module.exports = grammar({
 
     // SQL expressions and queries with simpler approach
     sql_expr_or_query: $ => choice(
+      $.sql_query,
       $.sql_expression,
-      $.sql_query
     ),
 
     // Property types
@@ -76,6 +76,7 @@ module.exports = grammar({
       optional($.prop_qualifier),
       'val',
       optional($.type),
+      field("name", $.identifier),
       ':',
       $.sql_expression,
       ';'
@@ -85,6 +86,7 @@ module.exports = grammar({
       optional($.prop_qualifier),
       'expr',
       optional($.type),
+      field("name", $.identifier),
       ':',
       $.sql_expression,
       ';'
@@ -94,6 +96,7 @@ module.exports = grammar({
       optional($.prop_qualifier),
       'dataset',
       optional($.type),
+      field("name", $.identifier),
       ':',
       $.sql_query,
       ';'
@@ -102,10 +105,9 @@ module.exports = grammar({
     comp_prop: $ => seq(
       optional($.prop_qualifier),
       'comp',
-      optional($.type),
+      field("name", $.identifier),
       ':',
       $.comp_instance,
-      ';'
     ),
 
     // Component instance
@@ -776,11 +778,11 @@ module.exports = grammar({
     object_reference: $ => seq(
       optional(
         seq(
-          field('schema', $.identifier),
+          field('schema', $.table_identifier),
           '.',
         ),
       ),
-      field('name', $.identifier),
+      field('name', $.table_identifier),
     ),
 
     _column_list: $ => paren_list(alias($._column, $.column), true),
@@ -799,7 +801,7 @@ module.exports = grammar({
       '*',
     ),
 
-    parameter: $ => /\?|(\$[0-9]+)/,
+    parameter: $ => /\?|(\$[0-9]+)|(@[a-z][a-zA-Z0-9_]*)/,
 
     case: $ => seq(
       $.keyword_case,
@@ -1054,7 +1056,7 @@ module.exports = grammar({
         choice(
           $.subquery,
           $.invocation,
-          $.object_reference,
+          seq(optional('@'), $.object_reference),
           wrapped_in_parenthesis($.values),
         ),
         optional(
@@ -1427,7 +1429,7 @@ module.exports = grammar({
 
     list: $ => paren_list($.sql_expression),
 
-    literal: $ => prec(2,
+    literal: $ => prec(5,
       choice(
         $._integer,
         $._decimal_number,
@@ -1448,7 +1450,6 @@ module.exports = grammar({
       choice(
         $._single_quote_string,
         $._double_quote_string,
-        $._dollar_quoted_string,
       ),
     ),
     _natural_number: _ => /\d+/,
