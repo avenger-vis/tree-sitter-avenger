@@ -46,7 +46,8 @@ module.exports = grammar({
       $.dataset_prop,
       $.comp_prop,
       $.prop_binding,
-      $.component_def
+      $.component_def,
+      $.comp_instance
     ),
 
     // Basic elements
