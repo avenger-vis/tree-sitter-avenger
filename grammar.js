@@ -13,7 +13,7 @@ module.exports = grammar({
   conflicts: $ => [
     [$.boolean_literal, $.table_identifier],
     [$.object_reference],
-    [$.between_expression, $.binary_expression],
+    [$.between_expression, $.binary_expression]
   ],
 
   precedences: $ => [
@@ -47,7 +47,8 @@ module.exports = grammar({
       $.comp_prop,
       $.prop_binding,
       $.component_def,
-      $.comp_instance
+      $.comp_instance,
+      $.function_def
     ),
 
     // Basic elements
@@ -79,6 +80,58 @@ module.exports = grammar({
       '{',
       repeat($.statement),
       '}'
+    ),
+
+    // Function definition and related constructs
+    keyword_fn: _ => make_keyword("fn"),
+    keyword_return: _ => make_keyword("return"),
+    
+    function_def: $ => seq(
+      $.keyword_fn,
+      field("name", $.identifier),
+      '(',
+      optional($.param_list),
+      ')',
+      seq(
+        '->',
+        field("return_kind", choice(
+          'val',
+          'expr',
+          'dataset'
+        )),
+        optional($.type)
+      ),
+      '{',
+      repeat($.fn_statement),
+      $.return_statement,
+      '}'
+    ),
+
+    param_list: $ => seq(
+      $.parameter_decl,
+      repeat(seq(',', $.parameter_decl))
+    ),
+
+    parameter_decl: $ => seq(
+      field("kind", choice(
+        'val',
+        'expr',
+        'dataset'
+      )),
+      optional($.type),
+      field("name", $.identifier)
+    ),
+
+    fn_statement: $ => choice(
+      $.val_prop,
+      $.expr_prop,
+      $.dataset_prop
+    ),
+
+    return_statement: $ => seq(
+      $.keyword_return,
+      $.sql_expr_or_query,
+      optional(';')
     ),
 
     // SQL expressions and queries with simpler approach
@@ -324,9 +377,7 @@ module.exports = grammar({
     keyword_extension: _ => make_keyword("extension"),
 
     keyword_trigger: _ => make_keyword('trigger'),
-    keyword_function: _ => make_keyword("function"),
     keyword_returns: _ => make_keyword("returns"),
-    keyword_return: _ => make_keyword("return"),
     keyword_setof: _ => make_keyword("setof"),
     keyword_atomic: _ => make_keyword("atomic"),
     keyword_declare: _ => make_keyword("declare"),
@@ -342,7 +393,6 @@ module.exports = grammar({
     keyword_unsafe: _ => make_keyword("unsafe"),
     keyword_restricted: _ => make_keyword("restricted"),
     keyword_called: _ => make_keyword("called"),
-    keyword_returns: _ => make_keyword("returns"),
     keyword_input: _ => make_keyword("input"),
     keyword_strict: _ => make_keyword("strict"),
     keyword_cost: _ => make_keyword("cost"),
@@ -421,7 +471,6 @@ module.exports = grammar({
     keyword_avro: _ => make_keyword("avro"),
     keyword_sequencefile: _ => make_keyword("sequencefile"),
     keyword_orc: _ => make_keyword("orc"),
-    keyword_avro: _ => make_keyword("avro"),
     keyword_jsonfile: _ => make_keyword("jsonfile"),
 
     // Operators

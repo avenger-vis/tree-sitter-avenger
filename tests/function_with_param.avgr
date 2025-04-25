@@ -1,0 +1,5 @@
+fn calculate_area(val radius) -> val {
+    val pi: 3.14159;
+    val area: @pi * @radius * @radius;
+    return @area;
+} 

@@ -1,0 +1,28 @@
+// Traditional component property
+comp graph: Group {
+    x := 20;
+    y := 20;
+}
+
+// Direct component instance without a comp name: prefix
+Group {
+    x := 30;
+    y := 40;
+    
+    // Nested component
+    Circle {
+        cx := 100;
+        cy := 100;
+        r := 50;
+        fill := 'blue';
+    }
+}
+
+// Another direct component instance
+Rect {
+    x := 200;
+    y := 200;
+    width := 100;
+    height := 75;
+    fill := 'red';
+} 

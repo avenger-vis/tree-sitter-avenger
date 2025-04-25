@@ -1,0 +1,25 @@
+// Simple function with no parameters and implicit return type
+fn get_pi() -> val {
+    val pi: 3.14159;
+    return @pi;
+}
+
+// Function with parameters and explicit return type
+fn calculate_area(val radius) -> val {
+    val pi: 3.14159;
+    val area: @pi * @radius * @radius;
+    return @area
+}
+
+// Function with multiple parameters of different types
+fn filter_by_category(dataset data, val category) -> dataset {
+    return SELECT * FROM @data WHERE "category" = @category;
+}
+
+// Function with expression and dataset parameters
+fn compute_stats(expr value_expr, dataset source_data) -> val {
+    val count: (SELECT COUNT(*) FROM @source_data);
+    val sum: (SELECT SUM(@value_expr) FROM @source_data);
+    val avg: @sum / @count;
+    return @avg
+} 

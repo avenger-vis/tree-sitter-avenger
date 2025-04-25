@@ -49,5 +49,23 @@ mod tests {
         parser
             .set_language(&super::LANGUAGE.into())
             .expect("Error loading Avenger parser");
+
+        let code = r#"
+        width := 100;
+        comp g1: Group {
+            x := 20;
+            y := 20;
+        }
+        "#;
+        let tree = parser.parse(code, None).unwrap();
+        let root = tree.root_node();
+        println!("{:?}", root);
+        println!("kind: {:?}", root.kind());
+        let mut cursor = tree.walk();
+        for child in root.children(&mut cursor) {
+            println!("child: {:?}", child);
+            println!("child kind: {:?}", child.kind());
+        }
+        // assert!(!tree.root_node().has_error());
     }
 }

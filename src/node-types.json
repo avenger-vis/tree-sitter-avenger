@@ -745,6 +745,42 @@
     }
   },
   {
+    "type": "component_def",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "pascal_identifier",
+            "named": true
+          }
+        ]
+      },
+      "parent": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "pascal_identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "cross_join",
     "named": true,
     "fields": {},
@@ -1184,6 +1220,29 @@
     }
   },
   {
+    "type": "fn_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "dataset_prop",
+          "named": true
+        },
+        {
+          "type": "expr_prop",
+          "named": true
+        },
+        {
+          "type": "val_prop",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "frame_definition",
     "named": true,
     "fields": {
@@ -1305,6 +1364,66 @@
         },
         {
           "type": "window_clause",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "function_def",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "return_kind": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "dataset",
+            "named": false
+          },
+          {
+            "type": "expr",
+            "named": false
+          },
+          {
+            "type": "val",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "fn_statement",
+          "named": true
+        },
+        {
+          "type": "keyword_fn",
+          "named": true
+        },
+        {
+          "type": "param_list",
+          "named": true
+        },
+        {
+          "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "type",
           "named": true
         }
       ]
@@ -2099,6 +2218,65 @@
     }
   },
   {
+    "type": "param_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "parameter_decl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "parameter_decl",
+    "named": true,
+    "fields": {
+      "kind": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "dataset",
+            "named": false
+          },
+          {
+            "type": "expr",
+            "named": false
+          },
+          {
+            "type": "val",
+            "named": false
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "partition_by",
     "named": true,
     "fields": {},
@@ -2204,6 +2382,25 @@
         },
         {
           "type": "values",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "return_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "keyword_return",
+          "named": true
+        },
+        {
+          "type": "sql_expr_or_query",
           "named": true
         }
       ]
@@ -2484,7 +2681,15 @@
       "required": true,
       "types": [
         {
+          "type": "comp_instance",
+          "named": true
+        },
+        {
           "type": "comp_prop",
+          "named": true
+        },
+        {
+          "type": "component_def",
           "named": true
         },
         {
@@ -2493,6 +2698,10 @@
         },
         {
           "type": "expr_prop",
+          "named": true
+        },
+        {
+          "type": "function_def",
           "named": true
         },
         {
@@ -3102,6 +3311,10 @@
     "named": false
   },
   {
+    "type": "->",
+    "named": false
+  },
+  {
     "type": ".",
     "named": false
   },
@@ -3179,11 +3392,19 @@
     "named": false
   },
   {
+    "type": "component",
+    "named": false
+  },
+  {
     "type": "dataset",
     "named": false
   },
   {
     "type": "expr",
+    "named": false
+  },
+  {
+    "type": "inherits",
     "named": false
   },
   {
@@ -3328,6 +3549,10 @@
   },
   {
     "type": "keyword_float",
+    "named": true
+  },
+  {
+    "type": "keyword_fn",
     "named": true
   },
   {
@@ -3536,6 +3761,10 @@
   },
   {
     "type": "keyword_regtype",
+    "named": true
+  },
+  {
+    "type": "keyword_return",
     "named": true
   },
   {
