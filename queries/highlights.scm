@@ -19,6 +19,34 @@
 (keyword_where) @keyword
 (keyword_values) @keyword
 
+;; Function-related keywords
+(keyword_fn) @keyword
+(keyword_return) @keyword
+(function_def "->" @operator)
+
+;; Explicitly highlight function return kind
+(function_def
+  "->"
+  "val" @keyword.storage.type)
+(function_def
+  "->"
+  "expr" @keyword.storage.type)
+(function_def
+  "->"
+  "dataset" @keyword.storage.type)
+
+;; Function definition
+(function_def
+  name: (identifier) @function)
+
+;; Function parameter kinds
+(parameter_decl
+  kind: _ @keyword.storage.type)
+
+;; Function return type
+(function_def
+  return_kind: _ @keyword.storage.type)
+
 (keyword_case) @conditional
 (keyword_when) @conditional
 (keyword_then) @conditional
@@ -41,6 +69,11 @@
 (val_prop "val" @keyword.storage.type)
 (dataset_prop "dataset" @keyword.storage.type)
 (comp_prop "comp" @keyword.storage.type)
+
+;; Component definition
+(component_def
+  "component" @keyword
+  "inherits" @keyword)
 
 ;; Type annotation
 (type) @type.annotation
