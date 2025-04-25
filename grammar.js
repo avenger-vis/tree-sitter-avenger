@@ -45,7 +45,8 @@ module.exports = grammar({
       $.expr_prop,
       $.dataset_prop,
       $.comp_prop,
-      $.prop_binding
+      $.prop_binding,
+      $.component_def
     ),
 
     // Basic elements
@@ -65,6 +66,19 @@ module.exports = grammar({
     ),
 
     prop_qualifier: $ => choice($.keyword_in, $.keyword_out),
+
+    // Component definition
+    component_def: $ => seq(
+      'component',
+      field("name", $.pascal_identifier),
+      optional(seq(
+        'inherits',
+        field("parent", $.pascal_identifier)
+      )),
+      '{',
+      repeat($.statement),
+      '}'
+    ),
 
     // SQL expressions and queries with simpler approach
     sql_expr_or_query: $ => choice(

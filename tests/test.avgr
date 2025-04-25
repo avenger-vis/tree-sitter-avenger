@@ -10,6 +10,7 @@ dataset data_0: SELECT * FROM (VALUES
     ) foo("a", "b");
 
 val pi: 3.14159;
+
 // asdf
 comp g1: Group {
     x := 20;
@@ -34,4 +35,9 @@ comp g1: Group {
         zindex := 1 + 2;
         clip := false;
     }
+}
+
+
+component RedRect inherits Rect {
+    
 }
