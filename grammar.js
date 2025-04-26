@@ -93,7 +93,7 @@ module.exports = grammar({
       $.keyword_fn,
       field("name", $.identifier),
       '(',
-      field("params", optional($.param_list)),
+      field("parameters", optional(comma_list($.parameter_decl, true))),
       ')',
       seq(
         '->',
@@ -108,11 +108,6 @@ module.exports = grammar({
       field("statements", repeat($.fn_statement)),
       field("return_statement", $.return_statement),
       '}'
-    ),
-
-    param_list: $ => seq(
-      field("first", $.parameter_decl),
-      field("rest", repeat(seq(',', $.parameter_decl)))
     ),
 
     parameter_decl: $ => seq(
@@ -156,8 +151,7 @@ module.exports = grammar({
     import_statement: $ => seq(
       $.keyword_import,
       '{',
-      field('first', $.import_item),
-      field('rest', repeat(seq(',', $.import_item))),
+      field('items', comma_list($.import_item, true)),
       optional(','),
       '}',
       field('path', $.import_path)
@@ -788,13 +782,7 @@ module.exports = grammar({
     _cte: $ => seq(
         $.keyword_with,
         field("recursive", optional($.keyword_recursive)),
-        field("first_cte", $.cte),
-        field("rest_ctes", repeat(
-            seq(
-              ',',
-              $.cte,
-            ),
-        )),
+        field("ctes", comma_list($.cte, true)),
     ),
 
     _select_or_set_operation: $ => choice(
@@ -1187,15 +1175,7 @@ module.exports = grammar({
 
     values: $ => seq(
       $.keyword_values,
-      field('first', $.list),
-      optional(
-          field('rest', repeat(
-          seq(
-            ',',
-            $.list,
-          ),
-        )),
-      ),
+      field('lists', comma_list($.list, true)),
     ),
 
     join: $ => seq(

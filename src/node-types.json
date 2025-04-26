@@ -1674,12 +1674,16 @@
           }
         ]
       },
-      "params": {
-        "multiple": false,
+      "parameters": {
+        "multiple": true,
         "required": false,
         "types": [
           {
-            "type": "param_list",
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "parameter_decl",
             "named": true
           }
         ]
@@ -1869,10 +1873,14 @@
     "type": "import_statement",
     "named": true,
     "fields": {
-      "first": {
-        "multiple": false,
+      "items": {
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": ",",
+            "named": false
+          },
           {
             "type": "import_item",
             "named": true
@@ -1885,20 +1893,6 @@
         "types": [
           {
             "type": "import_path",
-            "named": true
-          }
-        ]
-      },
-      "rest": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": ",",
-            "named": false
-          },
-          {
-            "type": "import_item",
             "named": true
           }
         ]
@@ -2868,36 +2862,6 @@
     }
   },
   {
-    "type": "param_list",
-    "named": true,
-    "fields": {
-      "first": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "parameter_decl",
-            "named": true
-          }
-        ]
-      },
-      "rest": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": ",",
-            "named": false
-          },
-          {
-            "type": "parameter_decl",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "parameter_decl",
     "named": true,
     "fields": {
@@ -3284,10 +3248,14 @@
     "type": "sql_query",
     "named": true,
     "fields": {
-      "first_cte": {
-        "multiple": false,
+      "ctes": {
+        "multiple": true,
         "required": false,
         "types": [
+          {
+            "type": ",",
+            "named": false
+          },
           {
             "type": "cte",
             "named": true
@@ -3318,20 +3286,6 @@
         "types": [
           {
             "type": "keyword_recursive",
-            "named": true
-          }
-        ]
-      },
-      "rest_ctes": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": ",",
-            "named": false
-          },
-          {
-            "type": "cte",
             "named": true
           }
         ]
@@ -3695,19 +3649,9 @@
     "type": "values",
     "named": true,
     "fields": {
-      "first": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "list",
-            "named": true
-          }
-        ]
-      },
-      "rest": {
+      "lists": {
         "multiple": true,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": ",",
