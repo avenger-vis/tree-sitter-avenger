@@ -760,18 +760,24 @@ module.exports = grammar({
 
     array: $ => seq(
       $.keyword_array,
-      choice(
-        seq(
-          "[",
-          field('elements', comma_list($.sql_expression)),
-          "]"
-        ),
-        seq(
-          "(",
-          field('query', $.sql_query),
-          ")",
-        )
-      )
+      field('contents', $._array_contents)
+    ),
+    
+    _array_contents: $ => choice(
+      $.array_elements,
+      $.array_query
+    ),
+    
+    array_elements: $ => seq(
+      "[",
+      field('elements', comma_list($.sql_expression)),
+      "]"
+    ),
+    
+    array_query: $ => seq(
+      "(",
+      field('query', $.sql_query),
+      ")",
     ),
 
     comment: _ => /--.*/,

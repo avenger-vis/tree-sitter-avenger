@@ -180,26 +180,16 @@
     "type": "array",
     "named": true,
     "fields": {
-      "elements": {
-        "multiple": true,
-        "required": false,
+      "contents": {
+        "multiple": false,
+        "required": true,
         "types": [
           {
-            "type": ",",
-            "named": false
+            "type": "array_elements",
+            "named": true
           },
           {
-            "type": "sql_expression",
-            "named": true
-          }
-        ]
-      },
-      "query": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "sql_query",
+            "type": "array_query",
             "named": true
           }
         ]
@@ -214,6 +204,42 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "array_elements",
+    "named": true,
+    "fields": {
+      "elements": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "sql_expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "array_query",
+    "named": true,
+    "fields": {
+      "query": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "sql_query",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
