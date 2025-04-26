@@ -1,3 +1,6 @@
+import { Foo } from 'path/to/components';
+import { Foo, Bar as Baz} from '';
+
 fn double(val x) -> val {
     return @x;
 } 

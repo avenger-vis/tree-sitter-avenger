@@ -1,5 +1,153 @@
 [
   {
+    "type": "fn_statement",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "dataset_prop",
+        "named": true
+      },
+      {
+        "type": "expr_prop",
+        "named": true
+      },
+      {
+        "type": "val_prop",
+        "named": true
+      }
+    ]
+  },
+  {
+    "type": "sql_expr_or_query",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "sql_expression",
+        "named": true
+      },
+      {
+        "type": "sql_query",
+        "named": true
+      }
+    ]
+  },
+  {
+    "type": "sql_expression",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "array",
+        "named": true
+      },
+      {
+        "type": "between_expression",
+        "named": true
+      },
+      {
+        "type": "binary_expression",
+        "named": true
+      },
+      {
+        "type": "case",
+        "named": true
+      },
+      {
+        "type": "cast",
+        "named": true
+      },
+      {
+        "type": "exists",
+        "named": true
+      },
+      {
+        "type": "field",
+        "named": true
+      },
+      {
+        "type": "grouped_expression",
+        "named": true
+      },
+      {
+        "type": "interval",
+        "named": true
+      },
+      {
+        "type": "invocation",
+        "named": true
+      },
+      {
+        "type": "list",
+        "named": true
+      },
+      {
+        "type": "literal",
+        "named": true
+      },
+      {
+        "type": "parameter",
+        "named": true
+      },
+      {
+        "type": "subquery",
+        "named": true
+      },
+      {
+        "type": "subscript",
+        "named": true
+      },
+      {
+        "type": "unary_expression",
+        "named": true
+      },
+      {
+        "type": "window_function",
+        "named": true
+      }
+    ]
+  },
+  {
+    "type": "statement",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "comp_instance",
+        "named": true
+      },
+      {
+        "type": "comp_prop",
+        "named": true
+      },
+      {
+        "type": "component_def",
+        "named": true
+      },
+      {
+        "type": "dataset_prop",
+        "named": true
+      },
+      {
+        "type": "expr_prop",
+        "named": true
+      },
+      {
+        "type": "function_def",
+        "named": true
+      },
+      {
+        "type": "import_statement",
+        "named": true
+      },
+      {
+        "type": "prop_binding",
+        "named": true
+      },
+      {
+        "type": "val_prop",
+        "named": true
+      }
+    ]
+  },
+  {
     "type": "all_fields",
     "named": true,
     "fields": {},
@@ -202,58 +350,6 @@
         "required": true,
         "types": [
           {
-            "type": "!=",
-            "named": false
-          },
-          {
-            "type": "%",
-            "named": false
-          },
-          {
-            "type": "*",
-            "named": false
-          },
-          {
-            "type": "+",
-            "named": false
-          },
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "/",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "<>",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
-          {
-            "type": "^",
-            "named": false
-          },
-          {
             "type": "distinct_from",
             "named": true
           },
@@ -312,15 +408,7 @@
         "required": true,
         "types": [
           {
-            "type": "list",
-            "named": true
-          },
-          {
             "type": "sql_expression",
-            "named": true
-          },
-          {
-            "type": "subquery",
             "named": true
           }
         ]
@@ -698,55 +786,6 @@
   {
     "type": "comp_instance",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "pascal_identifier",
-          "named": true
-        },
-        {
-          "type": "statement",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "comp_prop",
-    "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "comp_instance",
-          "named": true
-        },
-        {
-          "type": "prop_qualifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "component_def",
-    "named": true,
     "fields": {
       "name": {
         "multiple": false,
@@ -758,7 +797,69 @@
           }
         ]
       },
-      "parent": {
+      "statements": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "statement",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "comp_prop",
+    "named": true,
+    "fields": {
+      "instance": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "comp_instance",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "qualifier": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "prop_qualifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "keyword_comp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "component_def",
+    "named": true,
+    "fields": {
+      "inherits": {
         "multiple": false,
         "required": false,
         "types": [
@@ -767,17 +868,27 @@
             "named": true
           }
         ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "pascal_identifier",
+            "named": true
+          }
+        ]
+      },
+      "statements": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "statement",
+            "named": true
+          }
+        ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "statement",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -858,22 +969,44 @@
             "named": true
           }
         ]
+      },
+      "qualifier": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "prop_qualifier",
+            "named": true
+          }
+        ]
+      },
+      "query": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "sql_query",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
-          "type": "prop_qualifier",
-          "named": true
-        },
-        {
-          "type": "sql_query",
-          "named": true
-        },
-        {
-          "type": "type",
+          "type": "keyword_dataset",
           "named": true
         }
       ]
@@ -1084,6 +1217,16 @@
     "type": "expr_prop",
     "named": true,
     "fields": {
+      "expr": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "sql_expression",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -1093,22 +1236,34 @@
             "named": true
           }
         ]
+      },
+      "qualifier": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "prop_qualifier",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
-          "type": "prop_qualifier",
-          "named": true
-        },
-        {
-          "type": "sql_expression",
-          "named": true
-        },
-        {
-          "type": "type",
+          "type": "keyword_expr",
           "named": true
         }
       ]
@@ -1144,16 +1299,17 @@
     "type": "file",
     "named": true,
     "root": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "statement",
-          "named": true
-        }
-      ]
+    "fields": {
+      "statements": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "statement",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1214,29 +1370,6 @@
         },
         {
           "type": "keyword_zerofill",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "fn_statement",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "dataset_prop",
-          "named": true
-        },
-        {
-          "type": "expr_prop",
-          "named": true
-        },
-        {
-          "type": "val_prop",
           "named": true
         }
       ]
@@ -1383,47 +1516,71 @@
           }
         ]
       },
+      "params": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "param_list",
+            "named": true
+          }
+        ]
+      },
       "return_kind": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "dataset",
-            "named": false
+            "type": "keyword_dataset",
+            "named": true
           },
           {
-            "type": "expr",
-            "named": false
+            "type": "keyword_expr",
+            "named": true
           },
           {
-            "type": "val",
-            "named": false
+            "type": "keyword_val",
+            "named": true
+          }
+        ]
+      },
+      "return_statement": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "return_statement",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
+      },
+      "statements": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "fn_statement",
+            "named": true
           }
         ]
       }
     },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
-          "type": "fn_statement",
-          "named": true
-        },
-        {
           "type": "keyword_fn",
-          "named": true
-        },
-        {
-          "type": "param_list",
-          "named": true
-        },
-        {
-          "type": "return_statement",
-          "named": true
-        },
-        {
-          "type": "type",
           "named": true
         }
       ]
@@ -1457,9 +1614,116 @@
     }
   },
   {
+    "type": "grouped_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "sql_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "identifier",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "import_item",
+    "named": true,
+    "fields": {
+      "alias": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "pascal_identifier",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "pascal_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "import_path",
+    "named": true,
+    "fields": {
+      "path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "single_quote_string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "import_statement",
+    "named": true,
+    "fields": {
+      "first": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "import_item",
+            "named": true
+          }
+        ]
+      },
+      "path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "import_path",
+            "named": true
+          }
+        ]
+      },
+      "rest": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "import_item",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "keyword_import",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "int",
@@ -1500,11 +1764,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "keyword_interval",
+          "named": true
+        },
+        {
+          "type": "single_quote_string",
           "named": true
         }
       ]
@@ -1785,10 +2053,6 @@
       "required": true,
       "types": [
         {
-          "type": "invocation",
-          "named": true
-        },
-        {
           "type": "keyword_as",
           "named": true
         },
@@ -1826,10 +2090,6 @@
         },
         {
           "type": "sql_expression",
-          "named": true
-        },
-        {
-          "type": "subquery",
           "named": true
         }
       ]
@@ -1882,7 +2142,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
@@ -1899,6 +2159,10 @@
         },
         {
           "type": "keyword_true",
+          "named": true
+        },
+        {
+          "type": "single_quote_string",
           "named": true
         }
       ]
@@ -2220,16 +2484,31 @@
   {
     "type": "param_list",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "parameter_decl",
-          "named": true
-        }
-      ]
+    "fields": {
+      "first": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "parameter_decl",
+            "named": true
+          }
+        ]
+      },
+      "rest": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "parameter_decl",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -2241,16 +2520,16 @@
         "required": true,
         "types": [
           {
-            "type": "dataset",
-            "named": false
+            "type": "keyword_dataset",
+            "named": true
           },
           {
-            "type": "expr",
-            "named": false
+            "type": "keyword_expr",
+            "named": true
           },
           {
-            "type": "val",
-            "named": false
+            "type": "keyword_val",
+            "named": true
           }
         ]
       },
@@ -2302,20 +2581,27 @@
   {
     "type": "prop_binding",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "sql_expr_or_query",
-          "named": true
-        }
-      ]
+    "fields": {
+      "expr_or_query": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "sql_expr_or_query",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -2390,17 +2676,24 @@
   {
     "type": "return_statement",
     "named": true,
-    "fields": {},
+    "fields": {
+      "expr": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "sql_expr_or_query",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
           "type": "keyword_return",
-          "named": true
-        },
-        {
-          "type": "sql_expr_or_query",
           "named": true
         }
       ]
@@ -2506,6 +2799,11 @@
     }
   },
   {
+    "type": "single_quote_string",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "smallint",
     "named": true,
     "fields": {
@@ -2540,179 +2838,65 @@
     }
   },
   {
-    "type": "sql_expr_or_query",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "sql_expression",
-          "named": true
-        },
-        {
-          "type": "sql_query",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "sql_expression",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "array",
-          "named": true
-        },
-        {
-          "type": "between_expression",
-          "named": true
-        },
-        {
-          "type": "binary_expression",
-          "named": true
-        },
-        {
-          "type": "case",
-          "named": true
-        },
-        {
-          "type": "cast",
-          "named": true
-        },
-        {
-          "type": "exists",
-          "named": true
-        },
-        {
-          "type": "field",
-          "named": true
-        },
-        {
-          "type": "interval",
-          "named": true
-        },
-        {
-          "type": "invocation",
-          "named": true
-        },
-        {
-          "type": "list",
-          "named": true
-        },
-        {
-          "type": "literal",
-          "named": true
-        },
-        {
-          "type": "parameter",
-          "named": true
-        },
-        {
-          "type": "sql_expression",
-          "named": true
-        },
-        {
-          "type": "subquery",
-          "named": true
-        },
-        {
-          "type": "subscript",
-          "named": true
-        },
-        {
-          "type": "unary_expression",
-          "named": true
-        },
-        {
-          "type": "window_function",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "sql_query",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "cte",
-          "named": true
-        },
-        {
-          "type": "from",
-          "named": true
-        },
-        {
-          "type": "keyword_recursive",
-          "named": true
-        },
-        {
-          "type": "keyword_with",
-          "named": true
-        },
-        {
-          "type": "select",
-          "named": true
-        },
-        {
-          "type": "set_operation",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "statement",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "comp_instance",
-          "named": true
-        },
-        {
-          "type": "comp_prop",
-          "named": true
-        },
-        {
-          "type": "component_def",
-          "named": true
-        },
-        {
-          "type": "dataset_prop",
-          "named": true
-        },
-        {
-          "type": "expr_prop",
-          "named": true
-        },
-        {
-          "type": "function_def",
-          "named": true
-        },
-        {
-          "type": "prop_binding",
-          "named": true
-        },
-        {
-          "type": "val_prop",
-          "named": true
-        }
-      ]
+    "fields": {
+      "cte": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "cte",
+            "named": true
+          },
+          {
+            "type": "keyword_recursive",
+            "named": true
+          },
+          {
+            "type": "keyword_with",
+            "named": true
+          }
+        ]
+      },
+      "query": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "from",
+            "named": true
+          },
+          {
+            "type": "select",
+            "named": true
+          },
+          {
+            "type": "set_operation",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -3011,6 +3195,16 @@
     "type": "val_prop",
     "named": true,
     "fields": {
+      "expr": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "sql_expression",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -3020,22 +3214,34 @@
             "named": true
           }
         ]
+      },
+      "qualifier": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "prop_qualifier",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
-          "type": "prop_qualifier",
-          "named": true
-        },
-        {
-          "type": "sql_expression",
-          "named": true
-        },
-        {
-          "type": "type",
+          "type": "keyword_val",
           "named": true
         }
       ]
@@ -3279,14 +3485,6 @@
     }
   },
   {
-    "type": "!=",
-    "named": false
-  },
-  {
-    "type": "%",
-    "named": false
-  },
-  {
     "type": "(",
     "named": false
   },
@@ -3319,10 +3517,6 @@
     "named": false
   },
   {
-    "type": "/",
-    "named": false
-  },
-  {
     "type": ":",
     "named": false
   },
@@ -3347,14 +3541,6 @@
     "named": false
   },
   {
-    "type": "<>",
-    "named": false
-  },
-  {
-    "type": "=",
-    "named": false
-  },
-  {
     "type": ">",
     "named": false
   },
@@ -3375,7 +3561,7 @@
     "named": false
   },
   {
-    "type": "^",
+    "type": "as",
     "named": false
   },
   {
@@ -3388,19 +3574,11 @@
     "extra": true
   },
   {
-    "type": "comp",
-    "named": false
-  },
-  {
     "type": "component",
     "named": false
   },
   {
-    "type": "dataset",
-    "named": false
-  },
-  {
-    "type": "expr",
+    "type": "from",
     "named": false
   },
   {
@@ -3472,11 +3650,19 @@
     "named": true
   },
   {
+    "type": "keyword_comp",
+    "named": true
+  },
+  {
     "type": "keyword_cross",
     "named": true
   },
   {
     "type": "keyword_current",
+    "named": true
+  },
+  {
+    "type": "keyword_dataset",
     "named": true
   },
   {
@@ -3536,6 +3722,10 @@
     "named": true
   },
   {
+    "type": "keyword_expr",
+    "named": true
+  },
+  {
     "type": "keyword_false",
     "named": true
   },
@@ -3589,6 +3779,10 @@
   },
   {
     "type": "keyword_image",
+    "named": true
+  },
+  {
+    "type": "keyword_import",
     "named": true
   },
   {
@@ -3860,6 +4054,10 @@
     "named": true
   },
   {
+    "type": "keyword_val",
+    "named": true
+  },
+  {
     "type": "keyword_values",
     "named": true
   },
@@ -3932,10 +4130,6 @@
   {
     "type": "table_identifier",
     "named": true
-  },
-  {
-    "type": "val",
-    "named": false
   },
   {
     "type": "{",

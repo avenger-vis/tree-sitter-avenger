@@ -24,7 +24,7 @@ module.exports = grammar({
       'binary_times',
       'binary_plus',
       'unary_other',
-      'binary_other',
+      'binary_op',
       'binary_in',
       'binary_compare',
       'binary_relation',
@@ -35,12 +35,16 @@ module.exports = grammar({
     ],
   ],
 
-  word: $ => $._identifier,
+  supertypes:  $ => [
+    $.statement, $.fn_statement, $.sql_expression, $.sql_expr_or_query
+  ],
 
+  word: $ => $._identifier,
   rules: {
-    file: $ => repeat($.statement),
+    file: $ => field('statements', repeat($.statement)),
 
     statement: $ => choice(
+      $.import_statement,
       $.val_prop,
       $.expr_prop,
       $.dataset_prop,
@@ -48,7 +52,7 @@ module.exports = grammar({
       $.prop_binding,
       $.component_def,
       $.comp_instance,
-      $.function_def
+      $.function_def,
     ),
 
     // Basic elements
@@ -75,48 +79,45 @@ module.exports = grammar({
       field("name", $.pascal_identifier),
       optional(seq(
         'inherits',
-        field("parent", $.pascal_identifier)
+        field("inherits", $.pascal_identifier)
       )),
       '{',
-      repeat($.statement),
+      field("statements", repeat($.statement)),
       '}'
     ),
 
-    // Function definition and related constructs
-    keyword_fn: _ => make_keyword("fn"),
-    keyword_return: _ => make_keyword("return"),
-    
+    // Function definition and related constructs    
     function_def: $ => seq(
       $.keyword_fn,
       field("name", $.identifier),
       '(',
-      optional($.param_list),
+      field("params", optional($.param_list)),
       ')',
       seq(
         '->',
         field("return_kind", choice(
-          'val',
-          'expr',
-          'dataset'
+          $.keyword_val,
+          $.keyword_expr,
+          $.keyword_dataset
         )),
-        optional($.type)
+        field("return_type", optional($.type))
       ),
       '{',
-      repeat($.fn_statement),
-      $.return_statement,
+      field("statements", repeat($.fn_statement)),
+      field("return_statement", $.return_statement),
       '}'
     ),
 
     param_list: $ => seq(
-      $.parameter_decl,
-      repeat(seq(',', $.parameter_decl))
+      field("first", $.parameter_decl),
+      field("rest", repeat(seq(',', $.parameter_decl)))
     ),
 
     parameter_decl: $ => seq(
       field("kind", choice(
-        'val',
-        'expr',
-        'dataset'
+        $.keyword_val,
+        $.keyword_expr,
+        $.keyword_dataset
       )),
       optional($.type),
       field("name", $.identifier)
@@ -130,10 +131,36 @@ module.exports = grammar({
 
     return_statement: $ => seq(
       $.keyword_return,
-      $.sql_expr_or_query,
+      field("expr", $.sql_expr_or_query),
       optional(';')
     ),
 
+    // For the list items themselves (without commas)
+    import_item: $ => seq(
+      field("name", $.pascal_identifier),
+      optional(seq(
+        'as',
+        field("alias", $.pascal_identifier)
+      ))
+    ),
+
+    import_path: $ => seq(
+      "from",
+      field('path', $.single_quote_string),
+      ';'
+    ),
+
+    // In your import_statement rule
+    import_statement: $ => seq(
+      $.keyword_import,
+      '{',
+      field('first', $.import_item),
+      field('rest', repeat(seq(',', $.import_item))),
+      optional(','),
+      '}',
+      field('path', $.import_path)
+    ),
+    
     // SQL expressions and queries with simpler approach
     sql_expr_or_query: $ => choice(
       $.sql_query,
@@ -142,56 +169,56 @@ module.exports = grammar({
 
     // Property types
     val_prop: $ => seq(
-      optional($.prop_qualifier),
-      'val',
-      optional($.type),
+      field('qualifier', optional($.prop_qualifier)),
+      $.keyword_val,
+      field('type', optional($.type)),
       field("name", $.identifier),
       ':',
-      $.sql_expression,
+      field('expr', $.sql_expression),
       ';'
     ),
 
     expr_prop: $ => seq(
-      optional($.prop_qualifier),
-      'expr',
-      optional($.type),
+      field('qualifier', optional($.prop_qualifier)),
+      $.keyword_expr,
+      field('type', optional($.type)),
       field("name", $.identifier),
       ':',
-      $.sql_expression,
+      field('expr', $.sql_expression),
       ';'
     ),
 
     dataset_prop: $ => seq(
-      optional($.prop_qualifier),
-      'dataset',
-      optional($.type),
+      field('qualifier', optional($.prop_qualifier)),
+      $.keyword_dataset,
+      field('type', optional($.type)),
       field("name", $.identifier),
       ':',
-      $.sql_query,
+      field('query', $.sql_query),
       ';'
     ),
 
     comp_prop: $ => seq(
-      optional($.prop_qualifier),
-      'comp',
+      field('qualifier', optional($.prop_qualifier)),
+      $.keyword_comp,
       field("name", $.identifier),
       ':',
-      $.comp_instance,
+      field('instance', $.comp_instance),
     ),
 
     // Component instance
     comp_instance: $ => seq(
-      $.pascal_identifier,
+      field('name', $.pascal_identifier),
       '{',
-      repeat($.statement),
+      field('statements', repeat($.statement)),
       '}'
     ),
 
     // Property binding
     prop_binding: $ => seq(
-      $.identifier,
+      field('name', $.identifier),
       ':=',
-      $.sql_expr_or_query,
+      field('expr_or_query', $.sql_expr_or_query),
       ';'
     ),
   
@@ -573,6 +600,17 @@ module.exports = grammar({
 
     keyword_array: _ => make_keyword("array"), // not included in _type since it's a constructor literal
 
+    keyword_fn: _ => make_keyword("fn"),
+    keyword_return: _ => make_keyword("return"),
+    keyword_val: _ => make_keyword("val"),
+    keyword_expr: _ => make_keyword("expr"),
+    keyword_dataset: _ => make_keyword("dataset"),
+    keyword_comp: _ => make_keyword("comp"),
+    keyword_import: _ => make_keyword("import"),
+
+    _open_paren: _ => "(",
+    _close_paren: _ => ")",
+
     _type: $ => prec.left(
       seq(
         choice(
@@ -747,23 +785,24 @@ module.exports = grammar({
 
     _cte: $ => seq(
         $.keyword_with,
-        optional($.keyword_recursive),
-        $.cte,
-        repeat(
+        field("recursive", optional($.keyword_recursive)),
+        field("first", $.cte),
+        field("rest", repeat(
             seq(
               ',',
               $.cte,
             ),
-        ),
+        )),
     ),
 
     sql_query: $ => seq(
-      optional(optional_parenthesis($._cte)),
-      optional_parenthesis(
-        choice(
-          $._select_statement,
-          $.set_operation,
-        ),
+      field("cte", optional(optional_parenthesis($._cte))),
+      field("query", optional_parenthesis(
+          choice(
+            $._select_statement,
+            $.set_operation,
+          ),
+        )
       ),
     ),
 
@@ -1323,7 +1362,7 @@ module.exports = grammar({
         $.array,
         $.interval,
         $.between_expression,
-        wrapped_in_parenthesis($.sql_expression),
+        $.grouped_expression,
       )
     ),
 
@@ -1345,6 +1384,19 @@ module.exports = grammar({
 
     op_other: $ => token(
       choice(
+        '+',
+        '-',
+        '*',
+        '/',
+        '%',
+        '^',
+        '=',
+        '<',
+        '<=',
+        '!=',
+        '>=',
+        '>',
+        '<>',
         '->',
         '->>',
         '#>',
@@ -1391,20 +1443,7 @@ module.exports = grammar({
 
     binary_expression: $ => choice(
       ...[
-        ['+', 'binary_plus'],
-        ['-', 'binary_plus'],
-        ['*', 'binary_times'],
-        ['/', 'binary_times'],
-        ['%', 'binary_times'],
-        ['^', 'binary_exp'],
-        ['=', 'binary_relation'],
-        ['<', 'binary_relation'],
-        ['<=', 'binary_relation'],
-        ['!=', 'binary_relation'],
-        ['>=', 'binary_relation'],
-        ['>', 'binary_relation'],
-        ['<>', 'binary_relation'],
-        [$.op_other, 'binary_other'],
+        [$.op_other, 'binary_op'],
         [$.keyword_is, 'binary_is'],
         [$.is_not, 'binary_is'],
         [$.keyword_like, 'pattern_matching'],
@@ -1475,6 +1514,12 @@ module.exports = grammar({
       ),
     ),
 
+    grouped_expression: $ => prec(3, seq(
+      "(",
+      $.sql_expression,
+      ")",
+    )),
+
     between_expression: $ => choice(
       ...[
             [$.keyword_between, 'between'],
@@ -1516,11 +1561,11 @@ module.exports = grammar({
     _double_quote_string: _ => /"[^"]*"/,
     // The norm specify that between two consecutive string must be a return,
     // but this is good enough.
-    _single_quote_string: _ => seq(/([uU]&)?'([^']|'')*'/, repeat(/'([^']|'')*'/)),
+    single_quote_string: _ => seq(/([uU]&)?'([^']|'')*'/, repeat(/'([^']|'')*'/)),
     _literal_string: $ => prec(
       1,
       choice(
-        $._single_quote_string,
+        $.single_quote_string,
         $._double_quote_string,
       ),
     ),
@@ -1536,7 +1581,7 @@ module.exports = grammar({
     ),
     _bit_string: $ => seq(/[bBxX]'([^']|'')*'/, repeat(/'([^']|'')*'/)),
     // The identifier should be followed by a string (no parenthesis allowed)
-    _string_casting: $ => seq($.identifier, $._single_quote_string),
+    _string_casting: $ => seq($.identifier, $.single_quote_string),
 
     bang: _ => '!',
 
