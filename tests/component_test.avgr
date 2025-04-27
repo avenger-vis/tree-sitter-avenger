@@ -1,5 +1,5 @@
 // Simple component with no inheritance
-component SimpleRect {
+component SimpleRect inherits Foo {
     width := 100;
     height := 100;
     fill := 'red';
@@ -14,21 +14,21 @@ component BlueRect inherits SimpleRect {
 component ComplexComponent inherits BlueRect {
     x := 10;
     y := 20;
-    
+
     // Inside component can have all top-level statement types
     expr computed_value: 100 * 2;
-    
+
     val pi: 3.14159;
-    
+
     dataset sample_data: SELECT * FROM (VALUES
         (1, 'a'),
         (2, 'b'),
         (3, 'c')
     ) as t("id", "label");
-    
+
     comp mark: Rect {
         width := 50;
         height := 50;
         fill := 'green';
     }
-} 
+}
