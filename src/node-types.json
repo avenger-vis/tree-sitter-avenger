@@ -132,10 +132,6 @@
         "named": true
       },
       {
-        "type": "component_def",
-        "named": true
-      },
-      {
         "type": "dataset_prop",
         "named": true
       },
@@ -963,42 +959,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "component_def",
-    "named": true,
-    "fields": {
-      "inherits": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "pascal_identifier",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "pascal_identifier",
-            "named": true
-          }
-        ]
-      },
-      "statements": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "statement",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -4022,15 +3982,7 @@
     "extra": true
   },
   {
-    "type": "component",
-    "named": false
-  },
-  {
     "type": "from",
-    "named": false
-  },
-  {
-    "type": "inherits",
     "named": false
   },
   {

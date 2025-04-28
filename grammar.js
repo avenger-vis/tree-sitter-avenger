@@ -52,7 +52,6 @@ module.exports = grammar({
       $.dataset_prop,
       $.comp_prop,
       $.prop_binding,
-      $.component_def,
       $.comp_instance,
       $.function_def,
     ),
@@ -74,19 +73,6 @@ module.exports = grammar({
     ),
 
     prop_qualifier: $ => choice($.keyword_in, $.keyword_out),
-
-    // Component definition
-    component_def: $ => seq(
-      'component',
-      field("name", $.pascal_identifier),
-      optional(seq(
-        'inherits',
-        field("inherits", $.pascal_identifier)
-      )),
-      '{',
-      field("statements", repeat($.statement)),
-      '}'
-    ),
 
     // Function definition and related constructs    
     function_def: $ => seq(

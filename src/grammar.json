@@ -43,10 +43,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "component_def"
-        },
-        {
-          "type": "SYMBOL",
           "name": "comp_instance"
         },
         {
@@ -135,67 +131,6 @@
         {
           "type": "SYMBOL",
           "name": "keyword_out"
-        }
-      ]
-    },
-    "component_def": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "component"
-        },
-        {
-          "type": "FIELD",
-          "name": "name",
-          "content": {
-            "type": "SYMBOL",
-            "name": "pascal_identifier"
-          }
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "inherits"
-                },
-                {
-                  "type": "FIELD",
-                  "name": "inherits",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "pascal_identifier"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "STRING",
-          "value": "{"
-        },
-        {
-          "type": "FIELD",
-          "name": "statements",
-          "content": {
-            "type": "REPEAT",
-            "content": {
-              "type": "SYMBOL",
-              "name": "statement"
-            }
-          }
-        },
-        {
-          "type": "STRING",
-          "value": "}"
         }
       ]
     },

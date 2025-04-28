@@ -36,8 +36,3 @@ comp g1: Group {
         clip := false;
     }
 }
-
-
-component RedRect inherits Rect {
-    
-}

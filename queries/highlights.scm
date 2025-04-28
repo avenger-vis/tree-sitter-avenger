@@ -81,11 +81,6 @@
 (comp_prop
   (keyword_comp) @keyword.storage.type)
 
-;; Component definition
-(component_def
-  "component" @keyword
-  "inherits" @keyword)
-
 ;; Import statement
 (keyword_import) @keyword
 (import_path "from" @keyword)

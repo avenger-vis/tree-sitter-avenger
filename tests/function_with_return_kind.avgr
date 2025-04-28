@@ -1,4 +1,4 @@
 fn double(val x) -> val {
     val result: x * 2;
     return result;
-} 
+}
