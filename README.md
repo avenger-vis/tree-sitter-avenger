@@ -80,6 +80,13 @@ ignored Rust performance test records local clean/incremental evidence:
 cargo test --release --test performance -- --ignored --nocapture
 ```
 
+From clean sibling checkouts at the pinned revisions, the complete local CI
+contract is:
+
+```sh
+sh scripts/ci_local.sh ../tree-sitter-avenger-sql ../avenger
+```
+
 The synchronized compiler corpus contains 120 reviewed sources: 93 valid
 chart/definition/data roots, 10 strict-invalid recovery sources, and 17 lexical
 fragments. Normal parser and Cargo tests use the checked copies and do not read
