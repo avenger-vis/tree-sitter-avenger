@@ -1,0 +1,387 @@
+==================
+Headers imports and tolerant roots
+==================
+
+avenger 1;
+import 'semi; -- not comment /* still string */' sha256 'abc;123' as café;
+chart custom_coordinate as Δvalue {}
+define mark badge {}
+define tool inspect {}
+define transform summarize {}
+catalog memory as sales_2026 {}
+schema namespace as vega {}
+table parquet as orders {}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (import_statement
+    (single_quoted_string)
+    (single_quoted_string)
+    (identifier))
+  (chart_declaration
+    (identifier)
+    (as_clause
+      (identifier))
+    (body))
+  (definition_declaration
+    (identifier)
+    (definition_body))
+  (definition_declaration
+    (identifier)
+    (definition_body))
+  (definition_declaration
+    (identifier)
+    (definition_body))
+  (catalog_declaration
+    (identifier)
+    (as_clause
+      (identifier))
+    (body))
+  (schema_declaration
+    (identifier)
+    (as_clause
+      (identifier))
+    (body))
+  (table_declaration
+    (identifier)
+    (as_clause
+      (identifier))
+    (body)))
+
+==================
+Recursive physical Arrow types
+==================
+
+avenger 1;
+chart cartesian {
+  param as primitives {
+    type: boolean;
+    field signed: int8;
+    field signed16: int16;
+    field signed32: int32;
+    field signed64: int64;
+    field unsigned8: uint8;
+    field unsigned16: uint16;
+    field unsigned32: uint32;
+    field unsigned: uint64 nullable;
+    field floating: float16;
+    field floating32: float32;
+    field floating64: float64;
+    field small_text: utf8;
+    field text: large_utf8;
+    field small_bytes: binary;
+    field bytes: large_binary;
+    field date32_value: date32;
+    field date: date64;
+  }
+  param as temporal {
+    type: struct(
+      field('t32', time32(millisecond)),
+      field('t32_second', time32(second)),
+      field('t64', time64(nanosecond)),
+      field('t64_micro', time64(microsecond)),
+      field('timestamp_second', timestamp(second)),
+      field('timestamp_milli', timestamp(millisecond)),
+      field('zoned', timestamp(microsecond, 'America/New_York')),
+      field('timestamp_nano', timestamp(nanosecond, 'Etc/''Example')),
+      field('elapsed', duration(second)),
+      field('elapsed_milli', duration(millisecond)),
+      field('elapsed_micro', duration(microsecond)),
+      field('elapsed_nano', duration(nanosecond)),
+      field('period_year', interval(year_month)),
+      field('period_day', interval(day_time)),
+      field('period', interval(month_day_nano)),
+    );
+  }
+  param as nested {
+    type: map(utf8, fixed_size_list(list(decimal128(38, -2)), 4));
+    field positive: decimal256(76, +2);
+    field canonical: decimal128(20, 2);
+    field blob: fixed_size_binary(16);
+    field empty: struct();
+    field large: large_list(float64);
+  }
+  selection as brush {
+    type: interval;
+  }
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (identifier)
+    (body
+      (param_declaration
+        (as_clause
+          (identifier))
+        (param_body
+          (param_type_property
+            (property_name)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (primitive_arrow_type)))))
+      (param_declaration
+        (as_clause
+          (identifier))
+        (param_body
+          (param_type_property
+            (property_name)
+            (arrow_type
+              (parameterized_arrow_type
+                (arrow_type_constructor)
+                (arrow_type_arguments
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments
+                          (arrow_time_unit)))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments
+                          (arrow_time_unit)))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments
+                          (arrow_time_unit)
+                          (single_quoted_string)))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments
+                          (arrow_time_unit)
+                          (single_quoted_string)))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments
+                          (arrow_time_unit)))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments
+                          (arrow_time_unit)))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments
+                          (arrow_time_unit)))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments
+                          (arrow_time_unit)))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments
+                          (arrow_interval_unit)))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments
+                          (arrow_interval_unit)))))
+                  (arrow_struct_field
+                    (single_quoted_string)
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments
+                          (arrow_interval_unit)))))))))))
+      (param_declaration
+        (as_clause
+          (identifier))
+        (param_body
+          (param_type_property
+            (property_name)
+            (arrow_type
+              (parameterized_arrow_type
+                (arrow_type_constructor)
+                (arrow_type_arguments
+                  (arrow_type
+                    (primitive_arrow_type))
+                  (arrow_type
+                    (parameterized_arrow_type
+                      (arrow_type_constructor)
+                      (arrow_type_arguments
+                        (arrow_type
+                          (parameterized_arrow_type
+                            (arrow_type_constructor)
+                            (arrow_type_arguments
+                              (arrow_type
+                                (parameterized_arrow_type
+                                  (arrow_type_constructor)
+                                  (arrow_type_arguments
+                                    (arrow_unsigned_integer
+                                      (number))
+                                    (arrow_signed_integer
+                                      (number))))))))
+                        (arrow_unsigned_integer
+                          (number)))))))))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (parameterized_arrow_type
+                (arrow_type_constructor)
+                (arrow_type_arguments
+                  (arrow_unsigned_integer
+                    (number))
+                  (arrow_signed_integer
+                    (number))))))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (parameterized_arrow_type
+                (arrow_type_constructor)
+                (arrow_type_arguments
+                  (arrow_unsigned_integer
+                    (number))
+                  (arrow_signed_integer
+                    (number))))))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (parameterized_arrow_type
+                (arrow_type_constructor)
+                (arrow_type_arguments
+                  (arrow_unsigned_integer
+                    (number))))))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (parameterized_arrow_type
+                (arrow_type_constructor))))
+          (field_declaration
+            (identifier)
+            (arrow_type
+              (parameterized_arrow_type
+                (arrow_type_constructor)
+                (arrow_type_arguments
+                  (arrow_type
+                    (primitive_arrow_type))))))))
+      (selection_declaration
+        (as_clause
+          (identifier))
+        (body
+          (property
+            (property_name)
+            (sql_property_expression
+              (identifier))))))))

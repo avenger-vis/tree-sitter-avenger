@@ -93,3 +93,53 @@ fn exported_queries_compile() {
             .unwrap_or_else(|error| panic!("{name} query must compile: {error}"));
     }
 }
+
+#[test]
+fn arrow_types_are_structural_only_in_type_slots() {
+    let tree = parse(
+        "avenger 1; chart cartesian {\n\
+         param as config {\n\
+           type: struct(field('values', list(decimal128(38, -2))));\n\
+         }\n\
+         selection as brush { type: interval; }\n\
+         }",
+    );
+    let root = tree.root_node();
+    assert!(!root.has_error(), "{}", root.to_sexp());
+    assert!(find(root, "arrow_struct_field").is_some());
+    assert!(find(root, "arrow_signed_integer").is_some());
+
+    let selection = find(root, "selection_declaration").unwrap();
+    assert!(find(selection, "arrow_type").is_none());
+    assert!(find(selection, "sql_property_expression").is_some());
+}
+
+#[test]
+fn source_retains_multiple_tolerated_roots_and_unicode_names() {
+    let tree = parse(
+        "avenger 1;\n\
+         chart custom as café {}\n\
+         define mark Δvalue {}\n\
+         catalog memory as sales_2026 {}\n\
+         chart custom as Case {}\n\
+         chart custom as case {}",
+    );
+    let root = tree.root_node();
+    assert!(!root.has_error(), "{}", root.to_sexp());
+    assert_eq!(root.named_child_count(), 6);
+}
+
+#[test]
+fn structural_names_and_version_reject_noncanonical_prefixes() {
+    for source in [
+        "avenger -1; chart cartesian {}",
+        "avenger +1; chart cartesian {}",
+        "avenger 1; chart cartesian as $bad {}",
+        "avenger 1; chart cartesian as @bad {}",
+        "avenger 1; chart cartesian as #bad {}",
+        "avenger 1; chart cartesian as 9bad {}",
+    ] {
+        let tree = parse(source);
+        assert!(tree.root_node().has_error(), "unexpectedly clean: {source}");
+    }
+}

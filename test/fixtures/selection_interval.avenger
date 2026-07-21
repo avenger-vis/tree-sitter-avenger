@@ -1,0 +1,6 @@
+avenger 1;
+chart cartesian {
+  selection as brush {
+    type: interval;
+  }
+}

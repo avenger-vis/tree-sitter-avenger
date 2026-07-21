@@ -3,6 +3,10 @@ export default {
     $.version_directive,
     $.import_statement,
     $.chart_declaration,
+    $.definition_declaration,
+    $.catalog_declaration,
+    $.schema_declaration,
+    $.table_declaration,
   )),
 
   version_directive: $ => seq(
@@ -21,4 +25,12 @@ export default {
     optional(seq("as", field("alias", $.identifier))),
     ";",
   ),
+
+  // This private structural production is aliased to the shared public
+  // `qualified_name` node. SQL keeps its richer quoted-name production while
+  // DSL paths remain strictly unquoted identifiers.
+  _structural_qualified_name: $ => prec.right(10, seq(
+    field("name", $.identifier),
+    repeat(seq(".", field("member", $.identifier))),
+  )),
 };
