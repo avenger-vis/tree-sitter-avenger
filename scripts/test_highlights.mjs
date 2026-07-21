@@ -107,7 +107,7 @@ for (const [capture, text] of [
   }
 }
 if (!structural.stdout.split("\n").some(line =>
-  line.includes("- comment.documentation,")
+  line.includes("- comment.doc,")
   && line.includes("text: `-- | A chart-level documentation comment.")
 )) {
   throw new Error(`missing documentation comment capture:\n${structural.stdout}`);

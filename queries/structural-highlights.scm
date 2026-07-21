@@ -114,8 +114,8 @@
 (environment_value name: (single_quoted_string) @string)
 (none_value) @constant
 
-((line_comment) @comment.documentation
-  (#match? @comment.documentation "^-- \\|"))
+((line_comment) @comment @comment.doc
+  (#match? @comment.doc "^-- \\|"))
 
 (primitive_arrow_type) @type.builtin
 (arrow_type_constructor) @type.builtin

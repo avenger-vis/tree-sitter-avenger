@@ -28,10 +28,7 @@ fn composed_highlights_capture_sql_and_structural_roles() {
     }
 
     for expected in [
-        (
-            "comment.documentation",
-            "-- | A chart-level documentation comment.\n",
-        ),
+        ("comment.doc", "-- | A chart-level documentation comment.\n"),
         ("keyword", "chart"),
         ("keyword", "public"),
         ("type", "custom_mark"),
