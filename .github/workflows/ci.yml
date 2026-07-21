@@ -4,6 +4,12 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      cross_repo:
+        description: Check synchronized fixtures against the unpublished Avenger source revision
+        required: false
+        type: boolean
+        default: false
   schedule:
     - cron: "41 6 * * 1"
 
@@ -100,6 +106,7 @@ jobs:
       - run: tree-sitter fuzz --iterations 100 --edits 8
 
   cross-repository-generation:
+    if: github.event_name == 'workflow_dispatch' && inputs.cross_repo
     runs-on: ubuntu-latest
     steps:
       - name: Check out combined grammar
