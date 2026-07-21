@@ -8,6 +8,7 @@ npm ci
 npm run sync:sql-base -- --sql-root "$sql_root" --check
 npm run sync:fixtures -- --avenger-root "$avenger_root" --check
 npm run check-generated
+npm run check-generated:json
 npm test
 npm run test:highlights
 npm run test:fixtures

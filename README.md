@@ -69,7 +69,10 @@ npm run sync:fixtures -- --avenger-root ../avenger --check
 
 Generated parser sources and composed queries are committed. Run
 `npm run check-generated` from a clean worktree to verify deterministic
-generation. Never edit `vendor/avenger_sql_scanner.c`,
+generation from the composed JavaScript grammar. CI additionally runs
+`npm run check-generated:json`, which regenerates the parser and node contract
+from the committed composed `src/grammar.json` without a sibling checkout.
+Never edit `vendor/avenger_sql_scanner.c`,
 `queries/sql-highlights.scm`, or the SQL section of `queries/highlights.scm`
 directly.
 

@@ -45,6 +45,7 @@ jobs:
         run: cargo clippy --release --all-targets -- -D warnings
       - name: Test corpus and captures
         run: |
+          sh scripts/check_generated.sh --from-json
           tree-sitter test
           node scripts/test_highlights.mjs
           node scripts/test_compiler_fixtures.mjs

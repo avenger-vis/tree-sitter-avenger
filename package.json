@@ -14,6 +14,7 @@
     "test:fixtures": "node scripts/test_compiler_fixtures.mjs",
     "test:fixtures:wasm": "node scripts/test_compiler_fixtures.mjs --wasm",
     "check-generated": "sh scripts/check_generated.sh",
+    "check-generated:json": "sh scripts/check_generated.sh --from-json",
     "build:wasm": "node scripts/build_wasm.mjs",
     "test:wasm": "tree-sitter test --wasm",
     "test:fuzz": "tree-sitter fuzz --iterations 100 --edits 8",
