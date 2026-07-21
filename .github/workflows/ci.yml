@@ -4,12 +4,6 @@ on:
   push:
   pull_request:
   workflow_dispatch:
-    inputs:
-      cross_repo:
-        description: Run immutable SQL/Avenger synchronization and full generation
-        required: false
-        type: boolean
-        default: false
   schedule:
     - cron: "41 6 * * 1"
 
@@ -81,7 +75,9 @@ jobs:
       - uses: dtolnay/rust-toolchain@4cda84d5c5c54efe2404f9d843567869ab1699d4
         with:
           toolchain: 1.82.0
-      - name: Audit npm archive without resolving the local generation dependency
+      - name: Install immutable generation dependency
+        run: npm ci
+      - name: Audit npm archive
         run: npm pack --dry-run
       - name: Verify synchronized artifacts are represented in provenance
         run: |
@@ -104,7 +100,6 @@ jobs:
       - run: tree-sitter fuzz --iterations 100 --edits 8
 
   cross-repository-generation:
-    if: github.event_name == 'workflow_dispatch' && inputs.cross_repo
     runs-on: ubuntu-latest
     steps:
       - name: Check out combined grammar

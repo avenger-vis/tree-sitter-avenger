@@ -52,10 +52,9 @@ architecture despite the larger generated table.
 - `tree-sitter-cli` and the Rust runtime are pinned to 0.26.3 / ABI 15.
 - Native Node, Go, Python, Swift, Zig, CMake, Make, pixi, prebuild, and generic
   release machinery are removed until an identified consumer requires them.
-- The SQL sibling currently has no public `origin`; its only remote is the
-  disabled-push upstream fork source. A declared `file:` dependency is allowed
-  for local generation, but no publishable lock or immutable candidate may use
-  it. Publication remains gated on a fetchable full SQL revision.
+- The SQL base is published at `avenger-vis/tree-sitter-avenger-sql`; the npm
+  dependency and lock use its fetchable full commit. Sibling checkouts remain
+  part of synchronization audits, never the package dependency.
 
 ## Tracked artifact disposition
 

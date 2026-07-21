@@ -49,12 +49,11 @@ chart cartesian as movies {
 
 ## Development
 
-Generation currently expects the pinned `tree-sitter-avenger-sql` checkout and
-the Avenger compiler-contract checkout as sibling directories:
+The locked SQL grammar dependency is fetched from its immutable Git revision,
+so ordinary generation and tests need only this checkout:
 
 ```sh
 npm ci
-npm run sync:sql-base -- --sql-root ../tree-sitter-avenger-sql --check
 npm run generate
 npm test
 npm run test:highlights
@@ -64,6 +63,14 @@ npm run test:fixtures:wasm
 npm run test:scanner-sanitizers
 cargo test --release
 cargo clippy --release --all-targets -- -D warnings
+```
+
+The SQL-base and compiler-fixture synchronization checks additionally use
+checkouts at the revisions recorded in `SQL_BASE.md` and
+`test/fixtures/avenger-fixtures.json`:
+
+```sh
+npm run sync:sql-base -- --sql-root ../tree-sitter-avenger-sql --check
 npm run sync:fixtures -- --avenger-root ../avenger --check
 ```
 
@@ -95,10 +102,8 @@ Rust 1.82.0); the checked Linux evidence is recorded in
 `test/metrics/linux-validation-2026-07-21.json`. Windows remains CI-only until
 its first completed run and is not claimed as locally verified.
 
-The workflow also contains an opt-in `cross_repo` dispatch job pinned to the
-exact SQL and Avenger revisions. It becomes runnable once the declared
-`avenger-vis/tree-sitter-avenger-sql` repository exists; standard CI does not
-pretend that unavailable dependency is currently fetchable.
+The workflow's cross-repository job checks out the exact SQL and Avenger
+revisions and verifies synchronization plus complete JavaScript generation.
 
 The synchronized compiler corpus contains 120 reviewed sources: 93 valid
 chart/definition/data roots, 10 strict-invalid recovery sources, and 17 lexical
@@ -118,6 +123,6 @@ as an explicit compatibility surface. Changes require a reviewed generated
 node-type diff, corpus/query updates, and downstream Zed review. Patch releases
 preserve that surface.
 
-The current `file:` npm dependency is intentionally local-only. Do not publish
-or pin this grammar downstream until the SQL base has a fetchable immutable
-repository revision and the dependency/lock are updated accordingly.
+The SQL npm dependency is a package archive pinned to a full, fetchable Git
+commit. SQL-base upgrades must update that dependency, its lock entry,
+`SQL_BASE.md`, and the synchronization provenance together.
