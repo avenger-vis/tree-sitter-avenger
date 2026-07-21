@@ -47,6 +47,12 @@
     "install": "node-gyp-build",
     "prestart": "tree-sitter build --wasm",
     "start": "tree-sitter playground",
-    "test": "node --test bindings/node/*_test.js"
+    "test": "node --test bindings/node/*_test.js",
+    "sync:sql-base": "node scripts/sync_sql_base.mjs",
+    "test:composition": "npm --prefix composition-smoke test"
+  },
+  "avengerSqlBase": {
+    "repository": "https://github.com/avenger-vis/tree-sitter-avenger-sql",
+    "revision": "0198a1f7a8fe21e0af976859042f7910d57eaad0"
   }
 }

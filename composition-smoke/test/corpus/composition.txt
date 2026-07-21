@@ -1,0 +1,109 @@
+================================================================================
+Inherited query under DSL wrapper
+================================================================================
+
+sql: SELECT 1;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (sql_query
+    (query
+      (select_query
+        (select_clause
+          (keyword_select)
+          (projection
+            (select_item
+              (literal
+                (number)))))))))
+
+================================================================================
+Inherited binding expression before configuration
+================================================================================
+
+property: $width { next: 1; }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (sql_property_expression
+    (binding_reference
+      (identifier))
+    (configuration_body
+      (configuration_entry
+        (identifier)
+        (literal
+          (number))))))
+
+================================================================================
+SQL string owns structural delimiter characters
+================================================================================
+
+output: '$;},]';
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (sql_terminated_expression
+    (literal
+      (single_quoted_string))))
+
+================================================================================
+Structural array mixes inherited and structural forms
+================================================================================
+
+values: [1, [2,3], {key:4}, { next:5;}, value $x, pattern $p, none];
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (sql_array_property
+    (structural_array_item
+      (sql_array_expression
+        (literal
+          (number))))
+    (structural_array_item
+      (sql_array_expression
+        (array_expression
+          (literal
+            (number))
+          (literal
+            (number)))))
+    (structural_array_item
+      (sql_array_expression
+        (struct_expression
+          (struct_field
+            (identifier)
+            (literal
+              (number))))))
+    (structural_array_item
+      (anonymous_body
+        (configuration_entry
+          (identifier)
+          (literal
+            (number)))))
+    (structural_array_item
+      (sql_array_expression
+        (binding_reference
+          (identifier))))
+    (structural_array_item
+      (sql_array_expression
+        (binding_reference
+          (identifier))))
+    (structural_array_item)))
+
+================================================================================
+Unterminated string recovers before following sibling
+================================================================================
+
+output: 'unterminated;
+output: 2;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (sql_terminated_expression
+    (MISSING "􏿿"))
+  (sql_terminated_expression
+    (literal
+      (number))))
