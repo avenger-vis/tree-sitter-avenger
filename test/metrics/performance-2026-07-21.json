@@ -1,0 +1,45 @@
+{
+  "date": "2026-07-21",
+  "grammar_revision": "Phase 6 candidate based on 31de7a7",
+  "platform": {
+    "os": "macOS Darwin 25.5.0 arm64",
+    "cpu": "Apple M4 Pro",
+    "memory_bytes": 51539607552,
+    "rustc": "1.96.0",
+    "tree_sitter_cli": "0.26.3"
+  },
+  "generated_fixture": {
+    "marks": 1000,
+    "bytes": 74821
+  },
+  "iterations": 200,
+  "clean_total_ns": 2218387958,
+  "clean_mean_ns": 11091939,
+  "incremental_total_ns": 364166,
+  "incremental_mean_ns": 1820,
+  "process_maximum_resident_set_bytes": 38076416,
+  "generation": {
+    "wall_seconds": 2.73,
+    "maximum_resident_set_bytes": 436781056
+  },
+  "parser": {
+    "state_count": 3376,
+    "large_state_count": 857,
+    "symbol_count": 464,
+    "token_count": 253,
+    "field_count": 40,
+    "parser_bytes": 7316089,
+    "grammar_json_bytes": 236194,
+    "node_types_bytes": 183052
+  },
+  "command": "/usr/bin/time -l cargo test --release --test performance -- --ignored --nocapture",
+  "notes": [
+    "Resident-set observations include the Cargo test process and are not parser-only allocations.",
+    "Timing is local regression evidence, not a portable performance guarantee.",
+    "All six declared conflicts were individually removed during investigation; generation reported the exact ambiguity each conflict resolves.",
+    "The complete derived parser is larger than the SQL base because contextual structural names interact with both SQL struct fields and DSL properties; no broad undeclared conflict remains.",
+    "Native address/undefined-behavior scanner sanitizers passed the synchronized SQL harness, including 100,000 nested comments and the long dollar-string case.",
+    "Tree-sitter fuzzing passed 100 iterations and up to 8 edits for all 18 reviewed corpus cases (seed 12180950180228252176).",
+    "All 93 compiler-valid synchronized sources passed in native and Wasm parsers."
+  ]
+}

@@ -1,0 +1,33 @@
+avenger 1;
+chart custom as deep {
+  param as offset { type: float64; default: 0; }
+  sql: WITH base AS (
+         FROM vega.movies AS m
+         SELECT m."title", m."rating", m."gross"
+       ), ranked AS (
+         SELECT *, row_number() OVER (
+           PARTITION BY "rating"
+           ORDER BY "gross" DESC NULLS LAST
+         ) AS rank
+         FROM base
+       )
+       FROM ranked AS r
+       SELECT r."title", coalesce(r."gross", 0) + $offset@start AS adjusted
+       WHERE r.rank BETWEEN 1 AND 10;
+  group as outer {
+    group as middle {
+      group as inner {
+        mark custom_mark as points {
+          x: coalesce((CASE WHEN "adjusted" > 0 THEN "adjusted" ELSE 0 END), 0);
+          values: [
+            { name: 'dsl'; nested: { enabled: true; } },
+            {sql_key: [1, 2, 3], nested: {flag: true}},
+            value span(0, $offset),
+            pattern { angle: 45; },
+            none,
+          ];
+        }
+      }
+    }
+  }
+}

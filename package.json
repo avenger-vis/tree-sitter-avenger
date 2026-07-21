@@ -11,10 +11,13 @@
     "generate": "tree-sitter generate",
     "test": "tree-sitter test",
     "test:highlights": "node scripts/test_highlights.mjs",
+    "test:fixtures": "node scripts/test_compiler_fixtures.mjs",
+    "test:fixtures:wasm": "node scripts/test_compiler_fixtures.mjs --wasm",
     "check-generated": "sh scripts/check_generated.sh",
     "build:wasm": "node scripts/build_wasm.mjs",
     "test:wasm": "tree-sitter test --wasm",
     "test:fuzz": "tree-sitter fuzz --iterations 100 --edits 8",
+    "test:scanner-sanitizers": "sh scripts/test_scanner_sanitizers.sh",
     "measure": "node scripts/measure_parser.mjs",
     "sync:sql-base": "node scripts/sync_sql_base.mjs",
     "sync:fixtures": "node scripts/sync_avenger_fixtures.mjs"

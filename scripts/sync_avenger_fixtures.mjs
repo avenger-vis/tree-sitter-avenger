@@ -31,12 +31,21 @@ const sourceManifestPath = resolve(
 const sourceManifest = readFileSync(sourceManifestPath);
 const parsed = JSON.parse(sourceManifest);
 const destinationRoot = resolve(root, "test/fixtures/compiler/sources");
+const boundaryManifestRelative =
+  "avenger-lang-core/tests/fixtures/tree_sitter/sql_island_boundaries.json";
+const boundaryManifest = readFileSync(resolve(avengerRoot, boundaryManifestRelative));
+const boundaryDestination = resolve(
+  root,
+  "test/fixtures/compiler/sql_island_boundaries.json",
+);
 const wrapper = Buffer.from(`${JSON.stringify({
   schema_version: 1,
   source_repository: "https://github.com/avenger-vis/avenger",
   source_revision: revision,
   source_manifest: "avenger-lang-core/tests/fixtures/tree_sitter/structural_sources.json",
   source_manifest_sha256: createHash("sha256").update(sourceManifest).digest("hex"),
+  sql_island_manifest: boundaryManifestRelative,
+  sql_island_manifest_sha256: createHash("sha256").update(boundaryManifest).digest("hex"),
   source_count: parsed.sources.length,
   sources: parsed.sources,
 }, null, 2)}\n`);
@@ -57,6 +66,9 @@ const walk = directory => {
 if (process.argv.includes("--check")) {
   const actualManifest = readFileSync(resolve(root, "test/fixtures/avenger-fixtures.json"));
   if (!actualManifest.equals(wrapper)) throw new Error("avenger-fixtures.json is stale");
+  if (!readFileSync(boundaryDestination).equals(boundaryManifest)) {
+    throw new Error("sql_island_boundaries.json is stale");
+  }
   const actualPaths = walk(destinationRoot).sort();
   const expectedPaths = [...expected.keys()].sort();
   if (JSON.stringify(actualPaths) !== JSON.stringify(expectedPaths)) {
@@ -76,4 +88,5 @@ if (process.argv.includes("--check")) {
   }
   mkdirSync(resolve(root, "test/fixtures"), { recursive: true });
   writeFileSync(resolve(root, "test/fixtures/avenger-fixtures.json"), wrapper);
+  writeFileSync(boundaryDestination, boundaryManifest);
 }

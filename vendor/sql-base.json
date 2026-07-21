@@ -4,5 +4,7 @@
   "source_revision": "9ed9a6d5badfd34ec03e69c8cc5b3ec67c9d1553",
   "package": "@avenger-vis/tree-sitter-avenger-sql@0.1.0",
   "scanner_sha256": "5f7892e548984819495cafb112c4a88b77394cdc0fbd567450242f5fd5ba50c1",
-  "highlights_sha256": "860f9324db4f033bd81a0957bde05b69ebae8e43e322be0ab36c7f76ccf4fead"
+  "highlights_sha256": "860f9324db4f033bd81a0957bde05b69ebae8e43e322be0ab36c7f76ccf4fead",
+  "keywords_sha256": "f2d0f131ad65fb459337e70bf86a4b7a5677a23478be0c1662c9103e79c051ea",
+  "scanner_harness_sha256": "cea566d4d4ceeff5832234f235261794ba99c93077a4f0329dcbec02aa94c626"
 }

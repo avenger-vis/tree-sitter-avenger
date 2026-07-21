@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "insert_header_version",
+      "initial": "avenger ;\nchart custom {}",
+      "start_byte": 8,
+      "old_end_byte": 8,
+      "start_position": { "row": 0, "column": 8 },
+      "old_end_position": { "row": 0, "column": 8 },
+      "replacement": "1",
+      "final": "avenger 1;\nchart custom {}",
+      "final_node": "chart_declaration",
+      "max_changed_ranges": 4
+    },
+    {
+      "id": "close_structural_string",
+      "initial": "avenger 1;\nchart custom { x: 'oops; after: 2; }",
+      "start_byte": 34,
+      "old_end_byte": 34,
+      "start_position": { "row": 1, "column": 23 },
+      "old_end_position": { "row": 1, "column": 23 },
+      "replacement": "'",
+      "final": "avenger 1;\nchart custom { x: 'oops'; after: 2; }",
+      "final_node": "single_quoted_string",
+      "max_changed_ranges": 4
+    },
+    {
+      "id": "close_sql_call",
+      "initial": "avenger 1;\nchart custom { x: coalesce(1,; after: 2; }",
+      "start_byte": 40,
+      "old_end_byte": 40,
+      "start_position": { "row": 1, "column": 29 },
+      "old_end_position": { "row": 1, "column": 29 },
+      "replacement": "2)",
+      "final": "avenger 1;\nchart custom { x: coalesce(1,2); after: 2; }",
+      "final_node": "function_call",
+      "max_changed_ranges": 4
+    },
+    {
+      "id": "close_structural_array",
+      "initial": "avenger 1;\nchart custom { x: [1, 2; after: 3; }",
+      "start_byte": 34,
+      "old_end_byte": 34,
+      "start_position": { "row": 1, "column": 23 },
+      "old_end_position": { "row": 1, "column": 23 },
+      "replacement": "]",
+      "final": "avenger 1;\nchart custom { x: [1, 2]; after: 3; }",
+      "final_node": "array",
+      "max_changed_ranges": 4
+    },
+    {
+      "id": "close_configuration_body",
+      "initial": "avenger 1;\nchart custom { x: $width { enabled: true; after: 2; }",
+      "start_byte": 53,
+      "old_end_byte": 53,
+      "start_position": { "row": 1, "column": 42 },
+      "old_end_position": { "row": 1, "column": 42 },
+      "replacement": "} ",
+      "final": "avenger 1;\nchart custom { x: $width { enabled: true; } after: 2; }",
+      "final_node": "configured_expression",
+      "max_changed_ranges": 4
+    },
+    {
+      "id": "close_block_comment_and_chart",
+      "initial": "avenger 1;\nchart custom { x: 1; /* unfinished",
+      "start_byte": 45,
+      "old_end_byte": 45,
+      "start_position": { "row": 1, "column": 34 },
+      "old_end_position": { "row": 1, "column": 34 },
+      "replacement": "*/\n}",
+      "final": "avenger 1;\nchart custom { x: 1; /* unfinished*/\n}",
+      "final_node": "block_comment",
+      "max_changed_ranges": 4
+    }
+  ]
+}

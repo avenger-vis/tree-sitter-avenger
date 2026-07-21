@@ -1,0 +1,23 @@
+avenger 1;
+
+import 'inspect_points.tool.avenger';
+
+chart cartesian as chart {
+  data: {
+    values: [
+      { id: 'a'; x: 1.0; y: 2.0; },
+      { id: 'b'; x: 2.0; y: 1.0; }
+    ];
+  }
+
+  tool inspect_points as inspector {
+    target: points;
+  }
+
+  mark symbol as points {
+    x: "x" { scale: linear { domain: [0.0, 3.0]; } }
+    y: "y" { scale: linear { domain: [0.0, 3.0]; } }
+    details: [id];
+    size: 80;
+  }
+}
