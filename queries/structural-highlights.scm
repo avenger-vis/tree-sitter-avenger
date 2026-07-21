@@ -15,6 +15,14 @@
   "nullable"
   "private"
   "public"
+  "value"
+  "dim"
+  "pattern"
+  "env"
+  "marks"
+  "subplot"
+  "subplots"
+  "legend"
   "output"
 ] @keyword
 
@@ -32,6 +40,9 @@
 (field_declaration name: (identifier) @property)
 (output_declaration name: (identifier) @variable)
 (property name: (property_name) @property)
+(typed_object kind: (identifier) @type)
+(typed_reference kind: (reference_kind) @type)
+(environment_value name: (single_quoted_string) @string)
 (none_value) @constant
 
 (primitive_arrow_type) @type.builtin

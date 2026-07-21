@@ -1,0 +1,12 @@
+avenger 1;
+chart cartesian {
+  before: 1;
+  broken_call: coalesce(1, ;
+  after_call: 2;
+  broken_array: [1, coalesce(2, , 3, none];
+  after_array: 4;
+  sql: 1;
+  after_query: 5;
+  ordinary: SELECT value FROM source;
+  final: 6;
+}

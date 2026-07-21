@@ -1,0 +1,491 @@
+==================
+Typed configured and special property values
+==================
+
+avenger 1;
+chart cartesian {
+  scale: linear { clamp: true; }
+  quoted: "amount" { fallback: 0; }
+  bound: $width@start { fallback: 1; }
+  literal: 'blue' { enabled: true; }
+  parenthesized: (1 + 2) { enabled: true; }
+  called: coalesce($width, 0) { enabled: true; }
+  qualified: totals.amount { enabled: true; }
+  mark_ref: mark plot.points;
+  group_ref: group panel;
+  selection_ref: selection brush;
+  tool_ref: tool inspect;
+  widget_ref: widget slider;
+  resource_ref: resource tiles;
+  fill: value '#2563eb';
+  size: value 4 { legend: none; }
+  dimension: dim repeat.row;
+  configured_dimension: dim repeat.column { padding: 2; }
+  texture: pattern { width: 4; }
+  token: env 'AVENGER_TOKEN';
+  stroke: none;
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (identifier)
+    (body
+      (property
+        (property_name)
+        (typed_object
+          (identifier)
+          (body
+            (property
+              (property_name)
+              (sql_property_expression
+                (literal
+                  (keyword_true)))))))
+      (property
+        (property_name)
+        (configured_expression
+          (sql_property_expression
+            (qualified_name
+              (name
+                (quoted_identifier))))
+          (body
+            (property
+              (property_name)
+              (sql_property_expression
+                (literal
+                  (number)))))))
+      (property
+        (property_name)
+        (configured_expression
+          (sql_property_expression
+            (binding_reference
+              (identifier)
+              (temporal_qualifier)))
+          (body
+            (property
+              (property_name)
+              (sql_property_expression
+                (literal
+                  (number)))))))
+      (property
+        (property_name)
+        (configured_expression
+          (sql_property_expression
+            (literal
+              (single_quoted_string)))
+          (body
+            (property
+              (property_name)
+              (sql_property_expression
+                (literal
+                  (keyword_true)))))))
+      (property
+        (property_name)
+        (configured_expression
+          (sql_property_expression
+            (parenthesized_expression
+              (binary_expression
+                (literal
+                  (number))
+                (literal
+                  (number)))))
+          (body
+            (property
+              (property_name)
+              (sql_property_expression
+                (literal
+                  (keyword_true)))))))
+      (property
+        (property_name)
+        (configured_expression
+          (sql_property_expression
+            (function_call
+              (qualified_name
+                (name
+                  (identifier)))
+              (function_argument
+                (binding_reference
+                  (identifier)))
+              (function_argument
+                (literal
+                  (number)))))
+          (body
+            (property
+              (property_name)
+              (sql_property_expression
+                (literal
+                  (keyword_true)))))))
+      (property
+        (property_name)
+        (configured_expression
+          (sql_property_expression
+            (qualified_name
+              (name
+                (identifier))
+              (name
+                (identifier))))
+          (body
+            (property
+              (property_name)
+              (sql_property_expression
+                (literal
+                  (keyword_true)))))))
+      (property
+        (property_name)
+        (typed_reference
+          (reference_kind)
+          (qualified_name
+            (identifier)
+            (identifier))))
+      (property
+        (property_name)
+        (typed_reference
+          (reference_kind)
+          (qualified_name
+            (identifier))))
+      (property
+        (property_name)
+        (typed_reference
+          (reference_kind)
+          (qualified_name
+            (identifier))))
+      (property
+        (property_name)
+        (typed_reference
+          (reference_kind)
+          (qualified_name
+            (identifier))))
+      (property
+        (property_name)
+        (typed_reference
+          (reference_kind)
+          (qualified_name
+            (identifier))))
+      (property
+        (property_name)
+        (typed_reference
+          (reference_kind)
+          (qualified_name
+            (identifier))))
+      (property
+        (property_name)
+        (visual_value
+          (sql_property_expression
+            (literal
+              (single_quoted_string)))))
+      (property
+        (property_name)
+        (visual_value
+          (sql_property_expression
+            (literal
+              (number)))
+          (body
+            (property
+              (property_name)
+              (none_value)))))
+      (property
+        (property_name)
+        (dimension_value
+          (qualified_name
+            (identifier)
+            (identifier))))
+      (property
+        (property_name)
+        (dimension_value
+          (qualified_name
+            (identifier)
+            (identifier))
+          (body
+            (property
+              (property_name)
+              (sql_property_expression
+                (literal
+                  (number)))))))
+      (property
+        (property_name)
+        (pattern_value
+          (body
+            (property
+              (property_name)
+              (sql_property_expression
+                (literal
+                  (number)))))))
+      (property
+        (property_name)
+        (environment_value
+          (single_quoted_string)))
+      (property
+        (property_name)
+        (none_value)))))
+
+==================
+Structural array owns only outer delimiters
+==================
+
+avenger 1;
+chart cartesian {
+  values: [
+    {name: 'anonymous';},
+    value 'literal',
+    pattern { width: 4; },
+    none,
+    [1, 2, coalesce(3, 4)],
+    {key: 'sql struct', nested: {enabled: true}},
+    CASE WHEN true THEN '};,]' ELSE E'wide\nchart' END,
+    (SELECT '};,[]' AS value),
+    coalesce(1 /* },; nested /* [] */ still */, 2),
+    $$multi
+line { }, ; [ ]$$,
+    X'deadbeef',
+  ];
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (identifier)
+    (body
+      (property
+        (property_name)
+        (array
+          (array_element
+            (anonymous_object
+              (body
+                (property
+                  (property_name)
+                  (sql_property_expression
+                    (literal
+                      (single_quoted_string)))))))
+          (array_element
+            (array_visual_value
+              (sql_array_expression
+                (literal
+                  (single_quoted_string)))))
+          (array_element
+            (array_pattern_value
+              (body
+                (property
+                  (property_name)
+                  (sql_property_expression
+                    (literal
+                      (number)))))))
+          (array_element
+            (none_value))
+          (array_element
+            (sql_array_expression
+              (array_expression
+                (literal
+                  (number))
+                (literal
+                  (number))
+                (function_call
+                  (qualified_name
+                    (name
+                      (identifier)))
+                  (function_argument
+                    (literal
+                      (number)))
+                  (function_argument
+                    (literal
+                      (number)))))))
+          (array_element
+            (sql_array_expression
+              (struct_expression
+                (struct_field
+                  (identifier)
+                  (literal
+                    (single_quoted_string)))
+                (struct_field
+                  (identifier)
+                  (struct_expression
+                    (struct_field
+                      (identifier)
+                      (literal
+                        (keyword_true))))))))
+          (array_element
+            (sql_array_expression
+              (case_expression
+                (keyword_case)
+                (keyword_when)
+                (literal
+                  (keyword_true))
+                (keyword_then)
+                (literal
+                  (single_quoted_string))
+                (keyword_else)
+                (literal
+                  (escaped_string))
+                (keyword_end))))
+          (array_element
+            (sql_array_expression
+              (subquery_expression
+                (query
+                  (select_query
+                    (select_clause
+                      (keyword_select)
+                      (projection
+                        (select_item
+                          (literal
+                            (single_quoted_string))
+                          (alias
+                            (keyword_as)
+                            (identifier))))))))))
+          (array_element
+            (sql_array_expression
+              (function_call
+                (qualified_name
+                  (name
+                    (identifier)))
+                (function_argument
+                  (literal
+                    (number)))
+                (block_comment)
+                (function_argument
+                  (literal
+                    (number))))))
+          (array_element
+            (sql_array_expression
+              (literal
+                (dollar_quoted_string))))
+          (array_element
+            (sql_array_expression
+              (literal
+                (hex_binary_literal)))))))))
+
+==================
+Reserved query and event values
+==================
+
+avenger 1;
+chart cartesian {
+  sql: FROM vega.movies AS m SELECT m.title;
+  query: WITH visible AS (SELECT * FROM $brush WHERE visible)
+         SELECT count(*) FROM visible;
+  target: mark plot.points;
+  scope: subplot grid.left;
+  surface: legend color;
+  target: marks [plot.points, overlay.points,];
+  scope: subplots [grid.left, grid.right,];
+  surface: all;
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (identifier)
+    (body
+      (property
+        (property_name)
+        (sql_query
+          (query
+            (select_query
+              (from_clause
+                (keyword_from)
+                (relation
+                  (qualified_name
+                    (name
+                      (identifier))
+                    (name
+                      (identifier)))
+                  (relation_alias
+                    (keyword_as)
+                    (identifier))))
+              (select_clause
+                (keyword_select)
+                (projection
+                  (select_item
+                    (qualified_name
+                      (name
+                        (identifier))
+                      (name
+                        (identifier))))))))))
+      (property
+        (property_name)
+        (sql_query
+          (query
+            (with_clause
+              (keyword_with)
+              (common_table_expression
+                (identifier)
+                (keyword_as)
+                (query
+                  (select_query
+                    (select_clause
+                      (keyword_select)
+                      (projection
+                        (select_item
+                          (wildcard))))
+                    (from_clause
+                      (keyword_from)
+                      (relation
+                        (binding_reference
+                          (identifier))))
+                    (where_clause
+                      (keyword_where)
+                      (qualified_name
+                        (name
+                          (identifier))))))))
+            (select_query
+              (select_clause
+                (keyword_select)
+                (projection
+                  (select_item
+                    (function_call
+                      (qualified_name
+                        (name
+                          (identifier)))
+                      (function_argument)))))
+              (from_clause
+                (keyword_from)
+                (relation
+                  (qualified_name
+                    (name
+                      (identifier)))))))))
+      (property
+        (property_name)
+        (event_targets
+          (qualified_name
+            (identifier)
+            (identifier))))
+      (property
+        (property_name)
+        (event_scope
+          (qualified_name
+            (identifier)
+            (identifier))))
+      (property
+        (property_name)
+        (event_surface
+          (identifier)))
+      (property
+        (property_name)
+        (event_targets
+          (qualified_name_list
+            (qualified_name
+              (identifier)
+              (identifier))
+            (qualified_name
+              (identifier)
+              (identifier)))))
+      (property
+        (property_name)
+        (event_scope
+          (qualified_name_list
+            (qualified_name
+              (identifier)
+              (identifier))
+            (qualified_name
+              (identifier)
+              (identifier)))))
+      (property
+        (property_name)
+        (event_surface)))))

@@ -68,3 +68,21 @@ if (
 ) {
   throw new Error(`unterminated string lost the following output:\n${stringRecovery.stdout}`);
 }
+
+const valueRecovery = run([
+  "parse", "--no-ranges", "test/fixtures/recovery_values.avenger",
+]);
+if (valueRecovery.status !== 1) {
+  throw new Error(`expected value recovery status 1, got ${valueRecovery.status}`);
+}
+const valueCaptures = run([
+  "query", "--captures", "queries/highlights.scm",
+  "test/fixtures/recovery_values.avenger",
+]);
+for (const property of ["after_call", "after_array", "after_query", "final"]) {
+  if (!valueCaptures.stdout.split("\n").some(line =>
+    line.includes("- property,") && line.includes(`text: \`${property}\``)
+  )) {
+    throw new Error(`value recovery lost property ${property}:\n${valueRecovery.stdout}`);
+  }
+}

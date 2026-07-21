@@ -143,3 +143,37 @@ fn structural_names_and_version_reject_noncanonical_prefixes() {
         assert!(tree.root_node().has_error(), "unexpectedly clean: {source}");
     }
 }
+
+#[test]
+fn value_shapes_and_structural_delimiters_are_stable() {
+    let tree = parse(
+        "avenger 1; chart cartesian {\n\
+         typed: linear { clamp: true; }\n\
+         configured: $width@previous { fallback: 0; }\n\
+         reference: mark plot.points;\n\
+         values: [{name: 'dsl';}, value 'literal', pattern {}, none,\n\
+                  [1, 2], {key: 'sql'}, (SELECT 1), $$};,[]$$];\n\
+         }",
+    );
+    let root = tree.root_node();
+    assert!(!root.has_error(), "{}", root.to_sexp());
+    for kind in [
+        "typed_object",
+        "configured_expression",
+        "typed_reference",
+        "anonymous_object",
+        "array_visual_value",
+        "array_pattern_value",
+        "none_value",
+        "array_expression",
+        "struct_expression",
+        "subquery_expression",
+        "dollar_quoted_string",
+    ] {
+        assert!(
+            find(root, kind).is_some(),
+            "missing {kind}: {}",
+            root.to_sexp()
+        );
+    }
+}
