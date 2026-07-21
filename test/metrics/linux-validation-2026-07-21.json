@@ -1,0 +1,37 @@
+{
+  "date": "2026-07-21",
+  "result": "pass",
+  "combined_revision": "b7b22b74cda38b3fd8f8b0093168f74ec1fbc5f0",
+  "sql_revision": "9ed9a6d5badfd34ec03e69c8cc5b3ec67c9d1553",
+  "avenger_revision": "ebe15482494d911366e7737aacfe3c89fce24ec3",
+  "environment": {
+    "host": "macOS OrbStack Docker 29.4.0",
+    "container": "ubuntu:24.04",
+    "container_digest": "sha256:4fbb8e6a8395de5a7550b33509421a2bafbc0aab6c06ba2cef9ebffbc7092d90",
+    "architecture": "linux/arm64",
+    "node": "20.19.6",
+    "rustc": "1.82.0",
+    "clang": "18",
+    "tree_sitter_cli": "0.26.3"
+  },
+  "command": "sh scripts/ci_local.sh ../tree-sitter-avenger-sql ../avenger",
+  "coverage": [
+    "npm clean install from three clean sibling clones",
+    "SQL and Avenger synchronization checks",
+    "deterministic parser regeneration",
+    "native corpus, highlights, and all 93 compiler-valid sources",
+    "Wasm corpus, highlights, and all 93 compiler-valid sources",
+    "address and undefined-behavior scanner sanitizers",
+    "100-iteration, 8-edit Tree-sitter fuzz run (seed 734676002864484234)",
+    "parser metrics drift check",
+    "Rust format, tests, and clippy on MSRV 1.82.0",
+    "strict C11 warning build",
+    "npm dry-run archive",
+    "Cargo archive build and verification"
+  ],
+  "notes": [
+    "The test used fresh Git clones inside the container, not host working trees.",
+    "The first Debian Bookworm attempt was discarded before parser tests because the npm Tree-sitter Linux ARM binary requires glibc 2.39; Ubuntu 24.04 supplies that runtime.",
+    "Windows remains unexecuted and is not claimed."
+  ]
+}

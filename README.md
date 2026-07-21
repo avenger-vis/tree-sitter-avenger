@@ -87,6 +87,11 @@ contract is:
 sh scripts/ci_local.sh ../tree-sitter-avenger-sql ../avenger
 ```
 
+This contract passes from fresh clones on macOS and Linux ARM64 (Ubuntu 24.04,
+Rust 1.82.0); the checked Linux evidence is recorded in
+`test/metrics/linux-validation-2026-07-21.json`. Windows remains CI-only until
+its first completed run and is not claimed as locally verified.
+
 The synchronized compiler corpus contains 120 reviewed sources: 93 valid
 chart/definition/data roots, 10 strict-invalid recovery sources, and 17 lexical
 fragments. Normal parser and Cargo tests use the checked copies and do not read

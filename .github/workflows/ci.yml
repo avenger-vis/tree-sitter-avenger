@@ -32,8 +32,11 @@ jobs:
         with:
           node-version: 20.19.6
       - uses: Swatinem/rust-cache@v2
-      - name: Install pinned Tree-sitter CLI
-        run: cargo install tree-sitter-cli --version 0.26.3 --locked
+      - name: Install pinned Tree-sitter CLI outside the project dependency graph
+        shell: bash
+        run: |
+          npm install --prefix "$RUNNER_TEMP/tree-sitter" tree-sitter-cli@0.26.3
+          echo "$RUNNER_TEMP/tree-sitter/node_modules/.bin" >> "$GITHUB_PATH"
       - name: Check formatting
         run: cargo fmt --all --check
       - name: Test Rust binding and conformance
@@ -84,7 +87,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.6
       - name: Install pinned Tree-sitter CLI
-        run: cargo install tree-sitter-cli --version 0.26.3 --locked
+        run: |
+          npm install --prefix "$RUNNER_TEMP/tree-sitter" tree-sitter-cli@0.26.3
+          echo "$RUNNER_TEMP/tree-sitter/node_modules/.bin" >> "$GITHUB_PATH"
       - run: tree-sitter fuzz --iterations 100 --edits 8
