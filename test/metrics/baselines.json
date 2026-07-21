@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-07-21",
+  "platform": {
+    "os": "macOS Darwin 25.5.0 arm64",
+    "cpu": "Apple M4 Pro",
+    "tree_sitter_cli": "0.26.3",
+    "tree_sitter_abi": 15,
+    "node": "20.19.6",
+    "npm": "10.8.2",
+    "rustc": "1.96.0",
+    "cargo": "1.96.0",
+    "clang": "Apple clang 21.0.0"
+  },
+  "revisions": {
+    "legacy_combined": "2661a76a1796b34b0c16afb5fed35cc81e45b807",
+    "composition_spike": "f5c13e6b5720559db5f53b7f9c6bea0eb1c6faf5",
+    "sql_base": "9ed9a6d5badfd34ec03e69c8cc5b3ec67c9d1553",
+    "avenger_contract": "ebe15482494d911366e7737aacfe3c89fce24ec3"
+  },
+  "legacy_combined": {
+    "state_count": 4686,
+    "large_state_count": 16,
+    "symbol_count": 346,
+    "token_count": 196,
+    "field_count": 88,
+    "parser_c_bytes": 4750682,
+    "grammar_json_bytes": 265736,
+    "node_types_json_bytes": 80177,
+    "top_level_rule_count": 488,
+    "fixture_count": 11
+  },
+  "standalone_sql": {
+    "state_count": 2460,
+    "large_state_count": 48,
+    "symbol_count": 219,
+    "token_count": 132,
+    "field_count": 28,
+    "parser_c_bytes": 3638952,
+    "grammar_json_bytes": 100463,
+    "node_types_json_bytes": 119032,
+    "compiler_conformance_case_count": 81
+  },
+  "minimal_composition": {
+    "state_count": 2508,
+    "large_state_count": 51,
+    "symbol_count": 240,
+    "token_count": 141,
+    "field_count": 30,
+    "parser_c_bytes": 3670561,
+    "grammar_json_bytes": 106704,
+    "node_types_json_bytes": 129153,
+    "corpus_case_count": 10
+  },
+  "compiler_structural_contract": {
+    "source_count": 120,
+    "strict_valid": 74,
+    "strict_invalid": 10,
+    "token_fragment": 17,
+    "canonical_valid": 12,
+    "example_valid": 6,
+    "stdlib_valid": 1,
+    "sql_boundary_context_count": 4,
+    "sql_call_site_count": 9,
+    "sql_boundary_case_count": 13,
+    "sql_structural_case_count": 8
+  }
+}
