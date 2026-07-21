@@ -86,3 +86,38 @@ for (const property of ["after_call", "after_array", "after_query", "final"]) {
     throw new Error(`value recovery lost property ${property}:\n${valueRecovery.stdout}`);
   }
 }
+
+const structural = run([
+  "query", "--captures", "queries/highlights.scm",
+  "test/highlight/surface.avenger",
+]);
+if (structural.status !== 0) {
+  throw new Error(`structural highlight query failed:\n${structural.stdout}\n${structural.stderr}`);
+}
+for (const [capture, text] of [
+  ["keyword", "`public`"],
+  ["type", "`custom_mark`"],
+  ["type.builtin", "`float64`"],
+  ["variable.parameter", "`x`"],
+]) {
+  if (!structural.stdout.split("\n").some(line =>
+    line.includes(`- ${capture},`) && line.includes(`text: ${text}`)
+  )) {
+    throw new Error(`missing expected ${capture} capture for ${text}:\n${structural.stdout}`);
+  }
+}
+if (!structural.stdout.split("\n").some(line =>
+  line.includes("- comment.documentation,")
+  && line.includes("text: `-- | A chart-level documentation comment.")
+)) {
+  throw new Error(`missing documentation comment capture:\n${structural.stdout}`);
+}
+const plotLines = structural.stdout.split("\n").filter(line =>
+  line.includes("text: `plot`")
+);
+if (!plotLines.some(line => line.includes("- function,"))) {
+  throw new Error(`DSL-only keyword did not remain an SQL function name:\n${structural.stdout}`);
+}
+if (plotLines.some(line => line.includes("- keyword,"))) {
+  throw new Error(`SQL function plot was incorrectly captured as a keyword:\n${structural.stdout}`);
+}

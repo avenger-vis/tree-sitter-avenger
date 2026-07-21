@@ -1,0 +1,21 @@
+-- | A chart-level documentation comment.
+avenger 1;
+import './catalog.data.avenger' sha256 'abc123' as data;
+
+chart custom as demo {
+  public param as width { type: float64; default: 640; }
+  projected: plot($width);
+  mark custom_mark as points {
+    x: coalesce($width@start, 0);
+  }
+  on pointermove as hover {
+    set cursor = 'crosshair';
+  }
+}
+
+define mark badge {
+  slot number as radius;
+  channel x;
+  output bounds: span(0, $radius);
+  export points as marks;
+}

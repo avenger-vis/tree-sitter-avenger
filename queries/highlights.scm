@@ -194,13 +194,8 @@
 ] @keyword
 
 [
-  (visibility_modifier)
   (theme_kind)
-  (definition_kind)
-  (slot_shape)
   (state_kind)
-  (action_time)
-  (replacing_scopes_modifier)
 ] @keyword
 
 (version_directive version: (number) @number)
@@ -257,5 +252,3 @@
 (arrow_unsigned_integer (number) @number)
 (arrow_signed_integer (number) @number)
 (arrow_struct_field name: (single_quoted_string) @string)
-
-["{" "}" "[" "]" ":" ";" ","] @punctuation.delimiter
