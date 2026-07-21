@@ -6,7 +6,7 @@ time. The initial composition candidate is pinned to:
 | Field | Value |
 | --- | --- |
 | Repository | `https://github.com/avenger-vis/tree-sitter-avenger-sql` |
-| Revision | `0198a1f7a8fe21e0af976859042f7910d57eaad0` |
+| Revision | `9ed9a6d5badfd34ec03e69c8cc5b3ec67c9d1553` |
 | Package | `@avenger-vis/tree-sitter-avenger-sql` 0.1.0 |
 | Tree-sitter CLI / ABI | 0.26.3 / 15 |
 

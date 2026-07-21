@@ -78,3 +78,16 @@ for (const expected of [
 if ((structuralRecovery.stdout.match(/\(sql_terminated_expression/g) ?? []).length !== 2) {
   throw new Error(`incomplete call lost a following output:\n${structuralRecovery.stdout}`);
 }
+
+const queryEntry = run([
+  "parse",
+  "--no-ranges",
+  "test/fixtures/query-entry.avenger-composition",
+]);
+if (
+  queryEntry.status !== 1
+  || queryEntry.stdout.includes("(sql_query")
+  || !queryEntry.stdout.includes("(sql_terminated_expression")
+) {
+  throw new Error(`query wrapper accepted a scalar or lost its sibling:\n${queryEntry.stdout}`);
+}

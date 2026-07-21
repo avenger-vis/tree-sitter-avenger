@@ -53,6 +53,6 @@
   },
   "avengerSqlBase": {
     "repository": "https://github.com/avenger-vis/tree-sitter-avenger-sql",
-    "revision": "0198a1f7a8fe21e0af976859042f7910d57eaad0"
+    "revision": "9ed9a6d5badfd34ec03e69c8cc5b3ec67c9d1553"
   }
 }

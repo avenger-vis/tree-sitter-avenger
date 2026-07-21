@@ -3,7 +3,7 @@
 Date: 2026-07-21
 
 SQL base: `tree-sitter-avenger-sql`
-`0198a1f7a8fe21e0af976859042f7910d57eaad0`
+`9ed9a6d5badfd34ec03e69c8cc5b3ec67c9d1553`
 
 Tree-sitter CLI: 0.26.3, ABI 15
 
@@ -25,12 +25,12 @@ comma syntax.
 
 | Parser | States | Large states | Symbols | Tokens | Fields | `parser.c` bytes |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| standalone `avenger_sql` | 2,450 | 25 | 215 | 129 | 28 | 3,546,204 |
-| minimal derived composition | 2,498 | 24 | 236 | 138 | 30 | 3,573,547 |
+| standalone `avenger_sql` | 2,460 | 48 | 219 | 132 | 28 | 3,638,952 |
+| minimal derived composition | 2,508 | 51 | 240 | 141 | 30 | 3,670,561 |
 | obsolete legacy combined parser | 4,686 | 16 | 346 | 196 | 88 | 4,750,682 |
 
-The four wrapper families add 48 states and 27,343 bytes over the standalone
-base. The valid 624-byte all-context fixture parsed in 0.18 ms (about 3,503
+The four wrapper families add 48 states and 31,609 bytes over the standalone
+base. The valid 618-byte all-context fixture parsed in 0.17 ms (about 3,580
 bytes/ms) on the Apple M4 Pro planning machine. Full structural grammar growth
 must still be measured by the umbrella implementation, but the base-extension
 overhead itself is small.
