@@ -25,6 +25,17 @@ fn find<'tree>(node: Node<'tree>, kind: &str) -> Option<Node<'tree>> {
     None
 }
 
+fn assert_field(node: Node<'_>, field: &str, kind: &str) {
+    let child = node.child_by_field_name(field).unwrap_or_else(|| {
+        panic!(
+            "{} must expose field {field}: {}",
+            node.kind(),
+            node.to_sexp()
+        )
+    });
+    assert_eq!(child.kind(), kind, "{} field {field}", node.kind());
+}
+
 #[test]
 fn minimal_chart_has_stable_root_shape() {
     let tree = parse("avenger 1; chart cartesian {}");
@@ -175,5 +186,89 @@ fn value_shapes_and_structural_delimiters_are_stable() {
             "missing {kind}: {}",
             root.to_sexp()
         );
+    }
+}
+
+#[test]
+fn complete_declaration_surface_has_stable_nodes_and_fields() {
+    let source = include_str!("../test/fixtures/declarations.avenger");
+    let tree = parse(source);
+    let root = tree.root_node();
+    assert!(!root.has_error(), "{}", root.to_sexp());
+
+    for kind in [
+        "param_declaration",
+        "store_declaration",
+        "selection_declaration",
+        "resource_declaration",
+        "theme_declaration",
+        "group_declaration",
+        "mark_declaration",
+        "transform_declaration",
+        "tool_declaration",
+        "widget_declaration",
+        "view_declaration",
+        "event_declaration",
+        "cell_declaration",
+        "plot_declaration",
+        "variable_declaration",
+        "part_declaration",
+        "level_declaration",
+        "adjust_declaration",
+        "derive_declaration",
+        "overlay_declaration",
+        "layer_declaration",
+        "when_declaration",
+        "field_declaration",
+        "row_declaration",
+        "key_declaration",
+        "fields_declaration",
+        "scale_edit_declaration",
+        "scale_hint_declaration",
+        "dimension_declaration",
+        "clause_declaration",
+        "equality_declaration",
+        "interval_declaration",
+    ] {
+        assert!(find(root, kind).is_some(), "missing {kind}");
+    }
+
+    let cell = find(root, "cell_declaration").unwrap();
+    assert_field(cell, "kind", "identifier");
+    assert_field(cell, "placement", "body");
+    assert_field(cell, "body", "body");
+}
+
+#[test]
+fn definition_interfaces_and_actions_have_stable_fields() {
+    let definitions = parse(include_str!("../test/fixtures/declarations.avenger"));
+    let root = definitions.root_node();
+    assert!(!root.has_error(), "{}", root.to_sexp());
+    let definition = find(root, "definition_declaration").unwrap();
+    assert_field(definition, "kind", "definition_kind");
+    assert_field(definition, "name", "identifier");
+    assert_field(definition, "body", "definition_body");
+    assert!(find(definition, "slot_declaration").is_some());
+    assert!(find(definition, "channel_parameter_declaration").is_some());
+    assert!(find(definition, "output_declaration").is_some());
+    assert!(find(definition, "export_declaration").is_some());
+
+    let action = find(root, "set_action").expect("fixture must contain an action");
+    assert_field(action, "kind", "state_kind");
+    assert!(action.child_by_field_name("value").is_some());
+}
+
+#[test]
+fn syntactically_invalid_definition_heads_recover_without_hiding_following_roots() {
+    for source in [
+        "avenger 1; define widget custom {} chart custom {}",
+        "avenger 1; chart custom { id legacy {} mark symbol {} }",
+    ] {
+        let tree = parse(source);
+        assert!(
+            tree.root_node().has_error(),
+            "must be recovery-only: {source}"
+        );
+        assert_eq!(tree.root_node().kind(), "source_file");
     }
 }

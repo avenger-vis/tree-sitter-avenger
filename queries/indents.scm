@@ -1,5 +1,6 @@
 (body "{" @indent "}" @outdent)
 (definition_body "{" @indent "}" @outdent)
 (param_body "{" @indent "}" @outdent)
+(match_body "{" @indent "}" @outdent)
 (array "[" @indent "]" @outdent)
 (parameterized_arrow_type "(" @indent ")" @outdent)

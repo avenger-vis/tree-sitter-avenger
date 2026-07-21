@@ -27,12 +27,15 @@ table parquet as orders {}
       (identifier))
     (body))
   (definition_declaration
+    (definition_kind)
     (identifier)
     (definition_body))
   (definition_declaration
+    (definition_kind)
     (identifier)
     (definition_body))
   (definition_declaration
+    (definition_kind)
     (identifier)
     (definition_body))
   (catalog_declaration

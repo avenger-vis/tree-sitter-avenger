@@ -2,7 +2,7 @@
 set -eu
 
 tree-sitter generate
-git diff --exit-code -- \
+git --no-pager diff --no-ext-diff --exit-code -- \
   src/grammar.json \
   src/node-types.json \
   src/parser.c \

@@ -93,8 +93,8 @@ chart cartesian {
             (property
               (property_name)
               (sql_property_expression
-                (literal
-                  (keyword_true)))))))
+                (qualified_name
+                  (identifier)))))))
       (output_declaration
         (identifier)
         (sql_terminated_expression

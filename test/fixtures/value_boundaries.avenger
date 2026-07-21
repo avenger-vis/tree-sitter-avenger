@@ -1,0 +1,7 @@
+avenger 1;
+chart cartesian {
+  values: [
+    {name: 'anonymous';},
+    {key: 'sql struct', nested: {enabled: true}},
+  ];
+}

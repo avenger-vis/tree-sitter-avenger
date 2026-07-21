@@ -1,0 +1,121 @@
+==================
+Widget missing required binder preserves following mark
+==================
+
+avenger 1;
+chart custom {
+  widget slider {}
+  mark symbol as after {}
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (identifier)
+    (body
+      (ERROR
+        (identifier))
+      (mark_declaration
+        (identifier)
+        (as_clause
+          (identifier))
+        (body)))))
+
+==================
+Malformed action preserves following cursor action
+==================
+
+avenger 1;
+chart custom {
+  on pointermove {
+    set param width at = ;
+    set cursor = 'crosshair';
+  }
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (identifier)
+    (body
+      (event_declaration
+        (identifier)
+        (body
+          (block_splice
+            (property_name)
+            (ERROR
+              (qualified_name
+                (identifier))))
+          (set_action
+            (state_kind)
+            (sql_terminated_expression
+              (literal
+                (single_quoted_string)))))))))
+
+==================
+Partial cell placement preserves following declaration
+==================
+
+avenger 1;
+chart custom {
+  cell cartesian as left at {
+  mark symbol as after {}
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (ERROR
+    (identifier)
+    (identifier)
+    (as_clause
+      (identifier))
+    (body
+      (mark_declaration
+        (identifier)
+        (as_clause
+          (identifier))
+        (body)))))
+
+==================
+Obsolete declaration heads remain recovery only
+==================
+
+avenger 1;
+chart custom {
+  id legacy {}
+  data rows {}
+  facet grid {}
+  component old {}
+  mark symbol as after {}
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (identifier)
+    (body
+      (ERROR
+        (property_name)
+        (identifier)
+        (property_name)
+        (keyword_rows))))
+  (ERROR
+    (identifier)
+    (identifier)
+    (identifier)
+    (identifier)
+    (identifier)
+    (keyword_as)
+    (identifier)))

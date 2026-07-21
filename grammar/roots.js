@@ -1,3 +1,8 @@
+import { DSL_KEYWORDS, SQL_KEYWORDS } from "./helpers.js";
+
+const inheritedSqlKeywords = $ => SQL_KEYWORDS.map(word => $[`keyword_${word}`]);
+const dslOnlyKeywords = DSL_KEYWORDS.filter(word => !SQL_KEYWORDS.includes(word));
+
 export default {
   source_file: $ => repeat(choice(
     $.version_directive,
@@ -30,7 +35,19 @@ export default {
   // `qualified_name` node. SQL keeps its richer quoted-name production while
   // DSL paths remain strictly unquoted identifiers.
   _structural_qualified_name: $ => prec.right(10, seq(
-    field("name", $.identifier),
-    repeat(seq(".", field("member", $.identifier))),
+    field("name", $._structural_identifier),
+    repeat(seq(".", field("member", $._structural_identifier))),
   )),
+
+  _structural_identifier: $ => prec(100, choice(
+    $.identifier,
+    $._contextual_keyword_identifier,
+  )),
+
+  _contextual_keyword_identifier: $ => prec(100, choice(
+    alias(choice(...inheritedSqlKeywords($)), $.identifier),
+    $._dsl_keyword_identifier,
+  )),
+
+  _dsl_keyword_identifier: $ => alias(choice(...dslOnlyKeywords), $.identifier),
 };
