@@ -95,6 +95,11 @@ Rust 1.82.0); the checked Linux evidence is recorded in
 `test/metrics/linux-validation-2026-07-21.json`. Windows remains CI-only until
 its first completed run and is not claimed as locally verified.
 
+The workflow also contains an opt-in `cross_repo` dispatch job pinned to the
+exact SQL and Avenger revisions. It becomes runnable once the declared
+`avenger-vis/tree-sitter-avenger-sql` repository exists; standard CI does not
+pretend that unavailable dependency is currently fetchable.
+
 The synchronized compiler corpus contains 120 reviewed sources: 93 valid
 chart/definition/data roots, 10 strict-invalid recovery sources, and 17 lexical
 fragments. Normal parser and Cargo tests use the checked copies and do not read
