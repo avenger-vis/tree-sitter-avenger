@@ -22,6 +22,7 @@ skeleton reproduced this behavior before the spike was removed.
 | standalone `avenger_sql` | 2,460 | 48 | 219 | 132 | 28 | 3,638,952 |
 | minimal composition spike | 2,508 | 51 | 240 | 141 | 30 | 3,670,561 |
 | v1 repository-root skeleton | 2,536 | 53 | 246 | 141 | 33 | 3,685,000 |
+| complete v1 derived parser | 3,376 | 857 | 464 | 253 | 40 | 7,316,089 |
 | obsolete legacy combined parser | 4,686 | 16 | 346 | 196 | 88 | 4,750,682 |
 
 The spike added 48 states and 31,609 bytes over the standalone base. Its valid
@@ -29,6 +30,15 @@ The spike added 48 states and 31,609 bytes over the standalone base. Its valid
 Apple M4 Pro planning machine. The first repository-root skeleton remained
 close to that result while adding version, import, chart, body, and output
 structure.
+
+The complete v1 grammar remains below both the legacy parser's state count and
+the 30,622-state upstream SQL parser, although contextual structural names and
+the SQL-expression/DSL-value boundary produce more large parse states and a
+larger generated table. All six declared conflicts were removed individually
+during investigation and each produced its corresponding narrow generation
+ambiguity. A 74.8 KB generated chart parses cleanly; local release measurements
+recorded an 11.1 ms mean clean parse and a 1.8 μs mean prefix-only incremental
+parse. This growth is understood and does not trigger the injection fallback.
 
 ## Proven behavior
 
@@ -55,6 +65,7 @@ structure.
 | Highlighting | one composed query | injection registration and query layering |
 | Measured complexity | small increase over SQL base | not built; no failure criterion was met |
 
-Runtime injection should be reconsidered only if the complete structural
-grammar causes measured pathological growth, boundary corruption, or
-unacceptable incremental performance.
+Runtime injection should be reconsidered only if future structural growth
+causes boundary corruption or unacceptable incremental performance. Current
+full-corpus, mutation, fuzz, sanitizer, and performance evidence supports the
+generation-time design.

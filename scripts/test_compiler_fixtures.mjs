@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
-const executable = resolve(
+const executable = process.env.TREE_SITTER ?? resolve(
   root,
   "node_modules",
   ".bin",

@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "41 6 * * 1"
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  TREE_SITTER: tree-sitter
+
+jobs:
+  parser:
+    name: Parser (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.82.0
+          components: clippy, rustfmt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.6
+      - uses: Swatinem/rust-cache@v2
+      - name: Install pinned Tree-sitter CLI
+        run: cargo install tree-sitter-cli --version 0.26.3 --locked
+      - name: Check formatting
+        run: cargo fmt --all --check
+      - name: Test Rust binding and conformance
+        run: cargo test --release
+      - name: Lint Rust targets
+        run: cargo clippy --release --all-targets -- -D warnings
+      - name: Test corpus and captures
+        run: |
+          tree-sitter test
+          node scripts/test_highlights.mjs
+          node scripts/test_compiler_fixtures.mjs
+          node scripts/measure_parser.mjs --check
+      - name: Test Wasm parser
+        if: runner.os != 'Windows'
+        run: |
+          tree-sitter test --wasm
+          node scripts/test_compiler_fixtures.mjs --wasm
+      - name: Compile C sources with strict warnings
+        if: runner.os != 'Windows'
+        run: cc -std=c11 -Wall -Wextra -Wpedantic -Werror -Isrc -c src/parser.c src/scanner.c
+      - name: Test synchronized scanner with sanitizers
+        if: runner.os == 'Linux' || runner.os == 'macOS'
+        run: sh scripts/test_scanner_sanitizers.sh
+      - name: Audit Cargo package
+        run: cargo package --list
+
+  package:
+    name: Package audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.6
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.82.0
+      - name: Audit npm archive without resolving the local generation dependency
+        run: npm pack --dry-run
+      - name: Verify synchronized artifacts are represented in provenance
+        run: |
+          test -f vendor/avenger_sql_scanner.c
+          test -f vendor/sql-base.json
+          test -f test/fixtures/avenger-fixtures.json
+
+  fuzz:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install pinned Tree-sitter CLI
+        run: cargo install tree-sitter-cli --version 0.26.3 --locked
+      - run: tree-sitter fuzz --iterations 100 --edits 8

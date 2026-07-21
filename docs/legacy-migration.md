@@ -35,7 +35,11 @@ descendants, local recovery, native/Wasm parsing, and composed highlights.
 This evidence makes generation-time extension the accepted architecture.
 Runtime injection or opaque SQL-range scanning is reconsidered only if the full
 grammar later shows measured pathological growth, boundary corruption, or
-unacceptable incremental performance.
+unacceptable incremental performance. The completed v1 parser has 3,376 states,
+857 large states, 464 symbols, 253 tokens, 40 fields, and a 7,316,089-byte
+`parser.c`. Its six narrow declared conflicts were each confirmed necessary;
+the 74.8 KB generated stress source and incremental timing support the derived
+architecture despite the larger generated table.
 
 ## Package and generation policy
 
@@ -126,7 +130,8 @@ The eleven retired fixtures are `binary_op.avgr`, `direct_comp_instance.avgr`,
 
 ## Migration exit conditions
 
-The spike may be removed only after the root grammar reproduces its direct SQL
+The spike was removed after the root grammar reproduced its direct SQL
 composition, scanner-symbol wrapper, query composition, native/Wasm tests, and
-recorded metrics. The v1 corpus must contain no reachable legacy node. Git and
-`legacy/avenger-v0-root` remain the only compatibility archive.
+recorded metrics. The synchronized 120-source v1 corpus contains no reachable
+legacy node. Git and `legacy/avenger-v0-root` remain the only compatibility
+archive.

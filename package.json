@@ -46,6 +46,7 @@
     "SQL_BASE.md",
     "src/**",
     "tree-sitter.json",
+    "vendor/avenger_sql_scanner.c",
     "vendor/sql-base.json"
   ],
   "dependencies": {
