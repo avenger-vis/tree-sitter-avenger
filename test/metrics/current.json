@@ -1,0 +1,13 @@
+{
+  "grammar": "avenger",
+  "tree_sitter_cli": "0.26.3",
+  "abi_version": 15,
+  "state_count": 2536,
+  "large_state_count": 53,
+  "symbol_count": 246,
+  "token_count": 141,
+  "field_count": 33,
+  "parser_bytes": 3685000,
+  "grammar_json_bytes": 111433,
+  "node_types_bytes": 129241
+}

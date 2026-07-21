@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-07-21",
+  "platform": "macOS Darwin 25.5.0 arm64, Apple M4 Pro",
+  "tree_sitter_cli": "0.26.3",
+  "abi_version": 15,
+  "grammar": "avenger",
+  "state_count": 2536,
+  "large_state_count": 53,
+  "symbol_count": 246,
+  "token_count": 141,
+  "field_count": 33,
+  "parser_bytes": 3685000,
+  "grammar_json_bytes": 111433,
+  "node_types_bytes": 129241,
+  "generation_wall_seconds": 1.29,
+  "native_fixture_bytes": 253,
+  "native_parse_milliseconds": 0.34,
+  "native_parse_bytes_per_millisecond": 744,
+  "wasm_build": "passed",
+  "wasm_corpus": "passed"
+}

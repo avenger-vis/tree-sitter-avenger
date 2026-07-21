@@ -1,0 +1,191 @@
+==================
+Minimal chart root
+==================
+
+avenger 1;
+chart cartesian {}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (identifier)
+    (body)))
+
+==================
+Version import and named chart
+==================
+
+avenger 1;
+import './catalog.data.avenger' sha256 'abc123' as data;
+chart cartesian as sample {}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (import_statement
+    (single_quoted_string)
+    (single_quoted_string)
+    (identifier))
+  (chart_declaration
+    (identifier)
+    (as_clause
+      (identifier))
+    (body)))
+
+==================
+Four direct inherited SQL contexts
+==================
+
+avenger 1;
+chart cartesian {
+  sql: FROM vega.movies AS m SELECT m."title";
+  x: $width@start { enabled: true; }
+  output count: coalesce($width, 0);
+  values: [coalesce(1, 2), none];
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (identifier)
+    (body
+      (property
+        (property_name)
+        (sql_query
+          (query
+            (select_query
+              (from_clause
+                (keyword_from)
+                (relation
+                  (qualified_name
+                    (name
+                      (identifier))
+                    (name
+                      (identifier)))
+                  (relation_alias
+                    (keyword_as)
+                    (identifier))))
+              (select_clause
+                (keyword_select)
+                (projection
+                  (select_item
+                    (qualified_name
+                      (name
+                        (identifier))
+                      (name
+                        (quoted_identifier))))))))))
+      (property
+        (property_name)
+        (configured_expression
+          (sql_property_expression
+            (binding_reference
+              (identifier)
+              (temporal_qualifier)))
+          (body
+            (property
+              (property_name)
+              (sql_property_expression
+                (literal
+                  (keyword_true)))))))
+      (output_declaration
+        (identifier)
+        (sql_terminated_expression
+          (function_call
+            (qualified_name
+              (name
+                (identifier)))
+            (function_argument
+              (binding_reference
+                (identifier)))
+            (function_argument
+              (literal
+                (number))))))
+      (property
+        (property_name)
+        (array
+          (array_element
+            (sql_array_expression
+              (function_call
+                (qualified_name
+                  (name
+                    (identifier)))
+                (function_argument
+                  (literal
+                    (number)))
+                (function_argument
+                  (literal
+                    (number))))))
+          (array_element
+            (none_value)))))))
+
+==================
+Missing version number preserves chart
+==================
+
+avenger ;
+chart cartesian { value: 1; }
+
+---
+
+(source_file
+  (ERROR)
+  (chart_declaration
+    (identifier)
+    (body
+      (property
+        (property_name)
+        (sql_property_expression
+          (literal
+            (number)))))))
+
+==================
+Missing version semicolon preserves chart
+==================
+
+avenger 1
+chart cartesian { value: 1; }
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (identifier)
+    (body
+      (property
+        (property_name)
+        (sql_property_expression
+          (literal
+            (number)))))))
+
+==================
+Missing chart closer is local
+==================
+
+avenger 1;
+chart cartesian {
+  value: 1;
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (identifier)
+    (body
+      (property
+        (property_name)
+        (sql_property_expression
+          (literal
+            (number))))
+      (MISSING "}"))))

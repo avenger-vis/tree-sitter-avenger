@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 const argument = process.argv.indexOf("--sql-root");
@@ -19,29 +19,30 @@ if (revision !== pinned) {
 
 const scanner = readFileSync(resolve(sqlRoot, "src/scanner.c"));
 const highlights = readFileSync(resolve(sqlRoot, "queries/highlights.scm"));
-const structuralHighlights = readFileSync(
-  resolve(root, "composition-smoke/queries/structural-highlights.scm"),
-);
+const structuralHighlights = readFileSync(resolve(root, "queries/structural-highlights.scm"));
 const combinedHighlights = Buffer.concat([
   highlights,
-  Buffer.from("\n; Derived composition-smoke captures.\n"),
+  Buffer.from("\n; Combined Avenger structural captures.\n"),
   structuralHighlights,
 ]);
 const metadata = Buffer.from(`${JSON.stringify({
+  schema_version: 1,
   source_repository: "https://github.com/avenger-vis/tree-sitter-avenger-sql",
   source_revision: revision,
+  package: "@avenger-vis/tree-sitter-avenger-sql@0.1.0",
   scanner_sha256: createHash("sha256").update(scanner).digest("hex"),
   highlights_sha256: createHash("sha256").update(highlights).digest("hex"),
 }, null, 2)}\n`);
 
 const outputs = [
-  ["composition-smoke/vendor/avenger_sql_scanner.c", scanner],
-  ["composition-smoke/queries/highlights.scm", combinedHighlights],
-  ["composition-smoke/vendor/sync.json", metadata],
+  ["vendor/avenger_sql_scanner.c", scanner],
+  ["queries/sql-highlights.scm", highlights],
+  ["queries/highlights.scm", combinedHighlights],
+  ["vendor/sql-base.json", metadata],
 ];
 for (const [relative, expected] of outputs) {
   const destination = resolve(root, relative);
-  mkdirSync(resolve(destination, ".."), { recursive: true });
+  mkdirSync(dirname(destination), { recursive: true });
   if (process.argv.includes("--check")) {
     const actual = readFileSync(destination);
     if (!actual.equals(expected)) {

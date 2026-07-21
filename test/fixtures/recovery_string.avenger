@@ -1,0 +1,5 @@
+avenger 1;
+chart cartesian {
+  output broken: 'unterminated;
+  output following: 2;
+}

@@ -1,71 +1,44 @@
-//! This crate provides Avenger language support for the [tree-sitter][] parsing library.
+//! Tree-sitter grammar for the Avenger visualization language.
 //!
-//! Typically, you will use the [LANGUAGE][] constant to add this language to a
-//! tree-sitter [Parser][], and then use the parser to parse some code:
-//!
-//! ```
-//! let code = r#"
-//! "#;
-//! let mut parser = tree_sitter::Parser::new();
-//! let language = tree_sitter_avenger::LANGUAGE;
-//! parser
-//!     .set_language(&language.into())
-//!     .expect("Error loading Avenger parser");
-//! let tree = parser.parse(code, None).unwrap();
-//! assert!(!tree.root_node().has_error());
-//! ```
-//!
-//! [Parser]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Parser.html
-//! [tree-sitter]: https://tree-sitter.github.io/
+//! This parser is tolerant and intended for editor tooling. The Avenger Rust
+//! frontend remains the authority for strict syntax and semantics.
 
 use tree_sitter_language::LanguageFn;
 
-extern "C" {
+unsafe extern "C" {
     fn tree_sitter_avenger() -> *const ();
 }
 
-/// The tree-sitter [`LanguageFn`][LanguageFn] for this grammar.
-///
-/// [LanguageFn]: https://docs.rs/tree-sitter-language/*/tree_sitter_language/struct.LanguageFn.html
+/// The Tree-sitter language function for this grammar.
 pub const LANGUAGE: LanguageFn = unsafe { LanguageFn::from_raw(tree_sitter_avenger) };
 
-/// The content of the [`node-types.json`][] file for this grammar.
-///
-/// [`node-types.json`]: https://tree-sitter.github.io/tree-sitter/using-parsers/6-static-node-types
+/// The generated public node contract.
 pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 
-// NOTE: uncomment these to include any queries that this grammar contains:
+/// Composed SQL and structural syntax highlights.
+pub const HIGHLIGHTS_QUERY: &str = include_str!("../../queries/highlights.scm");
 
-// pub const HIGHLIGHTS_QUERY: &str = include_str!("../../queries/highlights.scm");
-// pub const INJECTIONS_QUERY: &str = include_str!("../../queries/injections.scm");
-// pub const LOCALS_QUERY: &str = include_str!("../../queries/locals.scm");
-// pub const TAGS_QUERY: &str = include_str!("../../queries/tags.scm");
+/// Structural and inherited SQL bracket pairs.
+pub const BRACKETS_QUERY: &str = include_str!("../../queries/brackets.scm");
+
+/// Structural indentation query.
+pub const INDENTS_QUERY: &str = include_str!("../../queries/indents.scm");
 
 #[cfg(test)]
 mod tests {
     #[test]
-    fn test_can_load_grammar() {
+    fn grammar_and_queries_load() {
+        let language = super::LANGUAGE.into();
         let mut parser = tree_sitter::Parser::new();
         parser
-            .set_language(&super::LANGUAGE.into())
-            .expect("Error loading Avenger parser");
-
-        let code = r#"
-        width := 100;
-        comp g1: Group {
-            x := 20;
-            y := 20;
+            .set_language(&language)
+            .expect("Avenger language must load");
+        for query in [
+            super::HIGHLIGHTS_QUERY,
+            super::BRACKETS_QUERY,
+            super::INDENTS_QUERY,
+        ] {
+            tree_sitter::Query::new(&language, query).expect("query must compile");
         }
-        "#;
-        let tree = parser.parse(code, None).unwrap();
-        let root = tree.root_node();
-        println!("{:?}", root);
-        println!("kind: {:?}", root.kind());
-        let mut cursor = tree.walk();
-        for child in root.children(&mut cursor) {
-            println!("child: {:?}", child);
-            println!("child kind: {:?}", child.kind());
-        }
-        // assert!(!tree.root_node().has_error());
     }
 }

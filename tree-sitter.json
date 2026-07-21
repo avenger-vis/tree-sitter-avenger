@@ -6,24 +6,21 @@
       "camelcase": "Avenger",
       "title": "Avenger",
       "scope": "source.avenger",
-      "file-types": [
-        "avenger",
-        "avgr"
-      ],
-      "injection-regex": "^avenger$",
-      "class-name": "TreeSitterAvenger"
+      "path": ".",
+      "file-types": ["avenger"],
+      "highlights": ["queries/highlights.scm"],
+      "brackets": ["queries/brackets.scm"],
+      "indents": ["queries/indents.scm"]
     }
   ],
   "metadata": {
     "version": "0.1.0",
     "license": "MIT",
-    "description": "Avenger Visualization Language",
+    "description": "Tree-sitter grammar for the Avenger visualization language",
     "authors": [
-      {
-        "name": "Jon Mease",
-        "email": "jonmmease@gmail.com",
-        "url": "https://jonmmease.dev"
-      }
+      { "name": "Jon Mease" },
+      { "name": "Avenger contributors" },
+      { "name": "Derek Stride" }
     ],
     "links": {
       "repository": "https://github.com/avenger-vis/tree-sitter-avenger"
@@ -31,11 +28,6 @@
   },
   "bindings": {
     "c": true,
-    "go": true,
-    "node": true,
-    "python": true,
-    "rust": true,
-    "swift": true,
-    "zig": false
+    "rust": true
   }
 }

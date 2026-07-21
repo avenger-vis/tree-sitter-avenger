@@ -1,0 +1,9 @@
+avenger 1;
+chart cartesian {
+  sql: FROM vega.movies AS m SELECT m.;
+  output broken: f(1, ;
+  output following: 2;
+  property: $width@start {
+    next: 3;
+  }
+}
