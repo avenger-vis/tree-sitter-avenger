@@ -4,6 +4,6 @@ import './shared.data.avenger' sha256 'abc123' as data;
 chart cartesian as sample {
   sql: FROM vega.movies AS m SELECT m."title";
   x: $width@start { enabled: true; }
-  output count: coalesce($width, 0);
+  output coalesce($width, 0) as count;
   values: [coalesce(1, 2), none];
 }

@@ -119,9 +119,9 @@ export default {
   arrow_struct_field: $ => seq(
     "field",
     "(",
-    field("name", $.single_quoted_string),
-    ",",
     field("type", $.arrow_type),
+    ",",
+    field("name", $.single_quoted_string),
     ")",
   ),
 

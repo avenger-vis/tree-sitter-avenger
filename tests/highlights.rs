@@ -39,6 +39,10 @@ fn composed_highlights_capture_sql_and_structural_roles() {
         ("variable.special", "width"),
         ("attribute", "@start"),
         ("type.builtin", "float64"),
+        ("keyword", "store"),
+        ("type.builtin", "group"),
+        ("type.builtin", "row"),
+        ("property", "id"),
         ("variable.parameter", "x"),
     ] {
         assert!(

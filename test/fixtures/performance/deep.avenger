@@ -1,6 +1,6 @@
 avenger 1;
 chart custom as deep {
-  param as offset { type: float64; default: 0; }
+  param float64 as offset { value: 0; }
   sql: WITH base AS (
          FROM vega.movies AS m
          SELECT m."title", m."rating", m."gross"
@@ -14,9 +14,9 @@ chart custom as deep {
        FROM ranked AS r
        SELECT r."title", coalesce(r."gross", 0) + $offset@start AS adjusted
        WHERE r.rank BETWEEN 1 AND 10;
-  group as outer {
-    group as middle {
-      group as inner {
+  container group as outer {
+    container group as middle {
+      container group as inner {
         mark custom_mark as points {
           x: coalesce((CASE WHEN "adjusted" > 0 THEN "adjusted" ELSE 0 END), 0);
           values: [

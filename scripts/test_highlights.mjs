@@ -52,7 +52,7 @@ for (const expected of [
     throw new Error(`SQL recovery lost ${expected}:\n${recovery.stdout}`);
   }
 }
-if ((recovery.stdout.match(/\(sql_terminated_expression/g) ?? []).length !== 2) {
+if ((recovery.stdout.match(/\(sql_aliased_expression/g) ?? []).length !== 2) {
   throw new Error(`incomplete call lost the following output:\n${recovery.stdout}`);
 }
 
@@ -63,7 +63,7 @@ if (stringRecovery.status !== 1) {
   throw new Error(`expected string recovery status 1, got ${stringRecovery.status}`);
 }
 if (
-  (stringRecovery.stdout.match(/\(sql_terminated_expression/g) ?? []).length !== 2
+  (stringRecovery.stdout.match(/\(sql_property_expression/g) ?? []).length !== 2
   || !stringRecovery.stdout.includes("(literal\n            (number))")
 ) {
   throw new Error(`unterminated string lost the following output:\n${stringRecovery.stdout}`);
@@ -98,6 +98,10 @@ for (const [capture, text] of [
   ["keyword", "`public`"],
   ["type", "`custom_mark`"],
   ["type.builtin", "`float64`"],
+  ["keyword", "`store`"],
+  ["type.builtin", "`group`"],
+  ["type.builtin", "`row`"],
+  ["property", "`id`"],
   ["variable.parameter", "`x`"],
 ]) {
   if (!structural.stdout.split("\n").some(line =>

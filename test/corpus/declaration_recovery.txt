@@ -31,7 +31,7 @@ Malformed action preserves following cursor action
 avenger 1;
 chart custom {
   on pointermove {
-    set param width at = ;
+    set width at = ;
     set cursor = 'crosshair';
   }
 }
@@ -53,7 +53,8 @@ chart custom {
               (qualified_name
                 (identifier))))
           (set_action
-            (state_kind)
+            (qualified_name
+              (identifier))
             (sql_terminated_expression
               (literal
                 (single_quoted_string)))))))))

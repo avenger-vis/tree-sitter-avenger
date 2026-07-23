@@ -24,48 +24,55 @@ declarations. Schema and root legality belong to the compiler.
 
 ## Declarations
 
+The declaration nodes below are the post-unification, pre-1.0 contract. This
+intentionally removes the former source-oriented `store_declaration`,
+`selection_declaration`, `group_declaration`, `overlay_declaration`,
+`dimension_declaration`, and `channel_parameter_declaration` nodes. Those
+concepts now appear through the unified nodes and closed kind fields described
+below; consumers must not retain compatibility matches for the removed nodes.
+
 All kind values are generic identifiers unless the syntax itself closes the
 set. Native and third-party marks, transforms, tools, widgets, views,
 coordinates, resources, and data providers therefore require no grammar edit.
 
 | Family | Stable fields and named children |
 | --- | --- |
-| `param_declaration` | `body: param_body`; binder in required `as_clause` |
-| `store_declaration`, `selection_declaration` | `body`; binder in required `as_clause` |
+| `param_declaration` | required `type` (`arrow_type` or closed `param_kind`), direct `name` after the structural `as` token, and `body: param_body` |
 | `resource_declaration` | `kind`, `body`; required `as_clause` |
 | `theme_declaration` | `kind`, and either `source` plus optional `hash`, or `value` |
-| `group_declaration` | `body`; optional `as_clause` |
+| `container_declaration` | closed `kind: container_kind` (`group` or `overlay`), `body`, and optional `as_clause` |
 | `mark_declaration`, `transform_declaration`, `view_declaration` | `kind`, `body`; optional `as_clause` |
 | `tool_declaration` | `kind`, optional `body`; optional `as_clause`; a stateless form ends in `;` |
 | `widget_declaration` | `kind`, `body`; required `as_clause` |
 | `event_declaration` | `kind`, `body`; optional `as_clause` |
 | `cell_declaration` | `kind`, optional `placement`, required `body`; optional `as_clause` |
 | `plot_declaration` | `kind`, `body` |
-| `variable_declaration`, `derive_declaration`, `adjust_declaration` | optional/required `kind` as described by `node-types.json`, `body`, optional `as_clause` |
+| `variable_declaration` | closed `role: variable_role`, direct `name`, and `body`; there is no `as_clause` |
+| `adjust_declaration` | required `kind` and `body`; `expr` is a closed `adjust_kind` with no binder, while registry kinds are identifiers with an optional `as_clause` |
+| `derive_declaration` | required `kind`, `body`, and optional `as_clause` |
 | `part_declaration`, `layer_declaration` | `name`, `body` |
 | `level_declaration` | `value`, `body` |
-| `overlay_declaration`, `dimension_declaration` | `body`; binder in `as_clause` |
 | `when_declaration`, `row_declaration`, `key_declaration`, `fields_declaration`, `scale_edit_declaration`, `scale_hint_declaration`, `clause_declaration`, `equality_declaration`, `interval_declaration` | `body` |
-| `field_declaration` | `name`, `type`; `nullable` is an anonymous keyword child |
-| `slot_declaration` | `kind: slot_shape`, optional `body`; binder in required `as_clause` |
-| `channel_parameter_declaration` | `name`, optional `kind` |
-| `output_declaration` | `name`, optional `value: sql_terminated_expression` |
+| `predicate_entry` | direct keyed `name` and `body`, accepted only in the `predicate_body` owned by `equality_declaration` or `interval_declaration` |
+| `field_declaration` | `type` before direct `name`; `nullable` is an anonymous keyword child |
+| `slot_declaration` | `kind: slot_shape`, direct `name`, and optional `body`; `channel` is one of the closed slot shapes |
+| `output_declaration` | either identity `name`, or `source: sql_aliased_expression` followed by structural `as` and public `name` |
 | `export_declaration` | `source`, optional `alias` |
 | `match_declaration` | `name`, `body: match_body`; ordered `match_arm` children each expose `name` and `body` |
 | `block_splice` | `name: property_name` | A definition block slot invocation. The `property_name` leaf permits the same contextual spelling as properties. |
 
-`visibility_modifier`, `definition_kind`, `theme_kind`, `slot_shape`, and
-`state_kind` are closed named keyword nodes. The grammar preserves definition
-items in source order but does not enforce interface-before-implementation
-ordering.
+`visibility_modifier`, `definition_kind`, `theme_kind`, `param_kind`,
+`container_kind`, `variable_role`, `adjust_kind`, and `slot_shape` are closed
+named keyword nodes. The grammar preserves definition items in source order
+but does not enforce interface-before-implementation ordering.
 
 ## Actions
 
-`set_action` exposes `kind`, optional `target`, optional `time`, and required
-`value`. Param, store, and selection actions have a structural qualified target
-and may contain `action_time`, `replacing_scopes_modifier`, and either an SQL
-expression or `action_block`. Cursor is a peer `state_kind` with no target or
-modifiers and an expression value. Semantic legality remains compiler-owned.
+`set_action` exposes a structural qualified `target`, optional `time`, optional
+`replacing_scopes_modifier`, and required `value`. The resolved target decides
+whether the action updates a scalar param, store, selection, or the reserved
+unqualified cursor. The value is either an SQL expression or `action_block`;
+target category and modifier legality remain compiler-owned.
 
 ## Properties and values
 
@@ -96,6 +103,7 @@ elements.
 | `sql_query` | `query` | Property colon and final semicolon |
 | `sql_property_expression` | SQL expression node | Property colon and semicolon or configuration body |
 | `sql_terminated_expression` | SQL expression node | Declaration/action colon or equals and final semicolon |
+| `sql_aliased_expression` | SQL expression node | Output keyword on the left and top-level structural `as <name>;` on the right |
 | `sql_array_expression` | SQL expression node | Outer Avenger array brackets and commas |
 
 Inherited SQL nodes and fields retain the contract documented by the pinned
@@ -109,8 +117,9 @@ binding as a param or store.
 `parameterized_arrow_type`. Constructors and closed units have dedicated
 `arrow_type_constructor`, `arrow_time_unit`, and `arrow_interval_unit` nodes.
 Signed integer parameters use `arrow_signed_integer`; struct entries use
-`arrow_struct_field` with `name` and `type`. Arity, ranges, unit validity in a
-particular constructor, and duplicate fields are semantic checks.
+`arrow_struct_field` with `type` before the quoted `name`. Arity, ranges, unit
+validity in a particular constructor, and duplicate fields are semantic
+checks.
 
 ## Lexical ownership and tolerance
 

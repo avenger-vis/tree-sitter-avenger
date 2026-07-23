@@ -36,7 +36,7 @@ avenger 1;
 import './catalog.data.avenger' as data;
 
 chart cartesian as movies {
-  param as minimum_rating { type: float64; default: 7; }
+  param float64 as minimum_rating { value: 7; }
   sql: FROM vega.movies AS m
        SELECT m.title, m.rating
        WHERE m.rating >= $minimum_rating;

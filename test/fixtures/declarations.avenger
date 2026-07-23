@@ -1,13 +1,13 @@
 avenger 1;
 
 chart custom as demo {
-  private param as threshold { type: float64; default: 1; }
-  public store as rows { field id: int64; }
-  selection as brush { type: interval; }
+  private param float64 as threshold { value: 1; }
+  public param store as rows { field int64 id; }
+  param selection as brush {}
   resource tiles as osm {}
   theme css from './theme.css' sha256 'abc123';
   theme css: 'mark { color: red; }';
-  group as panel {}
+  container group as panel {}
   mark symbol as points {}
   transform filter as visible {}
   tool pan_zoom as pan {}
@@ -18,52 +18,51 @@ chart custom as demo {
     target: marks [panel.points,];
     scope: subplot grid.left;
     surface: legend color;
-    set param threshold at current replacing scopes = 2;
-    set store rows at start = replace { source: $rows; }
-    set selection brush = $brush;
+    set threshold at current replacing scopes = 2;
+    set rows at start = replace_rows { source: $rows; }
+    set brush = clear;
     set cursor = 'crosshair';
   }
   cell cartesian as left at { row: 0; column: 0; } {}
   plot cartesian {}
-  variable row as mpg {}
+  variable row mpg {}
   part title {}
   level 2 {}
-  adjust {}
+  adjust expr {}
   adjust dodge as shifted {}
   derive aggregate as totals {}
-  overlay as annotation {}
+  container overlay as annotation {}
   layer foreground {}
   when {}
-  field amount: decimal128(38, -2) nullable;
+  field decimal128(38, -2) amount nullable;
   row {}
   key {}
   fields {}
   scale_edit {}
   scale_hint {}
-  dimension as frame {}
   clause {}
-  equality {}
-  interval {}
-  output count: coalesce($threshold, 0);
+  equality { category { field: "category"; value: datum('category'); } }
+  interval { x { field: "x"; from: 0; to: 1; } }
+  output coalesce($threshold, 0) as count;
   export panel.points as exported_points;
 }
 
 define mark badge {
-  slot expr as x;
-  slot expr_list as values {}
-  slot literal as fill;
-  slot number as radius;
-  slot string as label;
-  slot boolean as enabled;
-  slot enum as style { values: [dot, line]; }
-  slot function as formatter { class: scalar; }
-  slot ref as target { kind: mark; }
-  slot block as content;
-  channel x;
-  channel y: y2;
-  output bounds: span(0, $radius);
+  slot expr x;
+  slot expr_list values {}
+  slot literal fill;
+  slot number radius;
+  slot string label;
+  slot boolean enabled;
+  slot enum style { values: [dot, line]; }
+  slot function formatter { class: scalar; }
+  slot ref target { kind: mark; }
+  slot block content;
+  slot channel x;
+  slot channel y { default: y2; }
+  output span(0, $radius) as bounds;
   export implementation.points as marks;
-  private group as implementation {
+  private container group as implementation {
     match style {
       dot { mark symbol {} }
       line { mark line {} }

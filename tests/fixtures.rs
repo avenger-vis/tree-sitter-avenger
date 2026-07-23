@@ -119,6 +119,7 @@ fn strict_invalid_sources_are_errors_or_documented_editor_tolerance() {
     let tolerated = [
         "avenger-lang-core/tests/fixtures/parse/invalid/late-interface.avenger",
         "avenger-lang-core/tests/fixtures/parse/invalid/multiple-roots.avenger",
+        "avenger-lang-core/tests/fixtures/parse/invalid/malformed-action.avenger",
     ];
     let mut checked = 0;
     for fixture in &manifest.sources {
@@ -175,9 +176,22 @@ fn wrap_boundary(case: &BoundaryCase) -> String {
         "property_expression" => format!("avenger 1; chart custom {{ x: {} }}", case.source),
         "terminated_expression" => {
             format!(
-                "avenger 1; define mark sample {{ output x: {} }}",
+                "avenger 1; chart custom {{ on click {{ set cursor = {} }} }}",
                 case.source
             )
+        }
+        "aliased_expression" => {
+            if case.outer == ";" {
+                format!(
+                    "avenger 1; define transform sample {{ output {} }}",
+                    case.source
+                )
+            } else {
+                format!(
+                    "avenger 1; define transform sample {{ output {}; }}",
+                    case.source
+                )
+            }
         }
         "array_expression" if case.outer == "," => {
             format!("avenger 1; chart custom {{ x: [{}]; }}", case.source)

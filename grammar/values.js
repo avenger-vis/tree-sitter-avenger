@@ -180,5 +180,6 @@ export default {
   sql_query: $ => field("query", $._query),
   sql_property_expression: $ => field("expression", $._expression),
   sql_terminated_expression: $ => field("expression", $._expression),
+  sql_aliased_expression: $ => field("expression", $._expression),
   sql_array_expression: $ => prec.dynamic(5, field("expression", $._expression)),
 };

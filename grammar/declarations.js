@@ -2,8 +2,10 @@ import { dslKeyword } from "./helpers.js";
 
 const SLOT_SHAPES = [
   "expr", "expr_list", "literal", "number", "string", "boolean",
-  "enum", "function", "ref", "block",
+  "enum", "function", "ref", "block", "channel",
 ];
+
+const VARIABLE_ROLES = ["row", "column", "item"];
 
 const visibility = $ => optional($.visibility_modifier);
 const structuralPath = $ => alias($._structural_qualified_name, $.qualified_name);
@@ -56,14 +58,12 @@ export default {
   _body_item: $ => choice(
     $.property,
     $.param_declaration,
-    $.store_declaration,
-    $.selection_declaration,
     $.resource_declaration,
     $.theme_declaration,
     $.catalog_declaration,
     $.schema_declaration,
     $.table_declaration,
-    $.group_declaration,
+    $.container_declaration,
     $.mark_declaration,
     $.transform_declaration,
     $.tool_declaration,
@@ -77,7 +77,6 @@ export default {
     $.level_declaration,
     $.adjust_declaration,
     $.derive_declaration,
-    $.overlay_declaration,
     $.layer_declaration,
     $.when_declaration,
     $.field_declaration,
@@ -86,12 +85,10 @@ export default {
     $.fields_declaration,
     $.scale_edit_declaration,
     $.scale_hint_declaration,
-    $.dimension_declaration,
     $.clause_declaration,
     $.equality_declaration,
     $.interval_declaration,
     $.slot_declaration,
-    $.channel_parameter_declaration,
     $.output_declaration,
     $.export_declaration,
     $.match_declaration,
@@ -102,40 +99,22 @@ export default {
   _definition_item: $ => $._body_item,
 
   param_declaration: $ => seq(
-    visibility($), "param", $.as_clause, field("body", $.param_body),
-  ),
-  store_declaration: $ => seq(
-    visibility($), "store", $.as_clause, field("body", $.body),
-  ),
-  selection_declaration: $ => seq(
-    visibility($), "selection", $.as_clause,
-    field("body", alias($._selection_body, $.body)),
+    visibility($),
+    "param",
+    field("type", choice(
+      $.arrow_type,
+      alias(choice("store", "selection"), $.param_kind),
+    )),
+    "as",
+    field("name", $._structural_identifier),
+    field("body", $.param_body),
   ),
   resource_declaration: $ => seq(
     visibility($), "resource", field("kind", $.identifier), $.as_clause,
     field("body", $.body),
   ),
 
-  param_body: $ => prec(2, seq(
-    "{", repeat(choice($.param_type_property, $._body_item)), "}",
-  )),
-  param_type_property: $ => prec(3, seq(
-    field("name", alias("type", $.property_name)),
-    ":", field("type", $.arrow_type), ";",
-  )),
-
-  _selection_body: $ => prec(2, seq(
-    "{",
-    repeat(choice(alias($._selection_type_property, $.property), $._body_item)),
-    "}",
-  )),
-  _selection_type_property: $ => seq(
-    field("name", alias("type", $.property_name)),
-    ":",
-    field("value", alias($._selection_type_atom, $.sql_property_expression)),
-    ";",
-  ),
-  _selection_type_atom: $ => $._structural_identifier,
+  param_body: $ => prec(2, seq("{", repeat($._body_item), "}")),
 
   theme_declaration: $ => seq(
     visibility($),
@@ -152,8 +131,12 @@ export default {
     ";",
   ),
 
-  group_declaration: $ => seq(
-    visibility($), dslKeyword($, "group"), optional($.as_clause), field("body", $.body),
+  container_declaration: $ => seq(
+    visibility($),
+    "container",
+    field("kind", alias(choice("group", "overlay"), $.container_kind)),
+    optional($.as_clause),
+    field("body", $.body),
   ),
   mark_declaration: $ => seq(
     visibility($), "mark", field("kind", $.identifier), optional($.as_clause),
@@ -188,7 +171,10 @@ export default {
     visibility($), "plot", field("kind", $.identifier), field("body", $.body),
   ),
   variable_declaration: $ => seq(
-    visibility($), "variable", field("kind", $.identifier), optional($.as_clause),
+    visibility($),
+    "variable",
+    field("role", alias(choice(...VARIABLE_ROLES), $.variable_role)),
+    field("name", $._structural_identifier),
     field("body", $.body),
   ),
   part_declaration: $ => seq(
@@ -200,15 +186,15 @@ export default {
   adjust_declaration: $ => seq(
     visibility($),
     "adjust",
-    optional(seq(field("kind", $.identifier), optional($.as_clause))),
+    choice(
+      field("kind", alias("expr", $.adjust_kind)),
+      seq(field("kind", $.identifier), optional($.as_clause)),
+    ),
     field("body", $.body),
   ),
   derive_declaration: $ => seq(
     visibility($), "derive", field("kind", $.identifier), optional($.as_clause),
     field("body", $.body),
-  ),
-  overlay_declaration: $ => seq(
-    visibility($), "overlay", optional($.as_clause), field("body", $.body),
   ),
   layer_declaration: $ => seq(
     visibility($), "layer", field("name", $.identifier), field("body", $.body),
@@ -227,23 +213,24 @@ export default {
   scale_hint_declaration: $ => seq(
     visibility($), "scale_hint", field("body", $.body),
   ),
-  dimension_declaration: $ => seq(
-    visibility($), "dimension", $.as_clause, field("body", $.body),
-  ),
   clause_declaration: $ => seq(visibility($), "clause", field("body", $.body)),
   equality_declaration: $ => seq(
-    visibility($), "equality", field("body", $.body),
+    visibility($), "equality", field("body", $.predicate_body),
   ),
   interval_declaration: $ => seq(
-    visibility($), dslKeyword($, "interval"), field("body", $.body),
+    visibility($), dslKeyword($, "interval"), field("body", $.predicate_body),
+  ),
+  predicate_body: $ => seq("{", repeat($.predicate_entry), "}"),
+  predicate_entry: $ => seq(
+    field("name", $._structural_identifier),
+    field("body", $.body),
   ),
 
   field_declaration: $ => seq(
     visibility($),
     "field",
-    field("name", $.identifier),
-    ":",
     field("type", $.arrow_type),
+    field("name", $._structural_identifier),
     optional("nullable"),
     ";",
   ),
@@ -252,21 +239,20 @@ export default {
     visibility($),
     "slot",
     field("kind", alias(choice(...SLOT_SHAPES), $.slot_shape)),
-    $.as_clause,
+    field("name", $._structural_identifier),
     choice(field("body", $.body), ";"),
-  ),
-  channel_parameter_declaration: $ => seq(
-    visibility($),
-    "channel",
-    field("name", $.identifier),
-    optional(seq(":", field("kind", $.identifier))),
-    ";",
   ),
   output_declaration: $ => seq(
     visibility($),
     "output",
-    field("name", $.identifier),
-    optional(seq(":", field("value", $.sql_terminated_expression))),
+    choice(
+      field("name", $._structural_identifier),
+      seq(
+        field("source", $.sql_aliased_expression),
+        "as",
+        field("name", $._structural_identifier),
+      ),
+    ),
     ";",
   ),
   export_declaration: $ => seq(
@@ -296,10 +282,6 @@ export default {
   set_action: $ => seq(
     visibility($),
     "set",
-    choice($._state_action, $._cursor_action),
-  ),
-  _state_action: $ => seq(
-    field("kind", alias(choice("param", "store", "selection"), $.state_kind)),
     field("target", structuralPath($)),
     optional(field("time", $.action_time)),
     optional($.replacing_scopes_modifier),
@@ -308,12 +290,6 @@ export default {
       field("value", $.action_block),
       seq(field("value", $.sql_terminated_expression), ";"),
     ),
-  ),
-  _cursor_action: $ => seq(
-    field("kind", alias("cursor", $.state_kind)),
-    "=",
-    field("value", $.sql_terminated_expression),
-    ";",
   ),
   action_time: _ => seq("at", choice("current", "start")),
   replacing_scopes_modifier: _ => seq("replacing", "scopes"),

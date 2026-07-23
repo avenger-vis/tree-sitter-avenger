@@ -145,7 +145,7 @@ fn checked_repairs_converge_to_clean_parse() {
 fn character_by_character_construction_converges() {
     for source in [
         "avenger 1;\nimport './data.avenger' as data;\nchart custom as demo { x: coalesce($width@start, 0); }",
-        "avenger 1;\ndefine mark badge { slot number as radius; mark symbol as points {} }",
+        "avenger 1;\ndefine mark badge { slot number radius; mark symbol as points {} }",
         "avenger 1;\ncatalog memory as local { schema memory as vega { table csv as movies { path: 'movies.csv'; } } }",
         include_str!("../test/fixtures/declarations.avenger"),
         "avenger 1;\nchart custom { sql: FROM vega.movies AS m SELECT m.title WHERE m.rating > $minimum; }",
@@ -168,7 +168,11 @@ fn character_by_character_construction_converges() {
             tree = parse(&current, Some(&tree));
         }
         let clean = parse(source, None);
-        assert!(!tree.root_node().has_error(), "{}", tree.root_node().to_sexp());
+        assert!(
+            !tree.root_node().has_error(),
+            "{}",
+            tree.root_node().to_sexp()
+        );
         assert_eq!(tree.root_node().to_sexp(), clean.root_node().to_sexp());
     }
 }
@@ -251,7 +255,7 @@ fn scanner_binding_and_temporal_delimiters_repair_incrementally() {
 
 #[test]
 fn keyword_binder_operator_and_boundary_tokens_repair_incrementally() {
-    let source = "avenger 1;\nchart custom as demo {\n  param as width { type: float64; default: 10; }\n  sql: FROM vega.movies SELECT title;\n  on click { set param width at start = $width@previous + 1; }\n  mark symbol as points {}\n}\n";
+    let source = "avenger 1;\nchart custom as demo {\n  param float64 as width { value: 10; }\n  sql: FROM vega.movies SELECT title;\n  on click { set width at start = $width@previous + 1; }\n  mark symbol as points {}\n}\n";
     let clean = parse(source, None);
     assert!(
         !clean.root_node().has_error(),
@@ -264,7 +268,7 @@ fn keyword_binder_operator_and_boundary_tokens_repair_incrementally() {
         "chart",
         " as ",
         "param",
-        "type",
+        "float64",
         "sql:",
         "FROM",
         "SELECT",

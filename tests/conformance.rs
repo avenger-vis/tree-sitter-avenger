@@ -25,6 +25,15 @@ fn find<'tree>(node: Node<'tree>, kind: &str) -> Option<Node<'tree>> {
     None
 }
 
+fn count(node: Node<'_>, kind: &str) -> usize {
+    let own = usize::from(node.kind() == kind);
+    let mut cursor = node.walk();
+    own + node
+        .children(&mut cursor)
+        .map(|child| count(child, kind))
+        .sum::<usize>()
+}
+
 fn assert_field(node: Node<'_>, field: &str, kind: &str) {
     let child = node.child_by_field_name(field).unwrap_or_else(|| {
         panic!(
@@ -74,7 +83,8 @@ fn sql_boundaries_have_direct_inherited_children() {
         "avenger 1; chart cartesian {\n\
          sql: FROM vega.movies SELECT title;\n\
          x: $width@start { enabled: true; }\n\
-         output count: coalesce($width, 0);\n\
+         on click { set cursor = coalesce($cursor_name, 'default'); }\n\
+         output coalesce($width, 0) as count;\n\
          values: [coalesce(1, 2), none];\n\
          }",
     );
@@ -85,6 +95,7 @@ fn sql_boundaries_have_direct_inherited_children() {
         ("sql_query", "query"),
         ("sql_property_expression", "binding_reference"),
         ("sql_terminated_expression", "function_call"),
+        ("sql_aliased_expression", "function_call"),
         ("sql_array_expression", "function_call"),
     ] {
         let wrapper = find(root, wrapper).unwrap_or_else(|| panic!("missing {wrapper}"));
@@ -109,10 +120,10 @@ fn exported_queries_compile() {
 fn arrow_types_are_structural_only_in_type_slots() {
     let tree = parse(
         "avenger 1; chart cartesian {\n\
-         param as config {\n\
-           type: struct(field('values', list(decimal128(38, -2))));\n\
+         param struct(field(list(decimal128(38, -2)), 'values')) as config {\n\
+           value: NULL;\n\
          }\n\
-         selection as brush { type: interval; }\n\
+         param selection as brush {}\n\
          }",
     );
     let root = tree.root_node();
@@ -120,9 +131,12 @@ fn arrow_types_are_structural_only_in_type_slots() {
     assert!(find(root, "arrow_struct_field").is_some());
     assert!(find(root, "arrow_signed_integer").is_some());
 
-    let selection = find(root, "selection_declaration").unwrap();
+    let mut selection = find(root, "param_kind").unwrap();
+    while selection.kind() != "param_declaration" {
+        selection = selection.parent().unwrap();
+    }
+    assert!(find(selection, "param_kind").is_some());
     assert!(find(selection, "arrow_type").is_none());
-    assert!(find(selection, "sql_property_expression").is_some());
 }
 
 #[test]
@@ -198,11 +212,9 @@ fn complete_declaration_surface_has_stable_nodes_and_fields() {
 
     for kind in [
         "param_declaration",
-        "store_declaration",
-        "selection_declaration",
         "resource_declaration",
         "theme_declaration",
-        "group_declaration",
+        "container_declaration",
         "mark_declaration",
         "transform_declaration",
         "tool_declaration",
@@ -216,7 +228,6 @@ fn complete_declaration_surface_has_stable_nodes_and_fields() {
         "level_declaration",
         "adjust_declaration",
         "derive_declaration",
-        "overlay_declaration",
         "layer_declaration",
         "when_declaration",
         "field_declaration",
@@ -225,10 +236,10 @@ fn complete_declaration_surface_has_stable_nodes_and_fields() {
         "fields_declaration",
         "scale_edit_declaration",
         "scale_hint_declaration",
-        "dimension_declaration",
         "clause_declaration",
         "equality_declaration",
         "interval_declaration",
+        "predicate_entry",
     ] {
         assert!(find(root, kind).is_some(), "missing {kind}");
     }
@@ -237,6 +248,24 @@ fn complete_declaration_surface_has_stable_nodes_and_fields() {
     assert_field(cell, "kind", "identifier");
     assert_field(cell, "placement", "body");
     assert_field(cell, "body", "body");
+
+    assert_eq!(count(root, "param_declaration"), 3);
+    let scalar = find(root, "param_declaration").unwrap();
+    assert_field(scalar, "type", "arrow_type");
+    assert_field(scalar, "name", "identifier");
+    assert_field(scalar, "body", "param_body");
+
+    let container = find(root, "container_declaration").unwrap();
+    assert_field(container, "kind", "container_kind");
+    assert_field(container, "body", "body");
+
+    let variable = find(root, "variable_declaration").unwrap();
+    assert_field(variable, "role", "variable_role");
+    assert_field(variable, "name", "identifier");
+
+    let predicate = find(root, "predicate_entry").unwrap();
+    assert_field(predicate, "name", "identifier");
+    assert_field(predicate, "body", "body");
 }
 
 #[test]
@@ -248,13 +277,14 @@ fn definition_interfaces_and_actions_have_stable_fields() {
     assert_field(definition, "kind", "definition_kind");
     assert_field(definition, "name", "identifier");
     assert_field(definition, "body", "definition_body");
-    assert!(find(definition, "slot_declaration").is_some());
-    assert!(find(definition, "channel_parameter_declaration").is_some());
+    let slot = find(definition, "slot_declaration").unwrap();
+    assert_field(slot, "kind", "slot_shape");
+    assert_field(slot, "name", "identifier");
     assert!(find(definition, "output_declaration").is_some());
     assert!(find(definition, "export_declaration").is_some());
 
     let action = find(root, "set_action").expect("fixture must contain an action");
-    assert_field(action, "kind", "state_kind");
+    assert_field(action, "target", "qualified_name");
     assert!(action.child_by_field_name("value").is_some());
 }
 
@@ -263,6 +293,13 @@ fn syntactically_invalid_definition_heads_recover_without_hiding_following_roots
     for source in [
         "avenger 1; define widget custom {} chart custom {}",
         "avenger 1; chart custom { id legacy {} mark symbol {} }",
+        "avenger 1; chart custom { param as width { type: float64; default: 1; } }",
+        "avenger 1; chart custom { store as rows {} selection as picked {} }",
+        "avenger 1; chart custom { group {} overlay {} dimension as x {} }",
+        "avenger 1; chart custom { on click { set param width = 1; } }",
+        "avenger 1; define mark sample { slot expr as x; channel x; }",
+        "avenger 1; chart custom { variable row as x {} field x: float64; adjust {} }",
+        "avenger 1; define transform sample { output result: value + 1; }",
     ] {
         let tree = parse(source);
         assert!(

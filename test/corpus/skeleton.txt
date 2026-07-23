@@ -38,14 +38,15 @@ chart cartesian as sample {}
     (body)))
 
 ==================
-Four direct inherited SQL contexts
+Five direct inherited SQL contexts
 ==================
 
 avenger 1;
 chart cartesian {
   sql: FROM vega.movies AS m SELECT m."title";
   x: $width@start { enabled: true; }
-  output count: coalesce($width, 0);
+  on click { set cursor = coalesce($cursor_name, 'default'); }
+  output coalesce($width, 0) as count;
   values: [coalesce(1, 2), none];
 }
 
@@ -95,9 +96,25 @@ chart cartesian {
               (sql_property_expression
                 (qualified_name
                   (identifier)))))))
-      (output_declaration
+      (event_declaration
         (identifier)
-        (sql_terminated_expression
+        (body
+          (set_action
+            (qualified_name
+              (identifier))
+            (sql_terminated_expression
+              (function_call
+                (qualified_name
+                  (name
+                    (identifier)))
+                (function_argument
+                  (binding_reference
+                    (identifier)))
+                (function_argument
+                  (literal
+                    (single_quoted_string))))))))
+      (output_declaration
+        (sql_aliased_expression
           (function_call
             (qualified_name
               (name
@@ -107,7 +124,8 @@ chart cartesian {
                 (identifier)))
             (function_argument
               (literal
-                (number))))))
+                (number)))))
+        (identifier))
       (property
         (property_name)
         (array

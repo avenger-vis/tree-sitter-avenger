@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "recorded_on": "2026-07-21",
+  "recorded_on": "2026-07-22",
   "platform": {
     "os": "macOS Darwin 25.5.0 arm64",
     "cpu": "Apple M4 Pro",
@@ -16,7 +16,7 @@
     "legacy_combined": "2661a76a1796b34b0c16afb5fed35cc81e45b807",
     "composition_spike": "f5c13e6b5720559db5f53b7f9c6bea0eb1c6faf5",
     "sql_base": "9ed9a6d5badfd34ec03e69c8cc5b3ec67c9d1553",
-    "avenger_contract": "ebe15482494d911366e7737aacfe3c89fce24ec3"
+    "avenger_contract": "a64791df3b7fc732afeb925112cc681938d6b6a3"
   },
   "legacy_combined": {
     "state_count": 4686,
@@ -60,9 +60,9 @@
     "canonical_valid": 12,
     "example_valid": 6,
     "stdlib_valid": 1,
-    "sql_boundary_context_count": 4,
-    "sql_call_site_count": 9,
-    "sql_boundary_case_count": 13,
-    "sql_structural_case_count": 8
+    "sql_boundary_context_count": 5,
+    "sql_call_site_count": 8,
+    "sql_boundary_case_count": 17,
+    "sql_structural_case_count": 10
   }
 }

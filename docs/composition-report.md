@@ -43,7 +43,8 @@ parse. This growth is understood and does not trigger the injection fallback.
 ## Proven behavior
 
 - `sql_query` directly contains inherited standard and `FROM`-first queries.
-- The three expression wrappers preserve direct inherited expression nodes.
+- The four expression wrappers preserve direct inherited expression nodes,
+  including the Avenger-owned top-level `as` boundary for output aliases.
 - SQL-owned braces, brackets, commas, and semicolons remain inside SQL nodes;
   structural delimiters remain owned by the derived grammar.
 - Binding paths and temporal qualifiers retain their SQL-base node identity.
@@ -53,7 +54,16 @@ parse. This growth is understood and does not trigger the injection fallback.
   a thin wrapper and is checked against a pinned content hash.
 - SQL and structural highlight queries compose without `injections.scm`.
 - Native, Wasm, and fuzz checks passed for the spike; repository-root parity
-  passed before retiring it.
+passed before retiring it.
+
+The 2026-07-22 declaration unification records 3,845 states, 909 large states,
+and an 8.40 MB generated parser. Relative to the immediately preceding
+combined grammar (3,376 states, 857 large states, 7.32 MB), the state and table
+growth comes from recursive physical types moving into param headers, the
+fifth SQL boundary at top-level output `as`, and local recovery for direct-name
+slots, variables, fields, and keyed predicate entries. It remains below the
+4,686-state legacy combined parser, parses the full 120-source compiler corpus
+cleanly where classified valid, and stays within the existing performance gate.
 
 ## Default versus fallback
 

@@ -23,6 +23,7 @@ export const SQL_KEYWORDS = [
 
 export const DSL_KEYWORDS = [
   "avenger", "import", "sha256", "chart", "define", "catalog", "schema", "table",
+  "container",
   "param", "store", "selection", "resource", "theme", "css", "group", "mark",
   "transform", "tool", "widget", "view", "cell", "plot", "variable", "part",
   "level", "adjust", "derive", "overlay", "layer", "when", "field", "row", "key",
@@ -30,7 +31,8 @@ export const DSL_KEYWORDS = [
   "interval", "slot", "channel", "output", "export", "match", "set", "cursor",
   "private", "public", "nullable", "at", "replacing", "scopes", "from", "as",
   "target", "scope", "surface", "value", "dim", "pattern", "env", "none",
-  "marks", "subplot", "subplots", "legend",
+  "marks", "subplot", "subplots", "legend", "expr", "expr_list", "literal",
+  "string", "boolean", "enum", "function", "ref", "block", "column", "item",
 ];
 
 export const aliasedStructuralIdentifier = ($, aliasNode) => {

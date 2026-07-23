@@ -4,9 +4,8 @@ Partial type preserves following property
 
 avenger 1;
 chart cartesian {
-  param as broken {
-    type: fixed_size_list(float64, );
-    default: 1;
+  param fixed_size_list(float64, ) as broken {
+    value: 1;
   }
 }
 
@@ -19,19 +18,16 @@ chart cartesian {
     (identifier)
     (body
       (param_declaration
-        (as_clause
-          (identifier))
+        (arrow_type
+          (parameterized_arrow_type
+            (arrow_type_constructor)
+            (arrow_type_arguments
+              (arrow_type
+                (primitive_arrow_type))
+              (arrow_unsigned_integer
+                (MISSING number)))))
+        (identifier)
         (param_body
-          (param_type_property
-            (property_name)
-            (arrow_type
-              (parameterized_arrow_type
-                (arrow_type_constructor)
-                (arrow_type_arguments
-                  (arrow_type
-                    (primitive_arrow_type))
-                  (arrow_unsigned_integer
-                    (MISSING number))))))
           (property
             (property_name)
             (sql_property_expression

@@ -4,13 +4,13 @@ Complete chart declaration surface
 
 avenger 1;
 chart custom as demo {
-  private param as threshold { type: float64; default: 1; }
-  public store as rows { field id: int64; }
-  selection as brush { type: interval; }
+  private param float64 as threshold { value: 1; }
+  public param store as rows { field int64 id; }
+  param selection as brush {}
   resource tiles as osm {}
   theme css from './theme.css' sha256 'abc123';
   theme css: 'mark { color: red; }';
-  group as panel {}
+  container group as panel {}
   mark symbol as points {}
   transform filter as visible {}
   tool pan_zoom as pan {}
@@ -21,33 +21,32 @@ chart custom as demo {
     target: marks [panel.points,];
     scope: subplot grid.left;
     surface: legend color;
-    set param threshold at current replacing scopes = 2;
-    set store rows at start = replace { source: $rows; }
-    set selection brush = $brush;
+    set threshold at current replacing scopes = 2;
+    set rows at start = replace_rows { source: $rows; }
+    set brush = clear;
     set cursor = 'crosshair';
   }
   cell cartesian as left at { row: 0; column: 0; } {}
   plot cartesian {}
-  variable row as mpg {}
+  variable row mpg {}
   part title {}
   level 2 {}
-  adjust {}
+  adjust expr {}
   adjust dodge as shifted {}
   derive aggregate as totals {}
-  overlay as annotation {}
+  container overlay as annotation {}
   layer foreground {}
   when {}
-  field amount: decimal128(38, -2) nullable;
+  field decimal128(38, -2) amount nullable;
   row {}
   key {}
   fields {}
   scale_edit {}
   scale_hint {}
-  dimension as frame {}
   clause {}
-  equality {}
-  interval {}
-  output count: coalesce($threshold, 0);
+  equality { category { field: "category"; value: datum('category'); } }
+  interval { x { field: "x"; from: 0; to: 1; } }
+  output coalesce($threshold, 0) as count;
   export panel.points as exported_points;
 }
 
@@ -63,35 +62,28 @@ chart custom as demo {
     (body
       (param_declaration
         (visibility_modifier)
-        (as_clause
-          (identifier))
+        (arrow_type
+          (primitive_arrow_type))
+        (identifier)
         (param_body
-          (param_type_property
-            (property_name)
-            (arrow_type
-              (primitive_arrow_type)))
           (property
             (property_name)
             (sql_property_expression
               (literal
                 (number))))))
-      (store_declaration
+      (param_declaration
         (visibility_modifier)
-        (as_clause
-          (identifier))
-        (body
+        (param_kind)
+        (identifier)
+        (param_body
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))))
-      (selection_declaration
-        (as_clause
-          (identifier))
-        (body
-          (property
-            (property_name)
-            (sql_property_expression
-              (identifier)))))
+              (primitive_arrow_type))
+            (identifier))))
+      (param_declaration
+        (param_kind)
+        (identifier)
+        (param_body))
       (resource_declaration
         (identifier)
         (as_clause
@@ -104,7 +96,8 @@ chart custom as demo {
       (theme_declaration
         (theme_kind)
         (single_quoted_string))
-      (group_declaration
+      (container_declaration
+        (container_kind)
         (as_clause
           (identifier))
         (body))
@@ -158,7 +151,6 @@ chart custom as demo {
             (event_surface
               (identifier)))
           (set_action
-            (state_kind)
             (qualified_name
               (identifier))
             (action_time)
@@ -167,7 +159,6 @@ chart custom as demo {
               (literal
                 (number))))
           (set_action
-            (state_kind)
             (qualified_name
               (identifier))
             (action_time)
@@ -180,14 +171,15 @@ chart custom as demo {
                     (binding_reference
                       (identifier)))))))
           (set_action
-            (state_kind)
             (qualified_name
               (identifier))
             (sql_terminated_expression
-              (binding_reference
-                (identifier))))
+              (qualified_name
+                (name
+                  (identifier)))))
           (set_action
-            (state_kind)
+            (qualified_name
+              (identifier))
             (sql_terminated_expression
               (literal
                 (single_quoted_string))))))
@@ -211,9 +203,8 @@ chart custom as demo {
         (identifier)
         (body))
       (variable_declaration
+        (variable_role)
         (identifier)
-        (as_clause
-          (identifier))
         (body))
       (part_declaration
         (identifier)
@@ -222,6 +213,7 @@ chart custom as demo {
         (number)
         (body))
       (adjust_declaration
+        (adjust_kind)
         (body))
       (adjust_declaration
         (identifier)
@@ -233,7 +225,8 @@ chart custom as demo {
         (as_clause
           (identifier))
         (body))
-      (overlay_declaration
+      (container_declaration
+        (container_kind)
         (as_clause
           (identifier))
         (body))
@@ -243,7 +236,6 @@ chart custom as demo {
       (when_declaration
         (body))
       (field_declaration
-        (identifier)
         (arrow_type
           (parameterized_arrow_type
             (arrow_type_constructor)
@@ -251,7 +243,8 @@ chart custom as demo {
               (arrow_unsigned_integer
                 (number))
               (arrow_signed_integer
-                (number))))))
+                (number)))))
+        (identifier))
       (row_declaration
         (body))
       (key_declaration
@@ -262,19 +255,52 @@ chart custom as demo {
         (body))
       (scale_hint_declaration
         (body))
-      (dimension_declaration
-        (as_clause
-          (identifier))
-        (body))
       (clause_declaration
         (body))
       (equality_declaration
-        (body))
+        (predicate_body
+          (predicate_entry
+            (identifier)
+            (body
+              (property
+                (property_name)
+                (sql_property_expression
+                  (qualified_name
+                    (name
+                      (quoted_identifier)))))
+              (property
+                (property_name)
+                (sql_property_expression
+                  (function_call
+                    (qualified_name
+                      (name
+                        (identifier)))
+                    (function_argument
+                      (literal
+                        (single_quoted_string))))))))))
       (interval_declaration
-        (body))
+        (predicate_body
+          (predicate_entry
+            (identifier)
+            (body
+              (property
+                (property_name)
+                (sql_property_expression
+                  (qualified_name
+                    (name
+                      (quoted_identifier)))))
+              (property
+                (property_name)
+                (sql_property_expression
+                  (literal
+                    (number))))
+              (property
+                (property_name)
+                (sql_property_expression
+                  (literal
+                    (number))))))))
       (output_declaration
-        (identifier)
-        (sql_terminated_expression
+        (sql_aliased_expression
           (function_call
             (qualified_name
               (name
@@ -284,7 +310,8 @@ chart custom as demo {
                 (identifier)))
             (function_argument
               (literal
-                (number))))))
+                (number)))))
+        (identifier))
       (export_declaration
         (qualified_name
           (identifier)
@@ -297,21 +324,21 @@ Definition interfaces match arms and splices
 
 avenger 1;
 define mark badge {
-  slot expr as x;
-  slot expr_list as values {}
-  slot literal as fill;
-  slot number as radius;
-  slot string as label;
-  slot boolean as enabled;
-  slot enum as style { values: [dot, line]; }
-  slot function as formatter { class: scalar; }
-  slot ref as target { kind: mark; }
-  slot block as content;
-  channel x;
-  channel y: y2;
-  output bounds: span(0, $radius);
+  slot expr x;
+  slot expr_list values {}
+  slot literal fill;
+  slot number radius;
+  slot string label;
+  slot boolean enabled;
+  slot enum style { values: [dot, line]; }
+  slot function formatter { class: scalar; }
+  slot ref target { kind: mark; }
+  slot block content;
+  slot channel x;
+  slot channel y { default: y2; }
+  output span(0, $radius) as bounds;
   export implementation.points as marks;
-  private group as implementation {
+  private container group as implementation {
     match style {
       dot { mark symbol {} }
       line { mark line {} }
@@ -331,33 +358,26 @@ define mark badge {
     (definition_body
       (slot_declaration
         (slot_shape)
-        (as_clause
-          (identifier)))
+        (identifier))
       (slot_declaration
         (slot_shape)
-        (as_clause
-          (identifier))
+        (identifier)
         (body))
       (slot_declaration
         (slot_shape)
-        (as_clause
-          (identifier)))
+        (identifier))
       (slot_declaration
         (slot_shape)
-        (as_clause
-          (identifier)))
+        (identifier))
       (slot_declaration
         (slot_shape)
-        (as_clause
-          (identifier)))
+        (identifier))
       (slot_declaration
         (slot_shape)
-        (as_clause
-          (identifier)))
+        (identifier))
       (slot_declaration
         (slot_shape)
-        (as_clause
-          (identifier))
+        (identifier)
         (body
           (property
             (property_name)
@@ -374,8 +394,7 @@ define mark badge {
                       (identifier)))))))))
       (slot_declaration
         (slot_shape)
-        (as_clause
-          (identifier))
+        (identifier)
         (body
           (property
             (property_name)
@@ -385,8 +404,7 @@ define mark badge {
                   (identifier)))))))
       (slot_declaration
         (slot_shape)
-        (as_clause
-          (identifier))
+        (identifier)
         (body
           (property
             (property_name)
@@ -395,16 +413,22 @@ define mark badge {
                 (identifier))))))
       (slot_declaration
         (slot_shape)
-        (as_clause
-          (identifier)))
-      (channel_parameter_declaration
         (identifier))
-      (channel_parameter_declaration
+      (slot_declaration
+        (slot_shape)
+        (identifier))
+      (slot_declaration
+        (slot_shape)
         (identifier)
-        (identifier))
+        (body
+          (property
+            (property_name)
+            (sql_property_expression
+              (qualified_name
+                (name
+                  (identifier)))))))
       (output_declaration
-        (identifier)
-        (sql_terminated_expression
+        (sql_aliased_expression
           (function_call
             (qualified_name
               (name
@@ -414,14 +438,16 @@ define mark badge {
                 (number)))
             (function_argument
               (binding_reference
-                (identifier))))))
+                (identifier)))))
+        (identifier))
       (export_declaration
         (qualified_name
           (identifier)
           (identifier))
         (identifier))
-      (group_declaration
+      (container_declaration
         (visibility_modifier)
+        (container_kind)
         (as_clause
           (identifier))
         (body

@@ -3,7 +3,12 @@ avenger 1;
 import './catalog.data.avenger' sha256 'abc123' as data;
 
 chart custom as demo {
-  public param as width { type: float64; default: 640; }
+  public param float64 as width { value: 640; }
+  param store as rows { field utf8 id; }
+  param selection as picked {}
+  container group as panel {}
+  variable row sample {}
+  equality { id { field: "id"; value: 1; } }
   projected: plot($width);
   mark custom_mark as points {
     x: coalesce($width@start, 0);
@@ -14,8 +19,8 @@ chart custom as demo {
 }
 
 define mark badge {
-  slot number as radius;
-  channel x;
-  output bounds: span(0, $radius);
+  slot number radius;
+  slot channel x;
+  output span(0, $radius) as bounds;
   export points as marks;
 }

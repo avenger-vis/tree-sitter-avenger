@@ -9,11 +9,9 @@
   "schema"
   "table"
   "param"
-  "store"
-  "selection"
+  "container"
   "resource"
   "theme"
-  "group"
   "mark"
   "transform"
   "tool"
@@ -27,7 +25,6 @@
   "level"
   "adjust"
   "derive"
-  "overlay"
   "layer"
   "when"
   "field"
@@ -36,12 +33,10 @@
   "fields"
   "scale_edit"
   "scale_hint"
-  "dimension"
   "clause"
   "equality"
   "interval"
   "slot"
-  "channel"
   "export"
   "match"
   "set"
@@ -67,7 +62,10 @@
 
 [
   (theme_kind)
-  (state_kind)
+  (param_kind)
+  (container_kind)
+  (variable_role)
+  (adjust_kind)
 ] @keyword
 
 (version_directive version: (number) @number)
@@ -81,7 +79,9 @@
 (schema_declaration kind: (identifier) @type)
 (table_declaration kind: (identifier) @type)
 (as_clause name: (identifier) @variable)
+(param_declaration name: (identifier) @variable.parameter)
 (resource_declaration kind: (identifier) @type)
+(container_declaration kind: (container_kind) @type.builtin)
 (mark_declaration kind: (identifier) @type)
 (transform_declaration kind: (identifier) @type)
 (tool_declaration kind: (identifier) @type)
@@ -90,7 +90,8 @@
 (event_declaration kind: (identifier) @type)
 (cell_declaration kind: (identifier) @type)
 (plot_declaration kind: (identifier) @type)
-(variable_declaration kind: (identifier) @type)
+(variable_declaration role: (variable_role) @type.builtin)
+(variable_declaration name: (identifier) @variable)
 (adjust_declaration kind: (identifier) @type)
 (derive_declaration kind: (identifier) @type)
 (action_block kind: (identifier) @type)
@@ -100,13 +101,13 @@
 (match_arm name: (identifier) @constant)
 (field_declaration name: (identifier) @property)
 (slot_declaration kind: (slot_shape) @type.builtin)
-(channel_parameter_declaration name: (identifier) @variable.parameter)
+(slot_declaration name: (identifier) @variable.parameter)
 (output_declaration name: (identifier) @variable)
 (export_declaration source: (qualified_name) @variable)
 (export_declaration alias: (identifier) @variable)
 (set_action target: (qualified_name) @variable)
+(predicate_entry name: (identifier) @property)
 (property name: (property_name) @property)
-(param_type_property name: (property_name) @property)
 (block_splice name: (property_name) @variable.parameter)
 (typed_object kind: (identifier) @type)
 (typed_reference kind: (reference_kind) @type)

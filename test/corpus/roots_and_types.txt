@@ -60,56 +60,56 @@ Recursive physical Arrow types
 
 avenger 1;
 chart cartesian {
-  param as primitives {
-    type: boolean;
-    field signed: int8;
-    field signed16: int16;
-    field signed32: int32;
-    field signed64: int64;
-    field unsigned8: uint8;
-    field unsigned16: uint16;
-    field unsigned32: uint32;
-    field unsigned: uint64 nullable;
-    field floating: float16;
-    field floating32: float32;
-    field floating64: float64;
-    field small_text: utf8;
-    field text: large_utf8;
-    field small_bytes: binary;
-    field bytes: large_binary;
-    field date32_value: date32;
-    field date: date64;
+  param store as primitives {
+    field boolean flag;
+    field int8 signed;
+    field int16 signed16;
+    field int32 signed32;
+    field int64 signed64;
+    field uint8 unsigned8;
+    field uint16 unsigned16;
+    field uint32 unsigned32;
+    field uint64 unsigned nullable;
+    field float16 floating;
+    field float32 floating32;
+    field float64 floating64;
+    field utf8 small_text;
+    field large_utf8 text;
+    field binary small_bytes;
+    field large_binary bytes;
+    field date32 date32_value;
+    field date64 date;
   }
-  param as temporal {
-    type: struct(
-      field('t32', time32(millisecond)),
-      field('t32_second', time32(second)),
-      field('t64', time64(nanosecond)),
-      field('t64_micro', time64(microsecond)),
-      field('timestamp_second', timestamp(second)),
-      field('timestamp_milli', timestamp(millisecond)),
-      field('zoned', timestamp(microsecond, 'America/New_York')),
-      field('timestamp_nano', timestamp(nanosecond, 'Etc/''Example')),
-      field('elapsed', duration(second)),
-      field('elapsed_milli', duration(millisecond)),
-      field('elapsed_micro', duration(microsecond)),
-      field('elapsed_nano', duration(nanosecond)),
-      field('period_year', interval(year_month)),
-      field('period_day', interval(day_time)),
-      field('period', interval(month_day_nano)),
-    );
+  param struct(
+    field(time32(millisecond), 't32'),
+    field(time32(second), 't32_second'),
+    field(time64(nanosecond), 't64'),
+    field(time64(microsecond), 't64_micro'),
+    field(timestamp(second), 'timestamp_second'),
+    field(timestamp(millisecond), 'timestamp_milli'),
+    field(timestamp(microsecond, 'America/New_York'), 'zoned'),
+    field(timestamp(nanosecond, 'Etc/''Example'), 'timestamp_nano'),
+    field(duration(second), 'elapsed'),
+    field(duration(millisecond), 'elapsed_milli'),
+    field(duration(microsecond), 'elapsed_micro'),
+    field(duration(nanosecond), 'elapsed_nano'),
+    field(interval(year_month), 'period_year'),
+    field(interval(day_time), 'period_day'),
+    field(interval(month_day_nano), 'period'),
+  ) as temporal {
+    value: NULL;
   }
-  param as nested {
-    type: map(utf8, fixed_size_list(list(decimal128(38, -2)), 4));
-    field positive: decimal256(76, +2);
-    field canonical: decimal128(20, 2);
-    field blob: fixed_size_binary(16);
-    field empty: struct();
-    field large: large_list(float64);
+  param map(utf8, fixed_size_list(list(decimal128(38, -2)), 4)) as nested {
+    value: NULL;
   }
-  selection as brush {
-    type: interval;
+  param store as nested_fields {
+    field decimal256(76, +2) positive;
+    field decimal128(20, 2) canonical;
+    field fixed_size_binary(16) blob;
+    field struct() empty;
+    field large_list(float64) large;
   }
+  param selection as brush {}
 }
 
 ---
@@ -121,270 +121,274 @@ chart cartesian {
     (identifier)
     (body
       (param_declaration
-        (as_clause
-          (identifier))
+        (param_kind)
+        (identifier)
         (param_body
-          (param_type_property
-            (property_name)
-            (arrow_type
-              (primitive_arrow_type)))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))
+              (primitive_arrow_type))
+            (identifier))
           (field_declaration
-            (identifier)
             (arrow_type
-              (primitive_arrow_type)))))
+              (primitive_arrow_type))
+            (identifier))
+          (field_declaration
+            (arrow_type
+              (primitive_arrow_type))
+            (identifier))))
       (param_declaration
-        (as_clause
-          (identifier))
+        (arrow_type
+          (parameterized_arrow_type
+            (arrow_type_constructor)
+            (arrow_type_arguments
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments)))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments)))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments)))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments)))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments
+                      (arrow_time_unit))))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments
+                      (arrow_time_unit))))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments
+                      (arrow_time_unit)
+                      (single_quoted_string))))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments
+                      (arrow_time_unit)
+                      (single_quoted_string))))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments
+                      (arrow_time_unit))))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments
+                      (arrow_time_unit))))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments
+                      (arrow_time_unit))))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments
+                      (arrow_time_unit))))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments
+                      (arrow_interval_unit))))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments
+                      (arrow_interval_unit))))
+                (single_quoted_string))
+              (arrow_struct_field
+                (arrow_type
+                  (parameterized_arrow_type
+                    (arrow_type_constructor)
+                    (arrow_type_arguments
+                      (arrow_interval_unit))))
+                (single_quoted_string)))))
+        (identifier)
         (param_body
-          (param_type_property
-            (property_name)
-            (arrow_type
-              (parameterized_arrow_type
-                (arrow_type_constructor)
-                (arrow_type_arguments
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments
-                          (arrow_time_unit)))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments
-                          (arrow_time_unit)))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments
-                          (arrow_time_unit)
-                          (single_quoted_string)))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments
-                          (arrow_time_unit)
-                          (single_quoted_string)))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments
-                          (arrow_time_unit)))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments
-                          (arrow_time_unit)))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments
-                          (arrow_time_unit)))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments
-                          (arrow_time_unit)))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments
-                          (arrow_interval_unit)))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments
-                          (arrow_interval_unit)))))
-                  (arrow_struct_field
-                    (single_quoted_string)
-                    (arrow_type
-                      (parameterized_arrow_type
-                        (arrow_type_constructor)
-                        (arrow_type_arguments
-                          (arrow_interval_unit)))))))))))
-      (param_declaration
-        (as_clause
-          (identifier))
-        (param_body
-          (param_type_property
-            (property_name)
-            (arrow_type
-              (parameterized_arrow_type
-                (arrow_type_constructor)
-                (arrow_type_arguments
-                  (arrow_type
-                    (primitive_arrow_type))
-                  (arrow_type
-                    (parameterized_arrow_type
-                      (arrow_type_constructor)
-                      (arrow_type_arguments
-                        (arrow_type
-                          (parameterized_arrow_type
-                            (arrow_type_constructor)
-                            (arrow_type_arguments
-                              (arrow_type
-                                (parameterized_arrow_type
-                                  (arrow_type_constructor)
-                                  (arrow_type_arguments
-                                    (arrow_unsigned_integer
-                                      (number))
-                                    (arrow_signed_integer
-                                      (number))))))))
-                        (arrow_unsigned_integer
-                          (number)))))))))
-          (field_declaration
-            (identifier)
-            (arrow_type
-              (parameterized_arrow_type
-                (arrow_type_constructor)
-                (arrow_type_arguments
-                  (arrow_unsigned_integer
-                    (number))
-                  (arrow_signed_integer
-                    (number))))))
-          (field_declaration
-            (identifier)
-            (arrow_type
-              (parameterized_arrow_type
-                (arrow_type_constructor)
-                (arrow_type_arguments
-                  (arrow_unsigned_integer
-                    (number))
-                  (arrow_signed_integer
-                    (number))))))
-          (field_declaration
-            (identifier)
-            (arrow_type
-              (parameterized_arrow_type
-                (arrow_type_constructor)
-                (arrow_type_arguments
-                  (arrow_unsigned_integer
-                    (number))))))
-          (field_declaration
-            (identifier)
-            (arrow_type
-              (parameterized_arrow_type
-                (arrow_type_constructor))))
-          (field_declaration
-            (identifier)
-            (arrow_type
-              (parameterized_arrow_type
-                (arrow_type_constructor)
-                (arrow_type_arguments
-                  (arrow_type
-                    (primitive_arrow_type))))))))
-      (selection_declaration
-        (as_clause
-          (identifier))
-        (body
           (property
             (property_name)
             (sql_property_expression
-              (identifier))))))))
+              (qualified_name
+                (identifier))))))
+      (param_declaration
+        (arrow_type
+          (parameterized_arrow_type
+            (arrow_type_constructor)
+            (arrow_type_arguments
+              (arrow_type
+                (primitive_arrow_type))
+              (arrow_type
+                (parameterized_arrow_type
+                  (arrow_type_constructor)
+                  (arrow_type_arguments
+                    (arrow_type
+                      (parameterized_arrow_type
+                        (arrow_type_constructor)
+                        (arrow_type_arguments
+                          (arrow_type
+                            (parameterized_arrow_type
+                              (arrow_type_constructor)
+                              (arrow_type_arguments
+                                (arrow_unsigned_integer
+                                  (number))
+                                (arrow_signed_integer
+                                  (number))))))))
+                    (arrow_unsigned_integer
+                      (number))))))))
+        (identifier)
+        (param_body
+          (property
+            (property_name)
+            (sql_property_expression
+              (qualified_name
+                (identifier))))))
+      (param_declaration
+        (param_kind)
+        (identifier)
+        (param_body
+          (field_declaration
+            (arrow_type
+              (parameterized_arrow_type
+                (arrow_type_constructor)
+                (arrow_type_arguments
+                  (arrow_unsigned_integer
+                    (number))
+                  (arrow_signed_integer
+                    (number)))))
+            (identifier))
+          (field_declaration
+            (arrow_type
+              (parameterized_arrow_type
+                (arrow_type_constructor)
+                (arrow_type_arguments
+                  (arrow_unsigned_integer
+                    (number))
+                  (arrow_signed_integer
+                    (number)))))
+            (identifier))
+          (field_declaration
+            (arrow_type
+              (parameterized_arrow_type
+                (arrow_type_constructor)
+                (arrow_type_arguments
+                  (arrow_unsigned_integer
+                    (number)))))
+            (identifier))
+          (field_declaration
+            (arrow_type
+              (parameterized_arrow_type
+                (arrow_type_constructor)))
+            (identifier))
+          (field_declaration
+            (arrow_type
+              (parameterized_arrow_type
+                (arrow_type_constructor)
+                (arrow_type_arguments
+                  (arrow_type
+                    (primitive_arrow_type)))))
+            (identifier))))
+      (param_declaration
+        (param_kind)
+        (identifier)
+        (param_body)))))
