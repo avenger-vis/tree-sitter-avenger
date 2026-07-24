@@ -214,7 +214,6 @@ fn complete_declaration_surface_has_stable_nodes_and_fields() {
         "param_declaration",
         "resource_declaration",
         "theme_declaration",
-        "container_declaration",
         "mark_declaration",
         "transform_declaration",
         "tool_declaration",
@@ -255,9 +254,9 @@ fn complete_declaration_surface_has_stable_nodes_and_fields() {
     assert_field(scalar, "name", "identifier");
     assert_field(scalar, "body", "param_body");
 
-    let container = find(root, "container_declaration").unwrap();
-    assert_field(container, "kind", "container_kind");
-    assert_field(container, "body", "body");
+    let group = find(root, "mark_declaration").expect("fixture must contain mark group");
+    assert_field(group, "kind", "identifier");
+    assert_field(group, "body", "body");
 
     let variable = find(root, "variable_declaration").unwrap();
     assert_field(variable, "role", "variable_role");
@@ -296,6 +295,7 @@ fn syntactically_invalid_definition_heads_recover_without_hiding_following_roots
         "avenger 1; chart custom { param as width { type: float64; default: 1; } }",
         "avenger 1; chart custom { store as rows {} selection as picked {} }",
         "avenger 1; chart custom { group {} overlay {} dimension as x {} }",
+        "avenger 1; chart custom { container group {} container overlay {} }",
         "avenger 1; chart custom { on click { set param width = 1; } }",
         "avenger 1; define mark sample { slot expr as x; channel x; }",
         "avenger 1; chart custom { variable row as x {} field x: float64; adjust {} }",

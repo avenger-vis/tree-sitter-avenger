@@ -137,7 +137,6 @@
   "schema"
   "table"
   "param"
-  "container"
   "resource"
   "theme"
   "mark"
@@ -191,7 +190,6 @@
 [
   (theme_kind)
   (param_kind)
-  (container_kind)
   (variable_role)
   (adjust_kind)
 ] @keyword
@@ -209,7 +207,6 @@
 (as_clause name: (identifier) @variable)
 (param_declaration name: (identifier) @variable.parameter)
 (resource_declaration kind: (identifier) @type)
-(container_declaration kind: (container_kind) @type.builtin)
 (mark_declaration kind: (identifier) @type)
 (transform_declaration kind: (identifier) @type)
 (tool_declaration kind: (identifier) @type)

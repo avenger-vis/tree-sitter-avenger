@@ -14,9 +14,9 @@ chart custom as deep {
        FROM ranked AS r
        SELECT r."title", coalesce(r."gross", 0) + $offset@start AS adjusted
        WHERE r.rank BETWEEN 1 AND 10;
-  container group as outer {
-    container group as middle {
-      container group as inner {
+  mark group as outer {
+    mark group as middle {
+      mark group as inner {
         mark custom_mark as points {
           x: coalesce((CASE WHEN "adjusted" > 0 THEN "adjusted" ELSE 0 END), 0);
           values: [

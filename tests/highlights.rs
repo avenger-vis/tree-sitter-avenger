@@ -40,7 +40,7 @@ fn composed_highlights_capture_sql_and_structural_roles() {
         ("attribute", "@start"),
         ("type.builtin", "float64"),
         ("keyword", "store"),
-        ("type.builtin", "group"),
+        ("type", "group"),
         ("type.builtin", "row"),
         ("property", "id"),
         ("variable.parameter", "x"),

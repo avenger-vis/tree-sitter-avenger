@@ -40,8 +40,8 @@ coordinates, resources, and data providers therefore require no grammar edit.
 | `param_declaration` | required `type` (`arrow_type` or closed `param_kind`), direct `name` after the structural `as` token, and `body: param_body` |
 | `resource_declaration` | `kind`, `body`; required `as_clause` |
 | `theme_declaration` | `kind`, and either `source` plus optional `hash`, or `value` |
-| `container_declaration` | closed `kind: container_kind` (`group` or `overlay`), `body`, and optional `as_clause` |
-| `mark_declaration`, `transform_declaration`, `view_declaration` | `kind`, `body`; optional `as_clause` |
+| `mark_declaration` | `kind: identifier`, including contextual SQL `group`; required `body`; optional `as_clause` |
+| `transform_declaration`, `view_declaration` | `kind`, `body`; optional `as_clause` |
 | `tool_declaration` | `kind`, optional `body`; optional `as_clause`; a stateless form ends in `;` |
 | `widget_declaration` | `kind`, `body`; required `as_clause` |
 | `event_declaration` | `kind`, `body`; optional `as_clause` |
@@ -62,7 +62,7 @@ coordinates, resources, and data providers therefore require no grammar edit.
 | `block_splice` | `name: property_name` | A definition block slot invocation. The `property_name` leaf permits the same contextual spelling as properties. |
 
 `visibility_modifier`, `definition_kind`, `theme_kind`, `param_kind`,
-`container_kind`, `variable_role`, `adjust_kind`, and `slot_shape` are closed
+`variable_role`, `adjust_kind`, and `slot_shape` are closed
 named keyword nodes. The grammar preserves definition items in source order
 but does not enforce interface-before-implementation ordering.
 

@@ -1132,10 +1132,6 @@
           "named": true
         },
         {
-          "type": "container_declaration",
-          "named": true
-        },
-        {
           "type": "derive_declaration",
           "named": true
         },
@@ -2033,46 +2029,6 @@
     }
   },
   {
-    "type": "container_declaration",
-    "named": true,
-    "fields": {
-      "body": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "body",
-            "named": true
-          }
-        ]
-      },
-      "kind": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "container_kind",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "as_clause",
-          "named": true
-        },
-        {
-          "type": "visibility_modifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "data_type",
     "named": true,
     "fields": {},
@@ -2137,10 +2093,6 @@
         },
         {
           "type": "clause_declaration",
-          "named": true
-        },
-        {
-          "type": "container_declaration",
           "named": true
         },
         {
@@ -5011,10 +4963,6 @@
         },
         {
           "type": "clause_declaration",
-          "named": true
-        },
-        {
-          "type": "container_declaration",
           "named": true
         },
         {
@@ -8634,14 +8582,6 @@
   {
     "type": "clause",
     "named": false
-  },
-  {
-    "type": "container",
-    "named": false
-  },
-  {
-    "type": "container_kind",
-    "named": true
   },
   {
     "type": "current",

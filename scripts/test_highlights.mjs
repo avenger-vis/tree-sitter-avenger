@@ -99,7 +99,7 @@ for (const [capture, text] of [
   ["type", "`custom_mark`"],
   ["type.builtin", "`float64`"],
   ["keyword", "`store`"],
-  ["type.builtin", "`group`"],
+  ["type", "`group`"],
   ["type.builtin", "`row`"],
   ["property", "`id`"],
   ["variable.parameter", "`x`"],

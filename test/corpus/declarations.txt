@@ -10,7 +10,7 @@ chart custom as demo {
   resource tiles as osm {}
   theme css from './theme.css' sha256 'abc123';
   theme css: 'mark { color: red; }';
-  container group as panel {}
+  mark group as panel {}
   mark symbol as points {}
   transform filter as visible {}
   tool pan_zoom as pan {}
@@ -34,7 +34,7 @@ chart custom as demo {
   adjust expr {}
   adjust dodge as shifted {}
   derive aggregate as totals {}
-  container overlay as annotation {}
+  overlay: { mark group as annotation {} }
   layer foreground {}
   when {}
   field decimal128(38, -2) amount nullable;
@@ -96,8 +96,8 @@ chart custom as demo {
       (theme_declaration
         (theme_kind)
         (single_quoted_string))
-      (container_declaration
-        (container_kind)
+      (mark_declaration
+        (identifier)
         (as_clause
           (identifier))
         (body))
@@ -225,11 +225,15 @@ chart custom as demo {
         (as_clause
           (identifier))
         (body))
-      (container_declaration
-        (container_kind)
-        (as_clause
-          (identifier))
-        (body))
+      (property
+        (property_name)
+        (anonymous_object
+          (body
+            (mark_declaration
+              (identifier)
+              (as_clause
+                (identifier))
+              (body)))))
       (layer_declaration
         (identifier)
         (body))
@@ -338,7 +342,7 @@ define mark badge {
   slot channel y { default: y2; }
   output span(0, $radius) as bounds;
   export implementation.points as marks;
-  private container group as implementation {
+  private mark group as implementation {
     match style {
       dot { mark symbol {} }
       line { mark line {} }
@@ -445,9 +449,9 @@ define mark badge {
           (identifier)
           (identifier))
         (identifier))
-      (container_declaration
+      (mark_declaration
         (visibility_modifier)
-        (container_kind)
+        (identifier)
         (as_clause
           (identifier))
         (body
@@ -468,3 +472,112 @@ define mark badge {
                     (body))))))
           (block_splice
             (property_name)))))))
+
+==================
+Nested legend overlay mark block
+==================
+
+avenger 1;
+chart cartesian {
+  mark symbol {
+    fill: "value" {
+      legend: {
+        overlay: {
+          mark group as annotations {
+            mark rule as threshold {}
+          }
+        }
+      }
+    }
+  }
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (identifier)
+    (body
+      (mark_declaration
+        (identifier)
+        (body
+          (property
+            (property_name)
+            (configured_expression
+              (sql_property_expression
+                (qualified_name
+                  (name
+                    (quoted_identifier))))
+              (body
+                (property
+                  (property_name)
+                  (anonymous_object
+                    (body
+                      (property
+                        (property_name)
+                        (anonymous_object
+                          (body
+                            (mark_declaration
+                              (identifier)
+                              (as_clause
+                                (identifier))
+                              (body
+                                (mark_declaration
+                                  (identifier)
+                                  (as_clause
+                                    (identifier))
+                                  (body))))))))))))))))))
+
+==================
+Incomplete legend overlay keeps following properties
+==================
+
+avenger 1;
+chart cartesian {
+  mark symbol {
+    fill: "value" {
+      legend: {
+        overlay: {
+          mark
+        }
+        title: 'Value';
+      }
+    }
+  }
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (identifier)
+    (body
+      (mark_declaration
+        (identifier)
+        (body
+          (property
+            (property_name)
+            (configured_expression
+              (sql_property_expression
+                (qualified_name
+                  (name
+                    (quoted_identifier))))
+              (body
+                (property
+                  (property_name)
+                  (anonymous_object
+                    (body
+                      (property
+                        (property_name)
+                        (anonymous_object
+                          (body
+                            (ERROR))))
+                      (property
+                        (property_name)
+                        (sql_property_expression
+                          (literal
+                            (single_quoted_string)))))))))))))))

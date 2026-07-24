@@ -4731,10 +4731,6 @@
           },
           {
             "type": "STRING",
-            "value": "container"
-          },
-          {
-            "type": "STRING",
             "value": "param"
           },
           {
@@ -4804,10 +4800,6 @@
           {
             "type": "STRING",
             "value": "derive"
-          },
-          {
-            "type": "STRING",
-            "value": "overlay"
           },
           {
             "type": "STRING",
@@ -5316,10 +5308,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "container_declaration"
-        },
-        {
-          "type": "SYMBOL",
           "name": "mark_declaration"
         },
         {
@@ -5683,69 +5671,6 @@
         }
       ]
     },
-    "container_declaration": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "visibility_modifier"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "STRING",
-          "value": "container"
-        },
-        {
-          "type": "FIELD",
-          "name": "kind",
-          "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "group"
-                },
-                {
-                  "type": "STRING",
-                  "value": "overlay"
-                }
-              ]
-            },
-            "named": true,
-            "value": "container_kind"
-          }
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "as_clause"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "FIELD",
-          "name": "body",
-          "content": {
-            "type": "SYMBOL",
-            "name": "body"
-          }
-        }
-      ]
-    },
     "mark_declaration": {
       "type": "SEQ",
       "members": [
@@ -5769,8 +5694,22 @@
           "type": "FIELD",
           "name": "kind",
           "content": {
-            "type": "SYMBOL",
-            "name": "identifier"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "identifier"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "keyword_group"
+                },
+                "named": true,
+                "value": "identifier"
+              }
+            ]
           }
         },
         {
@@ -8233,10 +8172,6 @@
               },
               {
                 "type": "STRING",
-                "value": "container"
-              },
-              {
-                "type": "STRING",
                 "value": "param"
               },
               {
@@ -8306,10 +8241,6 @@
               {
                 "type": "STRING",
                 "value": "derive"
-              },
-              {
-                "type": "STRING",
-                "value": "overlay"
               },
               {
                 "type": "STRING",

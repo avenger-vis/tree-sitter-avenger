@@ -63,7 +63,6 @@ export default {
     $.catalog_declaration,
     $.schema_declaration,
     $.table_declaration,
-    $.container_declaration,
     $.mark_declaration,
     $.transform_declaration,
     $.tool_declaration,
@@ -131,15 +130,11 @@ export default {
     ";",
   ),
 
-  container_declaration: $ => seq(
-    visibility($),
-    "container",
-    field("kind", alias(choice("group", "overlay"), $.container_kind)),
-    optional($.as_clause),
-    field("body", $.body),
-  ),
   mark_declaration: $ => seq(
-    visibility($), "mark", field("kind", $.identifier), optional($.as_clause),
+    visibility($),
+    "mark",
+    field("kind", choice($.identifier, alias($.keyword_group, $.identifier))),
+    optional($.as_clause),
     field("body", $.body),
   ),
   transform_declaration: $ => seq(

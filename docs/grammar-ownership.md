@@ -47,7 +47,8 @@ frozen. Hidden choice/list plumbing may change without changing these roles.
 | scalar `param`, store, selection | one `param_declaration` with direct `type`, `name`, and specialized param body; store/selection use `param_kind` |
 | `res` | `resource_declaration` |
 | `theme` | `theme_declaration` |
-| group, overlay containers | one `container_declaration` with closed `container_kind` |
+| logical groups | ordinary `mark_declaration` with contextual `group` kind |
+| continuous-colorbar overlays | schema-known `overlay` property block containing marks |
 | `mark` | `mark_declaration` |
 | `transform` | `transform_declaration` |
 | `tool` | `tool_declaration` |

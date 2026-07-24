@@ -6,7 +6,7 @@ chart custom as demo {
   public param float64 as width { value: 640; }
   param store as rows { field utf8 id; }
   param selection as picked {}
-  container group as panel {}
+  mark group as panel {}
   variable row sample {}
   equality { id { field: "id"; value: 1; } }
   projected: plot($width);

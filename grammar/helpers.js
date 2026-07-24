@@ -23,10 +23,9 @@ export const SQL_KEYWORDS = [
 
 export const DSL_KEYWORDS = [
   "avenger", "import", "sha256", "chart", "define", "catalog", "schema", "table",
-  "container",
   "param", "store", "selection", "resource", "theme", "css", "group", "mark",
   "transform", "tool", "widget", "view", "cell", "plot", "variable", "part",
-  "level", "adjust", "derive", "overlay", "layer", "when", "field", "row", "key",
+  "level", "adjust", "derive", "layer", "when", "field", "row", "key",
   "fields", "scale_edit", "scale_hint", "dimension", "clause", "equality",
   "interval", "slot", "channel", "output", "export", "match", "set", "cursor",
   "private", "public", "nullable", "at", "replacing", "scopes", "from", "as",
