@@ -14,12 +14,16 @@ chart custom {
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
-      (ERROR
-        (identifier))
-      (mark_declaration
-        (identifier)
+      (widget_declaration
+        (ERROR
+          (qualified_name
+            (identifier))
+          (identifier))
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body)))))
@@ -42,10 +46,12 @@ chart custom {
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
       (event_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (body
           (block_splice
             (property_name)
@@ -75,13 +81,16 @@ chart custom {
   (version_directive
     (number))
   (ERROR
-    (identifier)
-    (identifier)
+    (qualified_name
+      (identifier))
+    (qualified_name
+      (identifier))
     (as_clause
       (identifier))
     (body
       (mark_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body)))))
@@ -105,7 +114,8 @@ chart custom {
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
       (ERROR
         (property_name)

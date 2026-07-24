@@ -17,10 +17,11 @@ base revision and synchronization policy.
 
 ## Supported language surface
 
-The grammar covers Avenger v1 `.avenger` and `.data.avenger` sources:
+The grammar covers ordinary Avenger v1 `.avenger` modules:
 
-- version headers, imports, charts, mark/tool/transform definitions, and
-  catalog/schema/table roots;
+- version headers, named and namespace imports, private/exported module items,
+  multiple charts, mark/tool/transform definitions, and catalog/schema/table
+  declarations;
 - every structural declaration, property/value form, event action, definition
   interface form, and physical Arrow type;
 - direct inherited SQL query and expression nodes, including `$binding.path`
@@ -33,17 +34,21 @@ See [the node contract](docs/node-contract.md) for the stable editor API.
 
 ```avenger
 avenger 1;
-import './catalog.data.avenger' as data;
+import { badge } from './library.avenger';
 
-chart cartesian as movies {
+export chart cartesian as movies {
   param float64 as minimum_rating { value: 7; }
   sql: FROM vega.movies AS m
        SELECT m.title, m.rating
        WHERE m.rating >= $minimum_rating;
-  mark symbol as points {
+  mark badge as points {
     x: "rating";
     tooltip: "title";
   }
+}
+
+export define transform summarize {
+  output count(*) as count;
 }
 ```
 
@@ -107,8 +112,8 @@ revisions and verifies synchronization plus complete JavaScript generation.
 It remains dispatch-only until the compiler-contract revision is published;
 ordinary CI still tests every committed synchronized fixture on every run.
 
-The synchronized compiler corpus contains 120 reviewed sources: 93 valid
-chart/definition/data roots, 10 strict-invalid recovery sources, and 17 lexical
+The synchronized compiler corpus contains 130 reviewed sources: 100 valid
+modules/examples, 13 strict-invalid recovery sources, and 17 lexical
 fragments. Normal parser and Cargo tests use the checked copies and do not read
 a sibling checkout.
 

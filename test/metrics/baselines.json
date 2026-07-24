@@ -16,7 +16,7 @@
     "legacy_combined": "2661a76a1796b34b0c16afb5fed35cc81e45b807",
     "composition_spike": "f5c13e6b5720559db5f53b7f9c6bea0eb1c6faf5",
     "sql_base": "9ed9a6d5badfd34ec03e69c8cc5b3ec67c9d1553",
-    "avenger_contract": "6b62b220c8f00e37c8a1228cb9ca3db7ec6871bb"
+    "avenger_contract": "13dc389f499ec6ef3a0be7c2df26a905db33e3d9"
   },
   "legacy_combined": {
     "state_count": 4686,
@@ -53,12 +53,12 @@
     "corpus_case_count": 10
   },
   "compiler_structural_contract": {
-    "source_count": 120,
-    "strict_valid": 74,
-    "strict_invalid": 10,
+    "source_count": 130,
+    "strict_valid": 81,
+    "strict_invalid": 13,
     "token_fragment": 17,
-    "canonical_valid": 12,
-    "example_valid": 6,
+    "canonical_valid": 13,
+    "example_valid": 5,
     "stdlib_valid": 1,
     "sql_boundary_context_count": 5,
     "sql_call_site_count": 8,

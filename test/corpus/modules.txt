@@ -1,0 +1,445 @@
+==================
+Named and namespace imports
+==================
+
+avenger 1;
+import {
+  badge,
+  summarize as aggregate,
+  movies,
+} from './library.avenger' sha256 'abc123';
+import * as vega from 'vega';
+chart vega.cartesian as dashboard {
+  transform aggregate {}
+  mark badge {}
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (import_statement
+    (named_import_clause
+      (import_specifier
+        (identifier))
+      (import_specifier
+        (identifier)
+        (identifier))
+      (import_specifier
+        (identifier)))
+    (single_quoted_string)
+    (single_quoted_string))
+  (import_statement
+    (namespace_import_clause
+      (identifier))
+    (single_quoted_string))
+  (chart_declaration
+    (qualified_name
+      (identifier)
+      (identifier))
+    (identifier)
+    (body
+      (transform_declaration
+        (qualified_name
+          (identifier))
+        (body))
+      (mark_declaration
+        (qualified_name
+          (identifier))
+        (body)))))
+
+==================
+Private and exported module items
+==================
+
+avenger 1;
+define transform helper {}
+export define mark badge {}
+export catalog memory as data {
+  schema memory as vega {
+    table memory as movies {}
+  }
+}
+export chart cartesian as overview {}
+chart polar as detail {}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (definition_declaration
+    (definition_kind)
+    (identifier)
+    (definition_body))
+  (exported_module_item
+    (definition_declaration
+      (definition_kind)
+      (identifier)
+      (definition_body)))
+  (exported_module_item
+    (catalog_declaration
+      (qualified_name
+        (identifier))
+      (as_clause
+        (identifier))
+      (body
+        (schema_declaration
+          (qualified_name
+            (identifier))
+          (as_clause
+            (identifier))
+          (body
+            (table_declaration
+              (qualified_name
+                (identifier))
+              (as_clause
+                (identifier))
+              (body)))))))
+  (exported_module_item
+    (chart_declaration
+      (qualified_name
+        (identifier))
+      (identifier)
+      (body)))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (identifier)
+    (body)))
+
+==================
+Multiple named charts and singleton anonymous chart
+==================
+
+avenger 1;
+chart cartesian as first {}
+chart polar as second {}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (identifier)
+    (body))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (identifier)
+    (body)))
+
+==================
+Anonymous chart
+==================
+
+avenger 1;
+chart cartesian {}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body)))
+
+==================
+Qualified kinds in module and chart declarations
+==================
+
+avenger 1;
+import * as acme from '@acme/charts';
+export catalog acme.catalog as data {}
+export schema acme.schema as warehouse {}
+export table acme.table as orders {}
+export chart acme.dashboard as sales {
+  sql: FROM acme.warehouse.orders AS o SELECT o.id;
+  resource acme.font as labels {}
+  mark acme.badge as title {}
+  transform acme.aggregate as totals {}
+  tool acme.inspect as inspector;
+  widget acme.slider as threshold {}
+  view acme.detail as drilldown {}
+  on acme.select as selection {}
+  cell acme.panel {}
+  plot acme.layer {}
+  adjust acme.dodge {}
+  derive acme.label {}
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (import_statement
+    (namespace_import_clause
+      (identifier))
+    (single_quoted_string))
+  (exported_module_item
+    (catalog_declaration
+      (qualified_name
+        (identifier)
+        (identifier))
+      (as_clause
+        (identifier))
+      (body)))
+  (exported_module_item
+    (schema_declaration
+      (qualified_name
+        (identifier)
+        (identifier))
+      (as_clause
+        (identifier))
+      (body)))
+  (exported_module_item
+    (table_declaration
+      (qualified_name
+        (identifier)
+        (identifier))
+      (as_clause
+        (identifier))
+      (body)))
+  (exported_module_item
+    (chart_declaration
+      (qualified_name
+        (identifier)
+        (identifier))
+      (identifier)
+      (body
+        (property
+          (property_name)
+          (sql_query
+            (query
+              (select_query
+                (from_clause
+                  (keyword_from)
+                  (relation
+                    (qualified_name
+                      (name
+                        (identifier))
+                      (name
+                        (identifier))
+                      (name
+                        (identifier)))
+                    (relation_alias
+                      (keyword_as)
+                      (identifier))))
+                (select_clause
+                  (keyword_select)
+                  (projection
+                    (select_item
+                      (qualified_name
+                        (name
+                          (identifier))
+                        (name
+                          (identifier))))))))))
+        (resource_declaration
+          (qualified_name
+            (identifier)
+            (identifier))
+          (as_clause
+            (identifier))
+          (body))
+        (mark_declaration
+          (qualified_name
+            (identifier)
+            (identifier))
+          (as_clause
+            (identifier))
+          (body))
+        (transform_declaration
+          (qualified_name
+            (identifier)
+            (identifier))
+          (as_clause
+            (identifier))
+          (body))
+        (tool_declaration
+          (qualified_name
+            (identifier)
+            (identifier))
+          (as_clause
+            (identifier)))
+        (widget_declaration
+          (qualified_name
+            (identifier)
+            (identifier))
+          (as_clause
+            (identifier))
+          (body))
+        (view_declaration
+          (qualified_name
+            (identifier)
+            (identifier))
+          (as_clause
+            (identifier))
+          (body))
+        (event_declaration
+          (qualified_name
+            (identifier)
+            (identifier))
+          (as_clause
+            (identifier))
+          (body))
+        (cell_declaration
+          (qualified_name
+            (identifier)
+            (identifier))
+          (body))
+        (plot_declaration
+          (qualified_name
+            (identifier)
+            (identifier))
+          (body))
+        (adjust_declaration
+          (qualified_name
+            (identifier)
+            (identifier))
+          (body))
+        (derive_declaration
+          (qualified_name
+            (identifier)
+            (identifier))
+          (body))))))
+
+==================
+Legacy path import recovers before later item
+==================
+
+avenger 1;
+import './data.avenger' as data;
+chart cartesian as recovered {}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (ERROR
+    (keyword_as)
+    (identifier))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (identifier)
+    (body)))
+
+==================
+Default import recovers before later item
+==================
+
+avenger 1;
+import badge from './badge.avenger';
+chart cartesian as recovered {}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (ERROR
+    (identifier)
+    (keyword_from))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (identifier)
+    (body)))
+
+==================
+Re-export form recovers before later item
+==================
+
+avenger 1;
+export { badge } from './badge.avenger';
+chart cartesian as recovered {}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (exported_module_item
+    (ERROR
+      (identifier)
+      (keyword_from))
+    (chart_declaration
+      (qualified_name
+        (identifier))
+      (identifier)
+      (body))))
+
+==================
+Incomplete named import preserves later chart
+==================
+
+avenger 1;
+import { badge as } from './badge.avenger';
+chart cartesian as recovered {}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (import_statement
+    (named_import_clause
+      (import_specifier
+        (identifier))
+      (ERROR))
+    (single_quoted_string))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (identifier)
+    (body)))
+
+==================
+Incomplete namespace import preserves later chart
+==================
+
+avenger 1;
+import * as from './library.avenger';
+chart cartesian as recovered {}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (ERROR
+    (namespace_import_clause
+      (identifier)))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (identifier)
+    (body)))
+
+==================
+Incomplete export preserves later chart
+==================
+
+avenger 1;
+export
+chart cartesian as recovered {}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (exported_module_item
+    (chart_declaration
+      (qualified_name
+        (identifier))
+      (identifier)
+      (body))))

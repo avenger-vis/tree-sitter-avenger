@@ -54,15 +54,6 @@ fn find(node: Node<'_>, kind: &str) -> bool {
     found
 }
 
-fn count(node: Node<'_>, kind: &str) -> usize {
-    let own = usize::from(node.kind() == kind);
-    let mut cursor = node.walk();
-    own + node
-        .children(&mut cursor)
-        .map(|child| count(child, kind))
-        .sum::<usize>()
-}
-
 fn fixture_root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("test/fixtures/compiler/sources")
 }
@@ -71,8 +62,17 @@ fn fixture_root() -> PathBuf {
 fn every_compiler_valid_source_parses_cleanly_with_its_expected_root() {
     let manifest: FixtureManifest =
         serde_json::from_str(include_str!("../test/fixtures/avenger-fixtures.json")).unwrap();
-    assert_eq!(manifest.source_count, 120);
     assert_eq!(manifest.sources.len(), manifest.source_count);
+    let expected_checked = manifest
+        .sources
+        .iter()
+        .filter(|fixture| {
+            matches!(
+                fixture.classification.as_str(),
+                "strict_valid" | "canonical_valid" | "example_valid" | "stdlib_valid"
+            )
+        })
+        .count();
 
     let mut checked = 0;
     for fixture in &manifest.sources {
@@ -109,7 +109,7 @@ fn every_compiler_valid_source_parses_cleanly_with_its_expected_root() {
         );
         checked += 1;
     }
-    assert_eq!(checked, 93);
+    assert_eq!(checked, expected_checked);
 }
 
 #[test]
@@ -117,10 +117,16 @@ fn strict_invalid_sources_are_errors_or_documented_editor_tolerance() {
     let manifest: FixtureManifest =
         serde_json::from_str(include_str!("../test/fixtures/avenger-fixtures.json")).unwrap();
     let tolerated = [
+        "avenger-lang-core/tests/fixtures/parse/invalid/empty-module.avenger",
+        "avenger-lang-core/tests/fixtures/parse/invalid/import-only.avenger",
         "avenger-lang-core/tests/fixtures/parse/invalid/late-interface.avenger",
-        "avenger-lang-core/tests/fixtures/parse/invalid/multiple-roots.avenger",
         "avenger-lang-core/tests/fixtures/parse/invalid/malformed-action.avenger",
     ];
+    let expected_checked = manifest
+        .sources
+        .iter()
+        .filter(|fixture| fixture.classification == "strict_invalid")
+        .count();
     let mut checked = 0;
     for fixture in &manifest.sources {
         if fixture.classification != "strict_invalid" {
@@ -142,7 +148,11 @@ fn strict_invalid_sources_are_errors_or_documented_editor_tolerance() {
             );
         }
         assert_eq!(tree.root_node().kind(), "source_file");
-        let anchor = if fixture.path.ends_with("define-widget.avenger")
+        let anchor = if fixture.path.ends_with("empty-module.avenger") {
+            "version_directive"
+        } else if fixture.path.ends_with("import-only.avenger") {
+            "import_statement"
+        } else if fixture.path.ends_with("define-widget.avenger")
             || fixture.path.ends_with("illegal-visibility.avenger")
             || fixture.path.ends_with("wrong-root.avenger")
         {
@@ -162,12 +172,9 @@ fn strict_invalid_sources_are_errors_or_documented_editor_tolerance() {
             fixture.path,
             tree.root_node().to_sexp()
         );
-        if fixture.path.ends_with("multiple-roots.avenger") {
-            assert_eq!(count(tree.root_node(), "chart_declaration"), 2);
-        }
         checked += 1;
     }
-    assert_eq!(checked, 10);
+    assert_eq!(checked, expected_checked);
 }
 
 fn wrap_boundary(case: &BoundaryCase) -> String {

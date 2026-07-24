@@ -3,7 +3,7 @@ import {
   commaSeparated,
 } from "./helpers.js";
 
-const REFERENCE_KINDS = ["mark", "group", "selection", "tool", "widget", "resource"];
+const REFERENCE_KINDS = ["mark", "selection", "tool", "widget", "resource"];
 
 export default {
   property: $ => choice(
@@ -81,10 +81,7 @@ export default {
   )),
 
   typed_reference: $ => prec(10, seq(
-    field("kind", alias(choice(
-      ...REFERENCE_KINDS.filter(kind => kind !== "group"),
-      $.keyword_group,
-    ), $.reference_kind)),
+    field("kind", alias(choice(...REFERENCE_KINDS), $.reference_kind)),
     field("target", alias($._structural_qualified_name, $.qualified_name)),
     ";",
   )),

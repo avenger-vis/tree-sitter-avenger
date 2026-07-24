@@ -1,5 +1,5 @@
 avenger 1;
-import './shared.data.avenger' sha256 'abc123' as data;
+import { shared as data } from './shared.avenger' sha256 'abc123';
 
 chart cartesian as sample {
   sql: FROM vega.movies AS m SELECT m."title";

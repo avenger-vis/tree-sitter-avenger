@@ -53,6 +53,7 @@ fn minimal_chart_has_stable_root_shape() {
     assert_eq!(root.kind(), "source_file");
     assert_eq!(root.named_child(0).unwrap().kind(), "version_directive");
     assert_eq!(root.named_child(1).unwrap().kind(), "chart_declaration");
+    assert_field(root.named_child(1).unwrap(), "kind", "qualified_name");
     assert_eq!(
         root.named_child(1)
             .unwrap()
@@ -61,6 +62,58 @@ fn minimal_chart_has_stable_root_shape() {
             .kind(),
         "body"
     );
+}
+
+#[test]
+fn module_imports_exports_and_chart_binders_have_stable_fields() {
+    let tree = parse(
+        "avenger 1;\n\
+         import { badge, summarize as aggregate } from './library.avenger' sha256 'abc';\n\
+         import * as acme from 'native:acme';\n\
+         export define mark badge {}\n\
+         export chart acme.cartesian as dashboard {}",
+    );
+    let root = tree.root_node();
+    assert!(!root.has_error(), "{}", root.to_sexp());
+
+    let first_import = find(root, "import_statement").unwrap();
+    assert_field(first_import, "clause", "named_import_clause");
+    assert_field(first_import, "source", "single_quoted_string");
+    assert_field(first_import, "hash", "single_quoted_string");
+    let first_specifier = find(first_import, "import_specifier").unwrap();
+    assert_field(first_specifier, "imported", "identifier");
+
+    let namespace = find(root, "namespace_import_clause").unwrap();
+    assert_field(namespace, "local", "identifier");
+
+    assert_eq!(count(root, "exported_module_item"), 2);
+    let exported = find(root, "exported_module_item").unwrap();
+    assert!(exported.child_by_field_name("export").is_some());
+    assert!(exported.child_by_field_name("declaration").is_some());
+
+    let chart = find(root, "chart_declaration").unwrap();
+    assert_field(chart, "kind", "qualified_name");
+    assert_field(chart, "name", "identifier");
+    assert_field(chart, "body", "body");
+}
+
+#[test]
+fn obsolete_import_forms_recover_without_losing_later_charts() {
+    for source in [
+        "avenger 1; import './data.avenger' as data; chart cartesian as recovered {}",
+        "avenger 1; import badge from './badge.avenger'; chart cartesian as recovered {}",
+        "avenger 1; export { badge } from './badge.avenger'; chart cartesian as recovered {}",
+    ] {
+        let tree = parse(source);
+        let root = tree.root_node();
+        assert!(root.has_error(), "obsolete form parsed cleanly: {source}");
+        assert_eq!(
+            count(root, "chart_declaration"),
+            1,
+            "later chart was lost: {}",
+            root.to_sexp()
+        );
+    }
 }
 
 #[test]
@@ -244,7 +297,7 @@ fn complete_declaration_surface_has_stable_nodes_and_fields() {
     }
 
     let cell = find(root, "cell_declaration").unwrap();
-    assert_field(cell, "kind", "identifier");
+    assert_field(cell, "kind", "qualified_name");
     assert_field(cell, "placement", "body");
     assert_field(cell, "body", "body");
 
@@ -255,7 +308,7 @@ fn complete_declaration_surface_has_stable_nodes_and_fields() {
     assert_field(scalar, "body", "param_body");
 
     let group = find(root, "mark_declaration").expect("fixture must contain mark group");
-    assert_field(group, "kind", "identifier");
+    assert_field(group, "kind", "qualified_name");
     assert_field(group, "body", "body");
 
     let variable = find(root, "variable_declaration").unwrap();

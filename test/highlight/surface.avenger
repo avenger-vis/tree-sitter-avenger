@@ -1,8 +1,9 @@
 -- | A chart-level documentation comment.
 avenger 1;
-import './catalog.data.avenger' sha256 'abc123' as data;
+import { catalog as data } from './catalog.avenger' sha256 'abc123';
+import * as acme from 'native:acme';
 
-chart custom as demo {
+export chart custom as demo {
   public param float64 as width { value: 640; }
   param store as rows { field utf8 id; }
   param selection as picked {}
@@ -10,7 +11,7 @@ chart custom as demo {
   variable row sample {}
   equality { id { field: "id"; value: 1; } }
   projected: plot($width);
-  mark custom_mark as points {
+  mark acme.custom_mark as points {
     x: coalesce($width@start, 0);
   }
   on pointermove as hover {

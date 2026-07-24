@@ -12,7 +12,7 @@ chart cartesian {
   called: coalesce($width, 0) { enabled: true; }
   qualified: totals.amount { enabled: true; }
   mark_ref: mark plot.points;
-  group_ref: group panel;
+  group_ref: mark panel;
   selection_ref: selection brush;
   tool_ref: tool inspect;
   widget_ref: widget slider;
@@ -32,7 +32,8 @@ chart cartesian {
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
       (property
         (property_name)
@@ -249,7 +250,8 @@ line { }, ; [ ]$$,
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
       (property
         (property_name)
@@ -381,7 +383,8 @@ chart cartesian {
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
       (property
         (property_name)

@@ -56,9 +56,9 @@ chart custom as demo {
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
-    (as_clause
+    (qualified_name
       (identifier))
+    (identifier)
     (body
       (param_declaration
         (visibility_modifier)
@@ -85,7 +85,8 @@ chart custom as demo {
         (identifier)
         (param_body))
       (resource_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body))
@@ -97,39 +98,47 @@ chart custom as demo {
         (theme_kind)
         (single_quoted_string))
       (mark_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body))
       (mark_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body))
       (transform_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body))
       (tool_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body))
       (tool_declaration
-        (identifier))
+        (qualified_name
+          (identifier)))
       (widget_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body))
       (view_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body))
       (event_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body
@@ -163,7 +172,8 @@ chart custom as demo {
               (identifier))
             (action_time)
             (action_block
-              (identifier)
+              (qualified_name
+                (identifier))
               (body
                 (property
                   (property_name)
@@ -184,7 +194,8 @@ chart custom as demo {
               (literal
                 (single_quoted_string))))))
       (cell_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body
@@ -200,7 +211,8 @@ chart custom as demo {
                 (number)))))
         (body))
       (plot_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (body))
       (variable_declaration
         (variable_role)
@@ -216,12 +228,14 @@ chart custom as demo {
         (adjust_kind)
         (body))
       (adjust_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body))
       (derive_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body))
@@ -230,7 +244,8 @@ chart custom as demo {
         (anonymous_object
           (body
             (mark_declaration
-              (identifier)
+              (qualified_name
+                (identifier))
               (as_clause
                 (identifier))
               (body)))))
@@ -451,7 +466,8 @@ define mark badge {
         (identifier))
       (mark_declaration
         (visibility_modifier)
-        (identifier)
+        (qualified_name
+          (identifier))
         (as_clause
           (identifier))
         (body
@@ -462,13 +478,15 @@ define mark badge {
                 (identifier)
                 (body
                   (mark_declaration
-                    (identifier)
+                    (qualified_name
+                      (identifier))
                     (body))))
               (match_arm
                 (identifier)
                 (body
                   (mark_declaration
-                    (identifier)
+                    (qualified_name
+                      (identifier))
                     (body))))))
           (block_splice
             (property_name)))))))
@@ -498,10 +516,12 @@ chart cartesian {
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
       (mark_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (body
           (property
             (property_name)
@@ -520,12 +540,14 @@ chart cartesian {
                         (anonymous_object
                           (body
                             (mark_declaration
-                              (identifier)
+                              (qualified_name
+                                (identifier))
                               (as_clause
                                 (identifier))
                               (body
                                 (mark_declaration
-                                  (identifier)
+                                  (qualified_name
+                                    (identifier))
                                   (as_clause
                                     (identifier))
                                   (body))))))))))))))))))
@@ -554,10 +576,12 @@ chart cartesian {
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
       (mark_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (body
           (property
             (property_name)

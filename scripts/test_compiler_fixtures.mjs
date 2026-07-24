@@ -12,6 +12,11 @@ const executable = process.env.TREE_SITTER ?? resolve(
 const manifest = JSON.parse(readFileSync(
   resolve(root, "test/fixtures/avenger-fixtures.json"),
 ));
+if (manifest.sources.length !== manifest.source_count) {
+  throw new Error(
+    `fixture manifest declared ${manifest.source_count} sources but listed ${manifest.sources.length}`,
+  );
+}
 const valid = new Set([
   "strict_valid",
   "canonical_valid",
@@ -35,6 +40,6 @@ if (result.status !== 0) {
     `compiler-valid fixture parse failed (${result.status}):\n${result.stdout}\n${result.stderr}`,
   );
 }
-if (paths.length !== 93) {
-  throw new Error(`expected 93 compiler-valid sources, found ${paths.length}`);
+if (paths.length === 0) {
+  throw new Error("fixture manifest did not contain any compiler-valid sources");
 }

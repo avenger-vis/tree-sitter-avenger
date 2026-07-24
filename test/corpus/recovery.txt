@@ -15,7 +15,8 @@ chart cartesian {
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
       (param_declaration
         (arrow_type

@@ -1,18 +1,37 @@
-import { DSL_KEYWORDS, SQL_KEYWORDS } from "./helpers.js";
+import {
+  DSL_KEYWORDS,
+  SQL_KEYWORDS,
+  commaSeparated,
+  dslKeyword,
+} from "./helpers.js";
 
 const inheritedSqlKeywords = $ => SQL_KEYWORDS.map(word => $[`keyword_${word}`]);
 const dslOnlyKeywords = DSL_KEYWORDS.filter(word => !SQL_KEYWORDS.includes(word));
 
 export default {
-  source_file: $ => repeat(choice(
-    $.version_directive,
-    $.import_statement,
+  source_file: $ => seq(
+    optional($.version_directive),
+    repeat($.import_statement),
+    repeat(field("item", $._module_item)),
+  ),
+
+  _module_item: $ => choice(
+    $._module_declaration,
+    $.exported_module_item,
+  ),
+
+  _module_declaration: $ => choice(
     $.chart_declaration,
     $.definition_declaration,
     $.catalog_declaration,
     $.schema_declaration,
     $.table_declaration,
-  )),
+  ),
+
+  exported_module_item: $ => seq(
+    field("export", "export"),
+    field("declaration", $._module_declaration),
+  ),
 
   version_directive: $ => seq(
     "avenger",
@@ -25,10 +44,31 @@ export default {
 
   import_statement: $ => seq(
     "import",
-    field("path", $.single_quoted_string),
+    field("clause", choice(
+      $.named_import_clause,
+      $.namespace_import_clause,
+    )),
+    dslKeyword($, "from"),
+    field("source", $.single_quoted_string),
     optional(seq("sha256", field("hash", $.single_quoted_string))),
-    optional(seq("as", field("alias", $.identifier))),
     ";",
+  ),
+
+  named_import_clause: $ => seq(
+    "{",
+    optional(commaSeparated($, $.import_specifier)),
+    "}",
+  ),
+
+  import_specifier: $ => seq(
+    field("imported", $._structural_identifier),
+    optional(seq("as", field("local", $._structural_identifier))),
+  ),
+
+  namespace_import_clause: $ => seq(
+    "*",
+    "as",
+    field("local", $._structural_identifier),
   ),
 
   // This private structural production is aliased to the shared public

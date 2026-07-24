@@ -96,7 +96,9 @@ if (structural.status !== 0) {
 }
 for (const [capture, text] of [
   ["keyword", "`public`"],
-  ["type", "`custom_mark`"],
+  ["keyword", "`export`"],
+  ["namespace", "`acme`"],
+  ["type", "`acme.custom_mark`"],
   ["type.builtin", "`float64`"],
   ["keyword", "`store`"],
   ["type", "`group`"],

@@ -62,8 +62,14 @@ combined grammar (3,376 states, 857 large states, 7.32 MB), the state and table
 growth comes from recursive physical types moving into param headers, the
 fifth SQL boundary at top-level output `as`, and local recovery for direct-name
 slots, variables, fields, and keyed predicate entries. It remains below the
-4,686-state legacy combined parser, parses the full 120-source compiler corpus
-cleanly where classified valid, and stays within the existing performance gate.
+4,686-state legacy combined parser and stayed within the existing performance
+gate.
+
+The 2026-07-24 ESM-style module revision records 3,703 states, 962 large
+states, 461 symbols, 46 fields, and an 8.54 MB generated parser. It parses the
+full synchronized 130-source compiler corpus cleanly where classified valid.
+The added import/export/module fields and qualified structural kind paths stay
+below the legacy state count and within the same performance gate.
 
 ## Default versus fallback
 

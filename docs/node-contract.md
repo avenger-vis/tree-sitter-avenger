@@ -9,18 +9,24 @@ authority; a clean editor parse is not proof that a chart compiles.
 
 | Node | Stable fields | Role |
 | --- | --- | --- |
-| `source_file` | — | Ordered version, import, chart, definition, and data roots. Multiple roots are tolerated while editing. |
+| `source_file` | repeated `item` | Ordered optional version, imports, and module items. The editor grammar tolerates an empty or import-only in-progress module; the strict parser requires at least one item. |
 | `version_directive` | `version` | `avenger` header; a missing semicolon is tolerated for local recovery. |
-| `import_statement` | `path`, optional `hash`, optional `alias` | Structural strings are ordinary single-quoted strings. |
-| `chart_declaration` | `kind`, `body` | Chart root; an optional binder is an `as_clause` child. |
+| `import_statement` | `clause`, `source`, optional `hash` | A named or namespace clause followed by `from`; structural module sources and hashes are ordinary single-quoted strings. |
+| `named_import_clause` | — | Ordered `import_specifier` children; trailing commas are accepted. |
+| `import_specifier` | `imported`, optional `local` | A shorthand or `imported as local` binding. |
+| `namespace_import_clause` | `local` | The local binder in `* as namespace`. |
+| `exported_module_item` | `export`, `declaration` | Top-level export wrapper preserving the underlying chart, definition, catalog, schema, or table node. |
+| `chart_declaration` | `kind`, optional direct `name`, `body` | Chart module item. Unlike nested `as`-bound declarations, its optional binder is a direct field for runnable queries. |
 | `definition_declaration` | `kind`, `name`, `body` | Mark, tool, or transform definition. `kind` is a `definition_kind`; `body` is a `definition_body`. |
-| `catalog_declaration`, `schema_declaration`, `table_declaration` | `kind`, `body` | Data roots or nested data declarations; binder is required as an `as_clause`. |
+| `catalog_declaration`, `schema_declaration`, `table_declaration` | `kind`, `body` | Top-level module items or nested data declarations; binder is required as an `as_clause`. |
 | `as_clause` | `name` | Uniform binder wrapper. Consumers should not infer binders from sibling order. |
 | `body`, `param_body`, `definition_body`, `match_body` | — | Ordered structural containers with distinct syntactic roles. |
 | `qualified_name` | `name`, repeated `member` | Shared public path node. DSL paths contain unquoted structural identifiers; inherited SQL paths may contain `name` wrappers and quoted identifiers. |
 
-The grammar deliberately tolerates multiple roots and some misplaced
-declarations. Schema and root legality belong to the compiler.
+Every schema-owned kind position uses structural `qualified_name`, so imported
+module members retain their path shape. The grammar deliberately tolerates
+some misplaced declarations and incomplete module headers. Category, export,
+schema, and module-item legality belong to the compiler.
 
 ## Declarations
 
@@ -31,8 +37,8 @@ intentionally removes the former source-oriented `store_declaration`,
 concepts now appear through the unified nodes and closed kind fields described
 below; consumers must not retain compatibility matches for the removed nodes.
 
-All kind values are generic identifiers unless the syntax itself closes the
-set. Native and third-party marks, transforms, tools, widgets, views,
+All open kind values are structural `qualified_name` nodes unless the syntax
+itself closes the set. Native and third-party marks, transforms, tools, widgets, views,
 coordinates, resources, and data providers therefore require no grammar edit.
 
 | Family | Stable fields and named children |
@@ -40,7 +46,7 @@ coordinates, resources, and data providers therefore require no grammar edit.
 | `param_declaration` | required `type` (`arrow_type` or closed `param_kind`), direct `name` after the structural `as` token, and `body: param_body` |
 | `resource_declaration` | `kind`, `body`; required `as_clause` |
 | `theme_declaration` | `kind`, and either `source` plus optional `hash`, or `value` |
-| `mark_declaration` | `kind: identifier`, including contextual SQL `group`; required `body`; optional `as_clause` |
+| `mark_declaration` | `kind: qualified_name`, including contextual SQL `group`; required `body`; optional `as_clause` |
 | `transform_declaration`, `view_declaration` | `kind`, `body`; optional `as_clause` |
 | `tool_declaration` | `kind`, optional `body`; optional `as_clause`; a stateless form ends in `;` |
 | `widget_declaration` | `kind`, `body`; required `as_clause` |
@@ -65,6 +71,11 @@ coordinates, resources, and data providers therefore require no grammar edit.
 `variable_role`, `adjust_kind`, and `slot_shape` are closed
 named keyword nodes. The grammar preserves definition items in source order
 but does not enforce interface-before-implementation ordering.
+
+Top-level item export is represented only by `exported_module_item`.
+`export_declaration` is the distinct definition-body construct that publishes
+an internal output path. Nested `private`/`public` visibility remains a
+component concern; top-level visibility is rejected by the strict compiler.
 
 ## Actions
 

@@ -17,23 +17,23 @@ frozen. Hidden choice/list plumbing may change without changing these roles.
 | `sql_expr` | `avenger_sql` | inherited `_expression` under one of four expression wrappers |
 | `sql_query` | `avenger_sql` | inherited `_query` under `sql_query` |
 
-## Source, root, and common structure
+## Source modules and common structure
 
 | EBNF production | Combined grammar rule/node |
 | --- | --- |
-| `file` | `source_file` |
+| `module` | `source_file`, with ordered version, imports, and module items |
 | `version` | `version_directive` |
-| `import` | `import_statement` |
-| `chart` | `chart_declaration` |
+| named/namespace `import` | `import_statement`, `named_import_clause`, `import_specifier`, `namespace_import_clause` |
+| module-item `export` | `exported_module_item` around the underlying declaration |
+| `chart` | `chart_declaration`; optional chart binder is the direct `name` field |
 | `define` | `definition_declaration` plus `definition_body` |
-| `data_file` | repeated data-root declarations under `source_file` |
-| `data_bind`, `catalog_bind`, `schema_bind`, `table_bind` | hidden root choice plus `catalog_declaration`, `schema_declaration`, `table_declaration` |
-| `kind` | inherited `identifier` in a `kind:` field |
-| `bind` | `as_clause` with `name:` field |
+| catalog/schema/table items | hidden module-item choice plus `catalog_declaration`, `schema_declaration`, `table_declaration` |
+| `kind` | structural `qualified_name` in every schema-owned open `kind:` field |
+| nested declaration bind | `as_clause` with `name:` field |
 | `qual` | `qualified_name` |
 | `body` | `body` |
 | `item`, `child`, `child_decl`, `resource` | hidden ordered choices; concrete children retain named nodes |
-| `visibility` | `visibility_modifier` |
+| nested component `visibility` | `visibility_modifier`; top-level module export is separate |
 
 ## Definitions and declarations
 
@@ -41,7 +41,7 @@ frozen. Hidden choice/list plumbing may change without changing these roles.
 | --- | --- |
 | `slot`, `slot_shape`, `channel_param` | `slot_declaration` with direct `name`; `channel` is a closed `slot_shape` |
 | `output` | `output_declaration`; explicit sources use `sql_aliased_expression`, identity outputs contain only `name` |
-| `export` | `export_declaration` |
+| definition output `export` | `export_declaration` (distinct from top-level `exported_module_item`) |
 | `match_block`, `match_arm` | `match_declaration`, `match_arm` |
 | `splice` | `block_splice` |
 | scalar `param`, store, selection | one `param_declaration` with direct `type`, `name`, and specialized param body; store/selection use `param_kind` |

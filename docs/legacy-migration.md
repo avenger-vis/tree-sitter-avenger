@@ -111,7 +111,7 @@ deleted with the Node binding. No generated binary is retained.
 | obsolete root | `file`, `statement` | Replace with `source_file`, version/imports, and v1 root families. |
 | obsolete lexical split | `identifier`, `pascal_identifier`, `table_identifier`, `variable_reference` | Remove; inherit the single SQL-base identifier/binding contract. |
 | obsolete type/function language | `type`, `function_def`, `parameter_decl`, `fn_statement`, `return_statement` | Remove; definitions are mark/tool/transform structural roots and Arrow types are closed DSL syntax. |
-| obsolete imports | `import_item`, `import_path`, old `import_statement` | Replace with one path, optional hash, optional alias. |
+| obsolete imports | `import_item`, `import_path`, old plain/default `import_statement` | Replace with named or namespace clauses, `from`, optional hash, and no default/side-effect/re-export forms. |
 | obsolete properties/components | `val_prop`, `expr_prop`, `dataset_prop`, `comp_prop`, `comp_instance`, `prop_binding` | Remove; none is reachable in v1. |
 | embedded SQL entry | `sql_expr_or_query`, `sql_query`, `sql_expression` | Remove copied graph; use four wrappers over inherited `_query`/`_expression`. |
 | broad statement/query SQL | `_cte`, `cte`, `set_operation`, `select_statement`, `select`, `from`, relations/joins/clauses | Remove local copies; inherit the aggressively trimmed SQL base. |
@@ -131,6 +131,6 @@ The eleven retired fixtures are `binary_op.avgr`, `direct_comp_instance.avgr`,
 
 The spike was removed after the root grammar reproduced its direct SQL
 composition, scanner-symbol wrapper, query composition, native/Wasm tests, and
-recorded metrics. The synchronized 120-source v1 corpus contains no reachable
+recorded metrics. The synchronized 130-source v1 corpus contains no reachable
 legacy node. Git and `legacy/avenger-v0-root` remain the only compatibility
 archive.

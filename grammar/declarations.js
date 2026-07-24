@@ -13,22 +13,22 @@ const structuralPath = $ => alias($._structural_qualified_name, $.qualified_name
 export default {
   chart_declaration: $ => seq(
     "chart",
-    field("kind", $.identifier),
-    optional($.as_clause),
+    field("kind", structuralPath($)),
+    optional(seq("as", field("name", $._structural_identifier))),
     field("body", $.body),
   ),
 
   definition_declaration: $ => seq(
     "define",
     field("kind", alias(choice("mark", "tool", "transform"), $.definition_kind)),
-    field("name", $.identifier),
+    field("name", $._structural_identifier),
     field("body", $.definition_body),
   ),
 
   catalog_declaration: $ => seq(
     visibility($),
     "catalog",
-    field("kind", $.identifier),
+    field("kind", structuralPath($)),
     $.as_clause,
     field("body", $.body),
   ),
@@ -36,7 +36,7 @@ export default {
   schema_declaration: $ => seq(
     visibility($),
     "schema",
-    field("kind", $.identifier),
+    field("kind", structuralPath($)),
     $.as_clause,
     field("body", $.body),
   ),
@@ -44,12 +44,12 @@ export default {
   table_declaration: $ => seq(
     visibility($),
     "table",
-    field("kind", $.identifier),
+    field("kind", structuralPath($)),
     $.as_clause,
     field("body", $.body),
   ),
 
-  as_clause: $ => seq("as", field("name", $.identifier)),
+  as_clause: $ => seq("as", field("name", $._structural_identifier)),
   visibility_modifier: _ => choice("private", "public"),
 
   body: $ => prec.dynamic(5, seq("{", repeat($._body_item), "}")),
@@ -109,7 +109,7 @@ export default {
     field("body", $.param_body),
   ),
   resource_declaration: $ => seq(
-    visibility($), "resource", field("kind", $.identifier), $.as_clause,
+    visibility($), "resource", field("kind", structuralPath($)), $.as_clause,
     field("body", $.body),
   ),
 
@@ -133,37 +133,37 @@ export default {
   mark_declaration: $ => seq(
     visibility($),
     "mark",
-    field("kind", choice($.identifier, alias($.keyword_group, $.identifier))),
+    field("kind", structuralPath($)),
     optional($.as_clause),
     field("body", $.body),
   ),
   transform_declaration: $ => seq(
-    visibility($), "transform", field("kind", $.identifier), optional($.as_clause),
+    visibility($), "transform", field("kind", structuralPath($)), optional($.as_clause),
     field("body", $.body),
   ),
   tool_declaration: $ => seq(
-    visibility($), "tool", field("kind", $.identifier), optional($.as_clause),
+    visibility($), "tool", field("kind", structuralPath($)), optional($.as_clause),
     choice(field("body", $.body), ";"),
   ),
   widget_declaration: $ => seq(
-    visibility($), "widget", field("kind", $.identifier), $.as_clause,
+    visibility($), "widget", field("kind", structuralPath($)), $.as_clause,
     field("body", $.body),
   ),
   view_declaration: $ => seq(
-    visibility($), "view", field("kind", $.identifier), optional($.as_clause),
+    visibility($), "view", field("kind", structuralPath($)), optional($.as_clause),
     field("body", $.body),
   ),
   event_declaration: $ => seq(
-    visibility($), dslKeyword($, "on"), field("kind", $.identifier), optional($.as_clause),
+    visibility($), dslKeyword($, "on"), field("kind", structuralPath($)), optional($.as_clause),
     field("body", $.body),
   ),
   cell_declaration: $ => seq(
-    visibility($), "cell", field("kind", $.identifier), optional($.as_clause),
+    visibility($), "cell", field("kind", structuralPath($)), optional($.as_clause),
     optional(seq("at", field("placement", $.body))),
     field("body", $.body),
   ),
   plot_declaration: $ => seq(
-    visibility($), "plot", field("kind", $.identifier), field("body", $.body),
+    visibility($), "plot", field("kind", structuralPath($)), field("body", $.body),
   ),
   variable_declaration: $ => seq(
     visibility($),
@@ -173,26 +173,26 @@ export default {
     field("body", $.body),
   ),
   part_declaration: $ => seq(
-    visibility($), "part", field("name", $.identifier), field("body", $.body),
+    visibility($), "part", field("name", $._structural_identifier), field("body", $.body),
   ),
   level_declaration: $ => seq(
     visibility($), "level", field("value", $.number), field("body", $.body),
   ),
-  adjust_declaration: $ => seq(
+  adjust_declaration: $ => prec(1, seq(
     visibility($),
     "adjust",
     choice(
-      field("kind", alias("expr", $.adjust_kind)),
-      seq(field("kind", $.identifier), optional($.as_clause)),
+      prec(1, field("kind", alias("expr", $.adjust_kind))),
+      seq(field("kind", structuralPath($)), optional($.as_clause)),
     ),
     field("body", $.body),
-  ),
+  )),
   derive_declaration: $ => seq(
-    visibility($), "derive", field("kind", $.identifier), optional($.as_clause),
+    visibility($), "derive", field("kind", structuralPath($)), optional($.as_clause),
     field("body", $.body),
   ),
   layer_declaration: $ => seq(
-    visibility($), "layer", field("name", $.identifier), field("body", $.body),
+    visibility($), "layer", field("name", $._structural_identifier), field("body", $.body),
   ),
   when_declaration: $ => seq(
     visibility($), dslKeyword($, "when"), field("body", $.body),
@@ -254,18 +254,18 @@ export default {
     visibility($),
     "export",
     field("source", structuralPath($)),
-    optional(seq("as", field("alias", $.identifier))),
+    optional(seq("as", field("alias", $._structural_identifier))),
     ";",
   ),
   match_declaration: $ => seq(
     visibility($),
     "match",
-    field("name", $.identifier),
+    field("name", $._structural_identifier),
     field("body", $.match_body),
   ),
   match_body: $ => seq("{", repeat($.match_arm), "}"),
   match_arm: $ => seq(
-    field("name", $.identifier),
+    field("name", $._structural_identifier),
     field("body", alias($._match_arm_body, $.body)),
   ),
   _match_arm_body: $ => seq("{", repeat($._definition_item), "}"),
@@ -289,7 +289,7 @@ export default {
   action_time: _ => seq("at", choice("current", "start")),
   replacing_scopes_modifier: _ => seq("replacing", "scopes"),
   action_block: $ => seq(
-    field("kind", $.identifier),
+    field("kind", structuralPath($)),
     field("body", $.body),
   ),
 };

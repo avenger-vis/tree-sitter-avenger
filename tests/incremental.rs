@@ -70,6 +70,45 @@ fn contains_kind(node: tree_sitter::Node<'_>, kind: &str) -> bool {
     found
 }
 
+fn assert_incremental_replacement(
+    initial: &str,
+    start_byte: usize,
+    old_end_byte: usize,
+    replacement: &str,
+) {
+    let mut old_tree = parse(initial, None);
+    assert!(
+        !old_tree.root_node().has_error(),
+        "{}",
+        old_tree.root_node().to_sexp()
+    );
+    let start_position = point_at(initial, start_byte);
+    let old_end_position = point_at(initial, old_end_byte);
+    old_tree.edit(&InputEdit {
+        start_byte,
+        old_end_byte,
+        new_end_byte: start_byte + replacement.len(),
+        start_position,
+        old_end_position,
+        new_end_position: advance(start_position, replacement),
+    });
+
+    let mut final_source = initial.to_owned();
+    final_source.replace_range(start_byte..old_end_byte, replacement);
+    let incremental = parse(&final_source, Some(&old_tree));
+    let clean = parse(&final_source, None);
+    assert!(
+        !incremental.root_node().has_error(),
+        "{final_source}\n{}",
+        incremental.root_node().to_sexp()
+    );
+    assert_eq!(
+        incremental.root_node().to_sexp(),
+        clean.root_node().to_sexp(),
+        "{final_source}"
+    );
+}
+
 #[test]
 fn checked_repairs_converge_to_clean_parse() {
     let manifest: EditManifest =
@@ -144,7 +183,7 @@ fn checked_repairs_converge_to_clean_parse() {
 #[test]
 fn character_by_character_construction_converges() {
     for source in [
-        "avenger 1;\nimport './data.avenger' as data;\nchart custom as demo { x: coalesce($width@start, 0); }",
+        "avenger 1;\nimport { data } from './data.avenger';\nchart custom as demo { x: coalesce($width@start, 0); }",
         "avenger 1;\ndefine mark badge { slot number radius; mark symbol as points {} }",
         "avenger 1;\ncatalog memory as local { schema memory as vega { table csv as movies { path: 'movies.csv'; } } }",
         include_str!("../test/fixtures/declarations.avenger"),
@@ -175,6 +214,45 @@ fn character_by_character_construction_converges() {
         );
         assert_eq!(tree.root_node().to_sexp(), clean.root_node().to_sexp());
     }
+}
+
+#[test]
+fn module_structure_edits_converge() {
+    let private_chart = "avenger 1;\nchart cartesian as first {}\n";
+    let chart_start = private_chart.find("chart").unwrap();
+    assert_incremental_replacement(private_chart, chart_start, chart_start, "export ");
+
+    let exported_chart = "avenger 1;\nexport chart cartesian as first {}\n";
+    let export_start = exported_chart.find("export ").unwrap();
+    assert_incremental_replacement(
+        exported_chart,
+        export_start,
+        export_start + "export ".len(),
+        "",
+    );
+
+    let shorthand =
+        "avenger 1;\nimport { badge } from './library.avenger';\nchart badge as first {}\n";
+    let badge_end = shorthand.find("badge").unwrap() + "badge".len();
+    assert_incremental_replacement(shorthand, badge_end, badge_end, " as local");
+
+    let singleton = "avenger 1;\nchart cartesian as first {}\n";
+    assert_incremental_replacement(
+        singleton,
+        singleton.len(),
+        singleton.len(),
+        "chart polar as second {}\n",
+    );
+
+    let unqualified =
+        "avenger 1;\nimport * as acme from 'native:acme';\nchart cartesian as first {}\n";
+    let kind_start = unqualified.rfind("cartesian").unwrap();
+    assert_incremental_replacement(
+        unqualified,
+        kind_start,
+        kind_start + "cartesian".len(),
+        "acme.cartesian",
+    );
 }
 
 #[test]

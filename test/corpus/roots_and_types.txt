@@ -3,7 +3,7 @@ Headers imports and tolerant roots
 ==================
 
 avenger 1;
-import 'semi; -- not comment /* still string */' sha256 'abc;123' as café;
+import { value as café } from 'semi; -- not comment /* still string */' sha256 'abc;123';
 chart custom_coordinate as Δvalue {}
 define mark badge {}
 define tool inspect {}
@@ -18,13 +18,16 @@ table parquet as orders {}
   (version_directive
     (number))
   (import_statement
+    (named_import_clause
+      (import_specifier
+        (identifier)
+        (identifier)))
     (single_quoted_string)
-    (single_quoted_string)
-    (identifier))
+    (single_quoted_string))
   (chart_declaration
-    (identifier)
-    (as_clause
+    (qualified_name
       (identifier))
+    (identifier)
     (body))
   (definition_declaration
     (definition_kind)
@@ -39,17 +42,20 @@ table parquet as orders {}
     (identifier)
     (definition_body))
   (catalog_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (as_clause
       (identifier))
     (body))
   (schema_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (as_clause
       (identifier))
     (body))
   (table_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (as_clause
       (identifier))
     (body)))
@@ -118,7 +124,8 @@ chart cartesian {
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
       (param_declaration
         (param_kind)

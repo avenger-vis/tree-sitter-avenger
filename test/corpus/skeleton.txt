@@ -11,7 +11,8 @@ chart cartesian {}
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body)))
 
 ==================
@@ -19,7 +20,7 @@ Version import and named chart
 ==================
 
 avenger 1;
-import './catalog.data.avenger' sha256 'abc123' as data;
+import { catalog as data } from './catalog.avenger' sha256 'abc123';
 chart cartesian as sample {}
 
 ---
@@ -28,13 +29,16 @@ chart cartesian as sample {}
   (version_directive
     (number))
   (import_statement
+    (named_import_clause
+      (import_specifier
+        (identifier)
+        (identifier)))
     (single_quoted_string)
-    (single_quoted_string)
-    (identifier))
+    (single_quoted_string))
   (chart_declaration
-    (identifier)
-    (as_clause
+    (qualified_name
       (identifier))
+    (identifier)
     (body)))
 
 ==================
@@ -56,7 +60,8 @@ chart cartesian {
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
       (property
         (property_name)
@@ -97,7 +102,8 @@ chart cartesian {
                 (qualified_name
                   (identifier)))))))
       (event_declaration
-        (identifier)
+        (qualified_name
+          (identifier))
         (body
           (set_action
             (qualified_name
@@ -156,7 +162,8 @@ chart cartesian { value: 1; }
 (source_file
   (ERROR)
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
       (property
         (property_name)
@@ -177,7 +184,8 @@ chart cartesian { value: 1; }
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
       (property
         (property_name)
@@ -199,7 +207,8 @@ chart cartesian {
   (version_directive
     (number))
   (chart_declaration
-    (identifier)
+    (qualified_name
+      (identifier))
     (body
       (property
         (property_name)

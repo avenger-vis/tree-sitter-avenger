@@ -30,8 +30,10 @@ fn composed_highlights_capture_sql_and_structural_roles() {
     for expected in [
         ("comment.doc", "-- | A chart-level documentation comment.\n"),
         ("keyword", "chart"),
+        ("keyword", "export"),
         ("keyword", "public"),
-        ("type", "custom_mark"),
+        ("namespace", "acme"),
+        ("type", "acme.custom_mark"),
         ("variable", "points"),
         ("property", "x"),
         ("function", "coalesce"),
