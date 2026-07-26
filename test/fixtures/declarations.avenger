@@ -55,7 +55,7 @@ define mark badge {
   slot string label;
   slot boolean enabled;
   slot enum style { values: [dot, line]; }
-  slot function formatter { class: scalar; }
+  slot expr formatted_value;
   slot ref target { kind: mark; }
   slot block content;
   slot channel x;

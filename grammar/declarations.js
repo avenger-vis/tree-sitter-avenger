@@ -2,7 +2,7 @@ import { dslKeyword } from "./helpers.js";
 
 const SLOT_SHAPES = [
   "expr", "expr_list", "literal", "number", "string", "boolean",
-  "enum", "function", "ref", "block", "channel",
+  "enum", "ref", "block", "channel",
 ];
 
 const VARIABLE_ROLES = ["row", "column", "item"];
@@ -95,7 +95,10 @@ export default {
     $.block_splice,
   ),
 
-  _definition_item: $ => $._body_item,
+  _definition_item: $ => choice(
+    $._body_item,
+    $.obsolete_function_slot,
+  ),
 
   param_declaration: $ => seq(
     visibility($),
@@ -234,6 +237,16 @@ export default {
     visibility($),
     "slot",
     field("kind", alias(choice(...SLOT_SHAPES), $.slot_shape)),
+    field("name", $._structural_identifier),
+    choice(field("body", $.body), ";"),
+  ),
+  // Removed from language v1. Keep one explicit tolerant node so an editor
+  // can preserve the following definition items while the strict parser
+  // reports the obsolete shape.
+  obsolete_function_slot: $ => seq(
+    visibility($),
+    "slot",
+    "function",
     field("name", $._structural_identifier),
     choice(field("body", $.body), ";"),
   ),

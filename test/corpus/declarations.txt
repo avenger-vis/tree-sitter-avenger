@@ -350,7 +350,6 @@ define mark badge {
   slot string label;
   slot boolean enabled;
   slot enum style { values: [dot, line]; }
-  slot function formatter { class: scalar; }
   slot ref target { kind: mark; }
   slot block content;
   slot channel x;
@@ -411,16 +410,6 @@ define mark badge {
                   (qualified_name
                     (name
                       (identifier)))))))))
-      (slot_declaration
-        (slot_shape)
-        (identifier)
-        (body
-          (property
-            (property_name)
-            (sql_property_expression
-              (qualified_name
-                (name
-                  (identifier)))))))
       (slot_declaration
         (slot_shape)
         (identifier)
@@ -605,3 +594,63 @@ chart cartesian {
                         (sql_property_expression
                           (literal
                             (single_quoted_string)))))))))))))))
+
+==================
+Removed function slot shape recovers locally
+==================
+
+avenger 1;
+define transform rolling {
+  slot function agg { class: aggregate; }
+  slot expr measure;
+  transform sql { query: SELECT avg(measure) FROM input; }
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (definition_declaration
+    (definition_kind)
+    (identifier)
+    (definition_body
+      (obsolete_function_slot
+        (identifier)
+        (body
+          (property
+            (property_name)
+            (sql_property_expression
+              (qualified_name
+                (name
+                  (identifier)))))))
+      (slot_declaration
+        (slot_shape)
+        (identifier))
+      (transform_declaration
+        (qualified_name
+          (identifier))
+        (body
+          (property
+            (property_name)
+            (sql_query
+              (query
+                (select_query
+                  (select_clause
+                    (keyword_select)
+                    (projection
+                      (select_item
+                        (function_call
+                          (qualified_name
+                            (name
+                              (identifier)))
+                          (function_argument
+                            (qualified_name
+                              (name
+                                (identifier))))))))
+                  (from_clause
+                    (keyword_from)
+                    (relation
+                      (qualified_name
+                        (name
+                          (identifier))))))))))))))
