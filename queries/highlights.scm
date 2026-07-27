@@ -101,8 +101,6 @@
 
 (alias name: (identifier) @variable.parameter)
 (alias name: (quoted_identifier) @variable.parameter)
-(sql_required_projection_alias name: (identifier) @variable)
-(sql_required_projection_alias name: (quoted_identifier) @variable)
 (relation_alias name: (identifier) @variable.parameter)
 (relation_alias name: (quoted_identifier) @variable.parameter)
 (common_table_expression name: (identifier) @type)
@@ -232,6 +230,8 @@
 (field_declaration name: (identifier) @property)
 (slot_declaration kind: (slot_shape) @type.builtin)
 (slot_declaration name: (identifier) @variable.parameter)
+(sql_required_projection_alias name: (identifier) @variable)
+(sql_required_projection_alias name: (quoted_identifier) @variable)
 (output_declaration name: (identifier) @variable)
 (export_declaration source: (qualified_name) @variable)
 (export_declaration alias: (identifier) @variable)

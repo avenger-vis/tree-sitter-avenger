@@ -51,7 +51,7 @@
     "vendor/sql-base.json"
   ],
   "dependencies": {
-    "@avenger-vis/tree-sitter-avenger-sql": "https://github.com/avenger-vis/tree-sitter-avenger-sql/archive/9ed9a6d5badfd34ec03e69c8cc5b3ec67c9d1553.tar.gz"
+    "@avenger-vis/tree-sitter-avenger-sql": "https://github.com/avenger-vis/tree-sitter-avenger-sql/archive/f2f0a63a8adfb593f1fb218202dd1fd55dc19546.tar.gz"
   },
   "devDependencies": {
     "tree-sitter-cli": "0.26.3"

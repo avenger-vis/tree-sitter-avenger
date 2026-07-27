@@ -13,7 +13,7 @@ const sqlRoot = resolve(process.argv[argument + 1]);
 const revision = execFileSync("git", ["-C", sqlRoot, "rev-parse", "HEAD"], {
   encoding: "utf8",
 }).trim();
-const pinned = "9ed9a6d5badfd34ec03e69c8cc5b3ec67c9d1553";
+const pinned = "f2f0a63a8adfb593f1fb218202dd1fd55dc19546";
 if (revision !== pinned) {
   throw new Error(`SQL checkout is ${revision}; expected pinned ${pinned}`);
 }
