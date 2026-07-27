@@ -122,8 +122,8 @@ jobs:
       - name: Check out immutable Avenger compiler contract
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
-          repository: avenger-vis/avenger
-          ref: ba5201108c1656c7c473f411a74086d0c012ad16
+          repository: jonmmease/avenger
+          ref: 2be2449685ad9e415decd962aef508fe4401f169
           path: avenger
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:

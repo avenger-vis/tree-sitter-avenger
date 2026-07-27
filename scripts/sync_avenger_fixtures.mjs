@@ -19,7 +19,7 @@ const avengerRoot = resolve(process.argv[argument + 1]);
 const revision = execFileSync("git", ["-C", avengerRoot, "rev-parse", "HEAD"], {
   encoding: "utf8",
 }).trim();
-const pinned = "ba5201108c1656c7c473f411a74086d0c012ad16";
+const pinned = "2be2449685ad9e415decd962aef508fe4401f169";
 if (revision !== pinned) {
   throw new Error(`Avenger checkout is ${revision}; expected pinned ${pinned}`);
 }
@@ -40,7 +40,7 @@ const boundaryDestination = resolve(
 );
 const wrapper = Buffer.from(`${JSON.stringify({
   schema_version: 1,
-  source_repository: "https://github.com/avenger-vis/avenger",
+  source_repository: "https://github.com/jonmmease/avenger",
   source_revision: revision,
   source_manifest: "avenger-lang-core/tests/fixtures/tree_sitter/structural_sources.json",
   source_manifest_sha256: createHash("sha256").update(sourceManifest).digest("hex"),
