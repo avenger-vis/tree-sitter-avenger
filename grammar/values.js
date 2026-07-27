@@ -14,6 +14,18 @@ export default {
       ";",
     ),
     seq(
+      field("name", alias("expressions", $.property_name)),
+      ":",
+      field("value", $.sql_projection_list),
+      ";",
+    ),
+    prec.dynamic(6, seq(
+      field("name", $._property_name),
+      ":",
+      field("value", $.sql_named_projection_list),
+      ";",
+    )),
+    seq(
       field("name", alias("target", $.property_name)),
       ":",
       field("value", $.event_targets),
@@ -175,6 +187,23 @@ export default {
   ),
 
   sql_query: $ => field("query", $._query),
+  sql_projection_list: $ => field("projection", $.projection),
+  sql_named_projection_list: $ => field(
+    "projection",
+    seq(
+      $.sql_named_projection_item,
+      repeat(seq(",", $.sql_named_projection_item)),
+      optional(","),
+    ),
+  ),
+  sql_named_projection_item: $ => seq(
+    field("value", $._expression),
+    field("alias", $.sql_required_projection_alias),
+  ),
+  sql_required_projection_alias: $ => seq(
+    $.keyword_as,
+    field("name", choice($.identifier, $.quoted_identifier)),
+  ),
   sql_property_expression: $ => field("expression", $._expression),
   sql_terminated_expression: $ => field("expression", $._expression),
   sql_aliased_expression: $ => field("expression", $._expression),

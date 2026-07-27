@@ -11,6 +11,7 @@ export chart custom as demo {
   variable row sample {}
   equality { id { field: "id"; value: 1; } }
   projected: plot($width);
+  expressions: sum("value") AS Total;
   mark acme.custom_mark as points {
     x: coalesce($width@start, 0);
   }
@@ -24,4 +25,9 @@ define mark badge {
   slot channel x;
   output span(0, $radius) as bounds;
   export points as marks;
+}
+
+define transform summarize {
+  slot outputs measures;
+  transform aggregate { expressions: measures; }
 }

@@ -103,6 +103,8 @@ There is deliberately no `define widget` alternative.
 | `env string` | `environment_value` |
 | `none` | `none_value` |
 | reserved query value | `sql_query` |
+| reserved `expressions` projection list | `sql_projection_list` |
+| self-identifying named projection list | `sql_named_projection_list` |
 | ordinary terminated expression | `sql_property_expression` |
 | `terminator` | hidden choice between structural `body` and `;` |
 | `array`, `elem` | `array`, `array_element`, and `sql_array_expression` |

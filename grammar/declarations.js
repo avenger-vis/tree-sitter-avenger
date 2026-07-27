@@ -2,7 +2,7 @@ import { dslKeyword } from "./helpers.js";
 
 const SLOT_SHAPES = [
   "expr", "expr_list", "literal", "number", "string", "boolean",
-  "enum", "ref", "block", "channel",
+  "enum", "ref", "block", "outputs", "channel",
 ];
 
 const VARIABLE_ROLES = ["row", "column", "item"];

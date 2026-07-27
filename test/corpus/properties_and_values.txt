@@ -223,6 +223,76 @@ chart cartesian {
         (none_value)))))
 
 ==================
+SQL projection-list properties
+==================
+
+avenger 1;
+chart cartesian {
+  expressions:
+    sum("amount") AS total,
+    CAST(avg("amount") AS DOUBLE) AS average,;
+  custom_outputs: min("amount") AS minimum;
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body
+      (property
+        (property_name)
+        (sql_projection_list
+          (projection
+            (select_item
+              (function_call
+                (qualified_name
+                  (name
+                    (identifier)))
+                (function_argument
+                  (qualified_name
+                    (name
+                      (quoted_identifier)))))
+              (alias
+                (keyword_as)
+                (identifier)))
+            (select_item
+              (cast_expression
+                (keyword_cast)
+                (function_call
+                  (qualified_name
+                    (name
+                      (identifier)))
+                  (function_argument
+                    (qualified_name
+                      (name
+                        (quoted_identifier)))))
+                (keyword_as)
+                (data_type
+                  (keyword_double)))
+              (alias
+                (keyword_as)
+                (identifier))))))
+      (property
+        (property_name)
+        (sql_named_projection_list
+          (sql_named_projection_item
+            (function_call
+              (qualified_name
+                (name
+                  (identifier)))
+              (function_argument
+                (qualified_name
+                  (name
+                    (quoted_identifier)))))
+            (sql_required_projection_alias
+              (keyword_as)
+              (identifier))))))))
+
+==================
 Structural array owns only outer delimiters
 ==================
 

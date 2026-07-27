@@ -24,6 +24,10 @@ export default grammar(AvengerSql, {
     ...valueRules,
     ...arrowTypeRules,
 
+    // Keep the derived grammar aligned with AvengerSqlDialect while the
+    // independently versioned SQL base is being repinned.
+    projection: ($, previous) => seq(previous, optional(",")),
+
     // Derived DSL keywords are contextual. When one appears as an unquoted SQL
     // struct key, adapt that inherited token back to the base's identifier
     // node rather than letting a simultaneously viable DSL body steal it.

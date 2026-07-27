@@ -352,6 +352,7 @@ define mark badge {
   slot enum style { values: [dot, line]; }
   slot ref target { kind: mark; }
   slot block content;
+  slot outputs measures;
   slot channel x;
   slot channel y { default: y2; }
   output span(0, $radius) as bounds;
@@ -419,6 +420,9 @@ define mark badge {
             (sql_property_expression
               (qualified_name
                 (identifier))))))
+      (slot_declaration
+        (slot_shape)
+        (identifier))
       (slot_declaration
         (slot_shape)
         (identifier))

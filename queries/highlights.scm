@@ -101,6 +101,8 @@
 
 (alias name: (identifier) @variable.parameter)
 (alias name: (quoted_identifier) @variable.parameter)
+(sql_required_projection_alias name: (identifier) @variable)
+(sql_required_projection_alias name: (quoted_identifier) @variable)
 (relation_alias name: (identifier) @variable.parameter)
 (relation_alias name: (quoted_identifier) @variable.parameter)
 (common_table_expression name: (identifier) @type)

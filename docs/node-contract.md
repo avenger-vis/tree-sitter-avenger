@@ -99,7 +99,7 @@ value nodes are:
   `none_value`;
 - `event_targets`, `event_scope`, and `event_surface` for globally reserved
   event property names;
-- the four SQL boundary wrappers below.
+- the SQL boundary wrappers below.
 
 A bare structural identifier followed by `{` is a `typed_object`. Other valid
 expression heads followed by `{` form a `configured_expression`. A leading
@@ -112,6 +112,8 @@ elements.
 | Node | Direct inherited content | Structural owner |
 | --- | --- | --- |
 | `sql_query` | `query` | Property colon and final semicolon |
+| `sql_projection_list` | SQL `projection` | Reserved `expressions:` property colon and final semicolon |
+| `sql_named_projection_list` | one or more `sql_named_projection_item` nodes | Arbitrary property colon and final semicolon; every item owns a required explicit `AS` alias |
 | `sql_property_expression` | SQL expression node | Property colon and semicolon or configuration body |
 | `sql_terminated_expression` | SQL expression node | Declaration/action colon or equals and final semicolon |
 | `sql_aliased_expression` | SQL expression node | Output keyword on the left and top-level structural `as <name>;` on the right |
