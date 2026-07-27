@@ -44,7 +44,7 @@ chart custom as demo {
   scale_edit {}
   scale_hint {}
   clause {}
-  equality { category { field: "category"; value: datum('category'); } }
+  equality { category { field: "category"; value: datum."category"; } }
   interval { x { field: "x"; from: 0; to: 1; } }
   output coalesce($threshold, 0) as count;
   export panel.points as exported_points;
@@ -290,13 +290,11 @@ chart custom as demo {
               (property
                 (property_name)
                 (sql_property_expression
-                  (function_call
-                    (qualified_name
-                      (name
-                        (identifier)))
-                    (function_argument
-                      (literal
-                        (single_quoted_string))))))))))
+                  (qualified_name
+                    (name
+                      (identifier))
+                    (name
+                      (quoted_identifier)))))))))
       (interval_declaration
         (predicate_body
           (predicate_entry

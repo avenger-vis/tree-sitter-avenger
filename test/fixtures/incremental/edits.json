@@ -144,6 +144,18 @@
       "final": "avenger 1;\nchart custom { param list(float64) as values { value: NULL; } }",
       "final_node": "parameterized_arrow_type",
       "max_changed_ranges": 4
+    },
+    {
+      "id": "complete_contextual_datum_field",
+      "initial": "avenger 1;\nchart cartesian { on click { filter: datum.; surface: plot; } }",
+      "start_byte": 54,
+      "old_end_byte": 54,
+      "start_position": { "row": 1, "column": 43 },
+      "old_end_position": { "row": 1, "column": 43 },
+      "replacement": "\"id\"",
+      "final": "avenger 1;\nchart cartesian { on click { filter: datum.\"id\"; surface: plot; } }",
+      "final_node": "qualified_name",
+      "max_changed_ranges": 4
     }
   ]
 }

@@ -34,3 +34,129 @@ chart cartesian {
             (sql_property_expression
               (literal
                 (number)))))))))
+
+==================
+Incomplete contextual datum field preserves following action
+==================
+
+avenger 1;
+chart cartesian {
+  on click {
+    filter: datum.;
+    surface: plot;
+  }
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body
+      (event_declaration
+        (qualified_name
+          (identifier))
+        (body
+          (property
+            (property_name)
+            (sql_property_expression
+              (qualified_name
+                (name
+                  (identifier))))
+            (ERROR))
+          (property
+            (property_name)
+            (sql_property_expression
+              (qualified_name
+                (identifier)))))))))
+
+==================
+Unquoted datum field remains available for semantic diagnostics
+==================
+
+avenger 1;
+chart cartesian {
+  on click {
+    filter: datum.id IS NOT NULL;
+    surface: plot;
+  }
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body
+      (event_declaration
+        (qualified_name
+          (identifier))
+        (body
+          (property
+            (property_name)
+            (sql_property_expression
+              (is_expression
+                (qualified_name
+                  (name
+                    (identifier))
+                  (name
+                    (identifier)))
+                (keyword_is)
+                (keyword_not)
+                (keyword_null))))
+          (property
+            (property_name)
+            (sql_property_expression
+              (qualified_name
+                (identifier)))))))))
+
+==================
+Removed datum call remains available for semantic diagnostics
+==================
+
+avenger 1;
+chart cartesian {
+  on click {
+    filter: datum('id') IS NOT NULL;
+    surface: plot;
+  }
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body
+      (event_declaration
+        (qualified_name
+          (identifier))
+        (body
+          (property
+            (property_name)
+            (sql_property_expression
+              (is_expression
+                (function_call
+                  (qualified_name
+                    (name
+                      (identifier)))
+                  (function_argument
+                    (literal
+                      (single_quoted_string))))
+                (keyword_is)
+                (keyword_not)
+                (keyword_null))))
+          (property
+            (property_name)
+            (sql_property_expression
+              (qualified_name
+                (identifier)))))))))

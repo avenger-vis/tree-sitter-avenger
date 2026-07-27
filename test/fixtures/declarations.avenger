@@ -41,7 +41,7 @@ chart custom as demo {
   scale_edit {}
   scale_hint {}
   clause {}
-  equality { category { field: "category"; value: datum('category'); } }
+  equality { category { field: "category"; value: datum."category"; } }
   interval { x { field: "x"; from: 0; to: 1; } }
   output coalesce($threshold, 0) as count;
   export panel.points as exported_points;

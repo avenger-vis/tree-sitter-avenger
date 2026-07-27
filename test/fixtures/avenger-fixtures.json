@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source_repository": "https://github.com/jonmmease/avenger",
-  "source_revision": "2be2449685ad9e415decd962aef508fe4401f169",
+  "source_revision": "5a01e969bd15a3c3e8ff27703a3469e36a74ab5a",
   "source_manifest": "avenger-lang-core/tests/fixtures/tree_sitter/structural_sources.json",
   "source_manifest_sha256": "e1dd41d935c3f05ee43d3b228c158a442174161692b1d5347cc3109710d00303",
   "sql_island_manifest": "avenger-lang-core/tests/fixtures/tree_sitter/sql_island_boundaries.json",
