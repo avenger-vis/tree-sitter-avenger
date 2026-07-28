@@ -295,11 +295,66 @@ export default {
     optional($.replacing_scopes_modifier),
     "=",
     choice(
+      prec.dynamic(20, seq(
+        field(
+          "value",
+          alias($.set_contextual_expression, $.sql_terminated_expression),
+        ),
+        ";",
+      )),
+      prec.dynamic(10, seq(field("value", $.sql_terminated_expression), ";")),
       field("value", $.action_block),
-      seq(field("value", $.sql_terminated_expression), ";"),
     ),
   ),
   action_time: _ => seq("at", choice("current", "start")),
+  // A bare qualified SQL name and an action-block kind share the same prefix
+  // after `=`. Give the contextual access roots an explicit lookahead path so
+  // direct forms such as `event.coord.x;` remain SQL-shaped without requiring
+  // authors to add parentheses. All other expressions use the inherited SQL
+  // production above.
+  set_contextual_expression: $ => prec(100, field(
+    "expression",
+    choice(
+      alias($._set_contextual_qualified_name, $.qualified_name),
+      alias($._set_contextual_subscript_expression, $.subscript_expression),
+    ),
+  )),
+  _set_contextual_qualified_name: $ => prec(100, seq(
+    field(
+      "name",
+      alias(
+        choice(
+          token(prec(1, /[cC][hH][aA][nN][nN][eE][lL]/)),
+          token(prec(1, /[dD][aA][tT][uU][mM]/)),
+          token(prec(1, /[eE][vV][eE][nN][tT]/)),
+          token(prec(1, /[iI][tT][eE][mM]/)),
+          token(prec(1, /[vV][iI][eE][wW][pP][oO][rR][tT]/)),
+        ),
+        $.identifier,
+      ),
+    ),
+    repeat1(seq(".", field("member", $.name))),
+  )),
+  _set_event_facet_qualified_name: $ => prec(100, seq(
+    field(
+      "name",
+      alias(token(prec(1, /[eE][vV][eE][nN][tT]/)), $.identifier),
+    ),
+    ".",
+    field(
+      "member",
+      alias(token(prec(1, /[fF][aA][cC][eE][tT]/)), $.identifier),
+    ),
+  )),
+  _set_contextual_subscript_expression: $ => prec(100, seq(
+    field(
+      "value",
+      alias($._set_event_facet_qualified_name, $.qualified_name),
+    ),
+    "[",
+    field("index", $._expression),
+    "]",
+  )),
   replacing_scopes_modifier: _ => seq("replacing", "scopes"),
   action_block: $ => seq(
     field("kind", structuralPath($)),

@@ -74,6 +74,88 @@ chart cartesian {
                 (identifier)))))))))
 
 ==================
+Incomplete event coordinate preserves following action
+==================
+
+avenger 1;
+chart cartesian {
+  on pointermove {
+    set drag_x = event.coord.;
+    surface: plot;
+  }
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body
+      (event_declaration
+        (qualified_name
+          (identifier))
+        (body
+          (set_action
+            (qualified_name
+              (identifier))
+            (sql_terminated_expression
+              (qualified_name
+                (identifier)
+                (name
+                  (identifier))))
+            (ERROR))
+          (property
+            (property_name)
+            (sql_property_expression
+              (qualified_name
+                (identifier)))))))))
+
+==================
+Incomplete event facet subscript preserves following action
+==================
+
+avenger 1;
+chart cartesian {
+  on pointermove {
+    set facet = event.facet[1;
+    surface: plot;
+  }
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body
+      (event_declaration
+        (qualified_name
+          (identifier))
+        (body
+          (set_action
+            (qualified_name
+              (identifier))
+            (sql_terminated_expression
+              (subscript_expression
+                (qualified_name
+                  (identifier)
+                  (identifier))
+                (literal
+                  (number))
+                (MISSING "]"))))
+          (property
+            (property_name)
+            (sql_property_expression
+              (qualified_name
+                (identifier)))))))))
+
+==================
 Unquoted datum field remains available for semantic diagnostics
 ==================
 

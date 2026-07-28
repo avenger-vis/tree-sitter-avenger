@@ -1,0 +1,237 @@
+================================================================================
+Contextual property-access families embed as SQL expressions
+================================================================================
+
+avenger 1;
+chart cartesian as chart {
+  mark symbol as points {
+    x: channel.x;
+    adjust expr {
+      x: item.channel.x;
+      y: item.bbox.top;
+    }
+    derive text as labels {
+      text: item.data."display label";
+      x: item.channel.x;
+    }
+    view cartesian as viewport {
+      x_probe: viewport.x.pixels;
+      y_probe: viewport.y.domain.start;
+    }
+  }
+  on pointermove as inspect {
+    filter: datum."id" IS NOT NULL;
+    set drag_x = event.coord.x;
+    set canonicalized_x = EVENT.COORD.X;
+    set start_x = event.start.coord.x;
+    set domain_lo = event.domain.x.start;
+    set domain_hi = event.domain.x.end;
+    set drag_points = event.path;
+    set facet_component = event.facet[1];
+    set legend_hit = event.legend.value;
+  }
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (identifier)
+    (body
+      (mark_declaration
+        (qualified_name
+          (identifier))
+        (as_clause
+          (identifier))
+        (body
+          (property
+            (property_name)
+            (sql_property_expression
+              (qualified_name
+                (name
+                  (identifier))
+                (name
+                  (identifier)))))
+          (adjust_declaration
+            (adjust_kind)
+            (body
+              (property
+                (property_name)
+                (sql_property_expression
+                  (qualified_name
+                    (name
+                      (identifier))
+                    (name
+                      (identifier))
+                    (name
+                      (identifier)))))
+              (property
+                (property_name)
+                (sql_property_expression
+                  (qualified_name
+                    (name
+                      (identifier))
+                    (name
+                      (identifier))
+                    (name
+                      (identifier)))))))
+          (derive_declaration
+            (qualified_name
+              (identifier))
+            (as_clause
+              (identifier))
+            (body
+              (property
+                (property_name)
+                (sql_property_expression
+                  (qualified_name
+                    (name
+                      (identifier))
+                    (name
+                      (identifier))
+                    (name
+                      (quoted_identifier)))))
+              (property
+                (property_name)
+                (sql_property_expression
+                  (qualified_name
+                    (name
+                      (identifier))
+                    (name
+                      (identifier))
+                    (name
+                      (identifier)))))))
+          (view_declaration
+            (qualified_name
+              (identifier))
+            (as_clause
+              (identifier))
+            (body
+              (property
+                (property_name)
+                (sql_property_expression
+                  (qualified_name
+                    (name
+                      (identifier))
+                    (name
+                      (identifier))
+                    (name
+                      (identifier)))))
+              (property
+                (property_name)
+                (sql_property_expression
+                  (qualified_name
+                    (name
+                      (identifier))
+                    (name
+                      (identifier))
+                    (name
+                      (identifier))
+                    (name
+                      (identifier)))))))))
+      (event_declaration
+        (qualified_name
+          (identifier))
+        (as_clause
+          (identifier))
+        (body
+          (property
+            (property_name)
+            (sql_property_expression
+              (is_expression
+                (qualified_name
+                  (name
+                    (identifier))
+                  (name
+                    (quoted_identifier)))
+                (keyword_is)
+                (keyword_not)
+                (keyword_null))))
+          (set_action
+            (qualified_name
+              (identifier))
+            (sql_terminated_expression
+              (qualified_name
+                (identifier)
+                (name
+                  (identifier))
+                (name
+                  (identifier)))))
+          (set_action
+            (qualified_name
+              (identifier))
+            (sql_terminated_expression
+              (qualified_name
+                (identifier)
+                (name
+                  (identifier))
+                (name
+                  (identifier)))))
+          (set_action
+            (qualified_name
+              (identifier))
+            (sql_terminated_expression
+              (qualified_name
+                (identifier)
+                (name
+                  (identifier))
+                (name
+                  (identifier))
+                (name
+                  (identifier)))))
+          (set_action
+            (qualified_name
+              (identifier))
+            (sql_terminated_expression
+              (qualified_name
+                (identifier)
+                (name
+                  (identifier))
+                (name
+                  (identifier))
+                (name
+                  (identifier)))))
+          (set_action
+            (qualified_name
+              (identifier))
+            (sql_terminated_expression
+              (qualified_name
+                (identifier)
+                (name
+                  (identifier))
+                (name
+                  (identifier))
+                (name
+                  (identifier)))))
+          (set_action
+            (qualified_name
+              (identifier))
+            (sql_terminated_expression
+              (qualified_name
+                (identifier)
+                (name
+                  (identifier)))))
+          (set_action
+            (qualified_name
+              (identifier))
+            (sql_terminated_expression
+              (subscript_expression
+                (qualified_name
+                  (identifier)
+                  (identifier))
+                (literal
+                  (number)))))
+          (set_action
+            (qualified_name
+              (identifier))
+            (sql_terminated_expression
+              (qualified_name
+                (identifier)
+                (name
+                  (identifier))
+                (name
+                  (identifier))))))))))

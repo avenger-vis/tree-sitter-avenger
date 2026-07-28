@@ -119,6 +119,7 @@ fn strict_invalid_sources_are_errors_or_documented_editor_tolerance() {
     let tolerated = [
         "avenger-lang-core/tests/fixtures/parse/invalid/empty-module.avenger",
         "avenger-lang-core/tests/fixtures/parse/invalid/import-only.avenger",
+        "avenger-lang-core/tests/fixtures/parse/invalid/invalid-slot-shape.avenger",
         "avenger-lang-core/tests/fixtures/parse/invalid/late-interface.avenger",
         "avenger-lang-core/tests/fixtures/parse/invalid/malformed-action.avenger",
     ];
@@ -180,6 +181,9 @@ fn strict_invalid_sources_are_errors_or_documented_editor_tolerance() {
 fn wrap_boundary(case: &BoundaryCase) -> String {
     match case.context.as_str() {
         "query_property" => format!("avenger 1; chart custom {{ sql: {} }}", case.source),
+        "projection_property" => {
+            format!("avenger 1; chart custom {{ expressions: {} }}", case.source)
+        }
         "property_expression" => format!("avenger 1; chart custom {{ x: {} }}", case.source),
         "terminated_expression" => {
             format!(
