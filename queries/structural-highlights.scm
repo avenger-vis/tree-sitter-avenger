@@ -110,16 +110,16 @@
 (predicate_entry name: (identifier) @property)
 (property name: (property_name) @property)
 
-; Channel modes act as operators over their following expressions. Keep these
+; Channel modes classify their following expressions. Keep these constant
 ; captures after the generic property rule so conditional mode keys retain the
-; operator style as well.
-(channel_mode) @operator
+; same style as well.
+(channel_mode) @constant
 
 (when_declaration
   (body
     (property
-      name: (property_name) @operator
-      (#match? @operator "^(encoded|direct)$"))))
+      name: (property_name) @constant
+      (#match? @constant "^(encoded|direct)$"))))
 
 (property
   name: (property_name) @_otherwise
@@ -127,8 +127,8 @@
   value: (anonymous_object
     (body
       (property
-        name: (property_name) @operator
-        (#match? @operator "^(encoded|direct)$")))))
+        name: (property_name) @constant
+        (#match? @constant "^(encoded|direct)$")))))
 (block_splice name: (property_name) @variable.parameter)
 (typed_object kind: (identifier) @type)
 (typed_reference kind: (reference_kind) @type)
