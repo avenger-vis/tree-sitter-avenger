@@ -4,7 +4,7 @@ Complete chart declaration surface
 
 avenger 1;
 chart custom as demo {
-  private param float64 as threshold { value: 1; }
+  private param 1 as threshold { sharing: free; }
   public param store as rows { field int64 id; }
   param selection as brush {}
   resource tiles as osm {}
@@ -62,15 +62,16 @@ chart custom as demo {
     (body
       (param_declaration
         (visibility_modifier)
-        (arrow_type
-          (primitive_arrow_type))
+        (literal
+          (number))
         (identifier)
         (param_body
           (property
             (property_name)
             (sql_property_expression
-              (literal
-                (number))))))
+              (qualified_name
+                (name
+                  (identifier)))))))
       (param_declaration
         (visibility_modifier)
         (param_kind)
@@ -656,3 +657,81 @@ define transform rolling {
                       (qualified_name
                         (name
                           (identifier))))))))))))))
+
+==================
+Scalar param initializer forms
+==================
+
+avenger 1;
+chart cartesian {
+  public param 640 as width;
+  private param CAST(NULL AS DOUBLE) as hover_x;
+  param coalesce($width, 1) as size { sharing: level(1); }
+  param named_struct('label', 'base', 'weight', 2) as config;
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body
+      (param_declaration
+        (visibility_modifier)
+        (literal
+          (number))
+        (identifier))
+      (param_declaration
+        (visibility_modifier)
+        (cast_expression
+          (keyword_cast)
+          (literal
+            (keyword_null))
+          (keyword_as)
+          (data_type
+            (keyword_double)))
+        (identifier))
+      (param_declaration
+        (function_call
+          (qualified_name
+            (name
+              (identifier)))
+          (function_argument
+            (binding_reference
+              (identifier)))
+          (function_argument
+            (literal
+              (number))))
+        (identifier)
+        (param_body
+          (property
+            (property_name)
+            (sql_property_expression
+              (function_call
+                (qualified_name
+                  (name
+                    (identifier)))
+                (function_argument
+                  (literal
+                    (number))))))))
+      (param_declaration
+        (function_call
+          (qualified_name
+            (name
+              (identifier)))
+          (function_argument
+            (literal
+              (single_quoted_string)))
+          (function_argument
+            (literal
+              (single_quoted_string)))
+          (function_argument
+            (literal
+              (single_quoted_string)))
+          (function_argument
+            (literal
+              (number))))
+        (identifier)))))

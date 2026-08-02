@@ -1,6 +1,6 @@
 avenger 1;
 chart custom as deep {
-  param float64 as offset { value: 0; }
+  param 0 as offset;
   sql: WITH base AS (
          FROM vega.movies AS m
          SELECT m."title", m."rating", m."gross"

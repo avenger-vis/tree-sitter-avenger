@@ -99,7 +99,7 @@ for (const [capture, text] of [
   ["keyword", "`export`"],
   ["namespace", "`acme`"],
   ["type", "`acme.custom_mark`"],
-  ["type.builtin", "`float64`"],
+  ["type.builtin", "`utf8`"],
   ["keyword", "`store`"],
   ["type", "`group`"],
   ["type.builtin", "`row`"],

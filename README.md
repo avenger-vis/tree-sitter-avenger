@@ -37,7 +37,7 @@ avenger 1;
 import { badge } from './library.avenger';
 
 export chart cartesian as movies {
-  param float64 as minimum_rating { value: 7; }
+  param CAST(7 AS DOUBLE) as minimum_rating;
   sql: FROM vega.movies AS m
        SELECT m.title, m.rating
        WHERE m.rating >= $minimum_rating;

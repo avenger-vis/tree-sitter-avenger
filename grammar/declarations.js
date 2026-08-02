@@ -103,13 +103,20 @@ export default {
   param_declaration: $ => seq(
     visibility($),
     "param",
-    field("type", choice(
-      $.arrow_type,
-      alias(choice("store", "selection"), $.param_kind),
-    )),
-    "as",
-    field("name", $._structural_identifier),
-    field("body", $.param_body),
+    choice(
+      seq(
+        field("initializer", $._expression),
+        "as",
+        field("name", $._structural_identifier),
+        choice(";", field("body", $.param_body)),
+      ),
+      prec(2, seq(
+        field("type", alias(choice("store", "selection"), $.param_kind)),
+        "as",
+        field("name", $._structural_identifier),
+        field("body", $.param_body),
+      )),
+    ),
   ),
   resource_declaration: $ => seq(
     visibility($), "resource", field("kind", structuralPath($)), $.as_clause,

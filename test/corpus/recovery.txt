@@ -51,13 +51,13 @@ chart cartesian {
                   (number))))))))))
 
 ==================
-Partial type preserves following property
+Nested SQL AS preserves param binder and following property
 ==================
 
 avenger 1;
 chart cartesian {
-  param fixed_size_list(float64, ) as broken {
-    value: 1;
+  param CAST(1 AS DOUBLE) as broken {
+    sharing: free;
   }
 }
 
@@ -71,21 +71,56 @@ chart cartesian {
       (identifier))
     (body
       (param_declaration
-        (arrow_type
-          (parameterized_arrow_type
-            (arrow_type_constructor)
-            (arrow_type_arguments
-              (arrow_type
-                (primitive_arrow_type))
-              (arrow_unsigned_integer
-                (MISSING number)))))
+        (cast_expression
+          (keyword_cast)
+          (literal
+            (number))
+          (keyword_as)
+          (data_type
+            (keyword_double)))
+        (identifier)
+        (param_body
+          (property
+            (property_name)
+            (sql_property_expression
+              (qualified_name
+                (name
+                  (identifier))))))))))
+
+==================
+Removed typed param form recovers before a canonical param
+==================
+
+avenger 1;
+chart cartesian {
+  param float64 as old_width { value: 640; }
+  param 320 as width;
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body
+      (param_declaration
+        (qualified_name
+          (name
+            (identifier)))
         (identifier)
         (param_body
           (property
             (property_name)
             (sql_property_expression
               (literal
-                (number)))))))))
+                (number))))))
+      (param_declaration
+        (literal
+          (number))
+        (identifier)))))
 
 ==================
 Incomplete contextual datum field preserves following action
