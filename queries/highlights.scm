@@ -89,8 +89,9 @@
 (hex_binary_literal) @string.special
 ; Avenger reserves double-quoted identifiers for column/field references in
 ; expression positions. More specific function, relation, alias, and CTE roles
-; below override this field-colored default.
-(quoted_identifier) @property
+; below override this special-variable default. `string.special` provides a
+; distinct fallback for themes that do not define `variable.special`.
+(quoted_identifier) @string.special @variable.special
 
 (function_call
   function: (qualified_name
