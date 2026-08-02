@@ -14,7 +14,7 @@ fn large_source(count: usize) -> String {
     let mut source = String::from("avenger 1;\nchart custom as generated {\n");
     for index in 0..count {
         source.push_str(&format!(
-            "  mark custom as mark_{index} {{ x: coalesce(\"x\", {index}); values: [1, 2, none]; }}\n"
+            "  mark custom as mark_{index} {{ x: encoded coalesce(\"x\", {index}); values: [1, 2, none]; }}\n"
         ));
     }
     source.push_str("}\n");

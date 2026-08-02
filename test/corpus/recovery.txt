@@ -1,4 +1,56 @@
 ==================
+Removed and incomplete channel qualifiers recover locally
+==================
+
+avenger 1;
+chart cartesian {
+  mark symbol {
+    fill: value '#2563eb';
+    x: enc
+    y: encoded ;
+    size: direct 4;
+  }
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body
+      (mark_declaration
+        (qualified_name
+          (identifier))
+        (body
+          (property
+            (property_name)
+            (sql_property_expression
+              (qualified_name
+                (name
+                  (identifier))))
+            (ERROR))
+          (property
+            (property_name)
+            (sql_property_expression
+              (json_access_expression
+                (qualified_name
+                  (name
+                    (identifier)))
+                (ERROR
+                  (identifier))
+                (identifier))))
+          (property
+            (property_name)
+            (channel_value
+              (channel_mode)
+              (sql_property_expression
+                (literal
+                  (number))))))))))
+
+==================
 Partial type preserves following property
 ==================
 

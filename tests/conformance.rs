@@ -229,7 +229,8 @@ fn value_shapes_and_structural_delimiters_are_stable() {
          typed: linear { clamp: true; }\n\
          configured: $width@previous { fallback: 0; }\n\
          reference: mark plot.points;\n\
-         values: [{name: 'dsl';}, value 'literal', pattern {}, none,\n\
+         channel: direct 'literal';\n\
+         values: [{name: 'dsl';}, 'literal', pattern {}, none,\n\
                   [1, 2], {key: 'sql'}, (SELECT 1), $$};,[]$$];\n\
          }",
     );
@@ -240,7 +241,8 @@ fn value_shapes_and_structural_delimiters_are_stable() {
         "configured_expression",
         "typed_reference",
         "anonymous_object",
-        "array_visual_value",
+        "channel_value",
+        "channel_mode",
         "array_pattern_value",
         "none_value",
         "array_expression",

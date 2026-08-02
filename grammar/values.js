@@ -58,7 +58,7 @@ export default {
         field("value", $.typed_object),
         field("value", $.typed_reference),
         seq(field("value", $.array), ";"),
-        field("value", $.visual_value),
+        field("value", $.channel_value),
         field("value", $.dimension_value),
         field("value", $.pattern_value),
         field("value", $.environment_value),
@@ -112,22 +112,18 @@ export default {
 
   array_element: $ => choice(
     alias($._array_anonymous_object, $.anonymous_object),
-    $.array_visual_value,
     $.array_pattern_value,
     $.none_value,
     $.sql_array_expression,
   ),
 
-  visual_value: $ => prec(10, seq(
-    "value",
-    field("value", $.sql_property_expression),
+  channel_value: $ => prec(10, seq(
+    field("mode", $.channel_mode),
+    field("expression", $.sql_property_expression),
     choice(";", field("configuration", $.body)),
   )),
 
-  array_visual_value: $ => prec(10, seq(
-    "value",
-    field("value", $.sql_array_expression),
-  )),
+  channel_mode: _ => prec(20, choice("encoded", "direct")),
 
   dimension_value: $ => prec(10, seq(
     "dim",

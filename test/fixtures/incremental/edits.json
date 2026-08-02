@@ -180,6 +180,70 @@
       "final": "avenger 1;\nchart cartesian { on pointermove { set f = event.facet[1]; surface: plot; } }",
       "final_node": "subscript_expression",
       "max_changed_ranges": 4
+    },
+    {
+      "id": "insert_encoded_channel_mode",
+      "initial_must_error": false,
+      "initial": "avenger 1;\nchart cartesian { mark symbol { x: \"amount\"; } }",
+      "start_byte": 46,
+      "old_end_byte": 46,
+      "start_position": { "row": 1, "column": 35 },
+      "old_end_position": { "row": 1, "column": 35 },
+      "replacement": "encoded ",
+      "final": "avenger 1;\nchart cartesian { mark symbol { x: encoded \"amount\"; } }",
+      "final_node": "channel_value",
+      "max_changed_ranges": 4
+    },
+    {
+      "id": "replace_encoded_with_direct",
+      "initial_must_error": false,
+      "initial": "avenger 1;\nchart cartesian { mark symbol { x: encoded \"amount\"; } }",
+      "start_byte": 46,
+      "old_end_byte": 53,
+      "start_position": { "row": 1, "column": 35 },
+      "old_end_position": { "row": 1, "column": 42 },
+      "replacement": "direct",
+      "final": "avenger 1;\nchart cartesian { mark symbol { x: direct \"amount\"; } }",
+      "final_node": "channel_value",
+      "max_changed_ranges": 4
+    },
+    {
+      "id": "delete_channel_mode",
+      "initial_must_error": false,
+      "initial": "avenger 1;\nchart cartesian { mark symbol { x: encoded \"amount\"; } }",
+      "start_byte": 46,
+      "old_end_byte": 54,
+      "start_position": { "row": 1, "column": 35 },
+      "old_end_position": { "row": 1, "column": 43 },
+      "replacement": "",
+      "final": "avenger 1;\nchart cartesian { mark symbol { x: \"amount\"; } }",
+      "final_node": "sql_property_expression",
+      "max_changed_ranges": 4
+    },
+    {
+      "id": "complete_partial_channel_mode",
+      "initial": "avenger 1;\nchart cartesian { mark symbol { x: enc \"amount\"; } }",
+      "start_byte": 46,
+      "old_end_byte": 49,
+      "start_position": { "row": 1, "column": 35 },
+      "old_end_position": { "row": 1, "column": 38 },
+      "replacement": "encoded",
+      "final": "avenger 1;\nchart cartesian { mark symbol { x: encoded \"amount\"; } }",
+      "final_node": "channel_value",
+      "max_changed_ranges": 4
+    },
+    {
+      "id": "replace_legacy_conditional_branch_mode",
+      "initial_must_error": false,
+      "initial": "avenger 1;\nchart cartesian { mark symbol { fill: encoded \"kind\" { when { predicate: true; value: 'red'; } } } }",
+      "start_byte": 90,
+      "old_end_byte": 95,
+      "start_position": { "row": 1, "column": 79 },
+      "old_end_position": { "row": 1, "column": 84 },
+      "replacement": "direct",
+      "final": "avenger 1;\nchart cartesian { mark symbol { fill: encoded \"kind\" { when { predicate: true; direct: 'red'; } } } }",
+      "final_node": "property",
+      "max_changed_ranges": 4
     }
   ]
 }

@@ -152,10 +152,6 @@
           "named": true
         },
         {
-          "type": "array_visual_value",
-          "named": true
-        },
-        {
           "type": "none_value",
           "named": true
         },
@@ -271,22 +267,6 @@
         "types": [
           {
             "type": "body",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "array_visual_value",
-    "named": true,
-    "fields": {
-      "value": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "sql_array_expression",
             "named": true
           }
         ]
@@ -1886,6 +1866,47 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "channel_mode",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "channel_value",
+    "named": true,
+    "fields": {
+      "configuration": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "body",
+            "named": true
+          }
+        ]
+      },
+      "expression": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "sql_property_expression",
+            "named": true
+          }
+        ]
+      },
+      "mode": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "channel_mode",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -5803,6 +5824,10 @@
             "named": true
           },
           {
+            "type": "channel_value",
+            "named": true
+          },
+          {
             "type": "configured_expression",
             "named": true
           },
@@ -5856,10 +5881,6 @@
           },
           {
             "type": "typed_reference",
-            "named": true
-          },
-          {
-            "type": "visual_value",
             "named": true
           }
         ]
@@ -8410,32 +8431,6 @@
     "fields": {}
   },
   {
-    "type": "visual_value",
-    "named": true,
-    "fields": {
-      "configuration": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "body",
-            "named": true
-          }
-        ]
-      },
-      "value": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "sql_property_expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "when_declaration",
     "named": true,
     "fields": {
@@ -8958,8 +8953,16 @@
     "named": false
   },
   {
+    "type": "direct",
+    "named": false
+  },
+  {
     "type": "dollar_quoted_string",
     "named": true
+  },
+  {
+    "type": "encoded",
+    "named": false
   },
   {
     "type": "env",
@@ -9552,10 +9555,6 @@
   },
   {
     "type": "utf8",
-    "named": false
-  },
-  {
-    "type": "value",
     "named": false
   },
   {

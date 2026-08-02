@@ -18,11 +18,11 @@ chart custom as deep {
     mark group as middle {
       mark group as inner {
         mark custom_mark as points {
-          x: coalesce((CASE WHEN "adjusted" > 0 THEN "adjusted" ELSE 0 END), 0);
+          x: encoded coalesce((CASE WHEN "adjusted" > 0 THEN "adjusted" ELSE 0 END), 0);
           values: [
             { name: 'dsl'; nested: { enabled: true; } },
             {sql_key: [1, 2, 3], nested: {flag: true}},
-            value span(0, $offset),
+            span(0, $offset),
             pattern { angle: 45; },
             none,
           ];

@@ -95,7 +95,7 @@ value nodes are:
 - `configured_expression` with `expression` and `configuration`;
 - `typed_reference` with `kind` and `target`;
 - `array` with ordered `array_element` children;
-- `visual_value`, `dimension_value`, `pattern_value`, `environment_value`, and
+- `channel_value` with `channel_mode`, `dimension_value`, `pattern_value`, `environment_value`, and
   `none_value`;
 - `event_targets`, `event_scope`, and `event_surface` for globally reserved
   event property names;
@@ -106,6 +106,10 @@ expression heads followed by `{` form a `configured_expression`. A leading
 `{` at property-value start is always an Avenger `anonymous_object`; SQL struct
 expressions remain available within SQL expression positions, including array
 elements.
+
+`channel_value` owns the contextual outer-language `encoded` and `direct`
+qualifiers and embeds an unchanged SQL expression after the qualifier. Arrays
+contain ordinary SQL expressions directly and never accept a channel mode.
 
 ## SQL boundaries
 

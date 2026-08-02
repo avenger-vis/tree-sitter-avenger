@@ -20,6 +20,12 @@ struct EditCase {
     #[serde(rename = "final")]
     expected_final: String,
     max_changed_ranges: usize,
+    #[serde(default = "default_true")]
+    initial_must_error: bool,
+}
+
+const fn default_true() -> bool {
+    true
 }
 
 #[derive(Clone, Copy, Deserialize)]
@@ -116,11 +122,13 @@ fn checked_repairs_converge_to_clean_parse() {
     assert_eq!(manifest.schema_version, 1);
     for case in manifest.cases {
         let mut old_tree = parse(&case.initial, None);
-        assert!(
-            old_tree.root_node().has_error(),
-            "{} must begin partial",
-            case.id
-        );
+        if case.initial_must_error {
+            assert!(
+                old_tree.root_node().has_error(),
+                "{} must begin partial",
+                case.id
+            );
+        }
 
         let start = point(case.start_position);
         let old_end = point(case.old_end_position);

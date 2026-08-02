@@ -176,7 +176,6 @@
   "nullable"
   "private"
   "public"
-  "value"
   "dim"
   "pattern"
   "env"
@@ -186,6 +185,23 @@
   "legend"
   "output"
 ] @keyword
+
+(channel_mode) @keyword
+
+(when_declaration
+  (body
+    (property
+      name: (property_name) @keyword
+      (#match? @keyword "^(encoded|direct)$"))))
+
+(property
+  name: (property_name) @_otherwise
+  (#eq? @_otherwise "otherwise")
+  value: (anonymous_object
+    (body
+      (property
+        name: (property_name) @keyword
+        (#match? @keyword "^(encoded|direct)$")))))
 
 [
   (theme_kind)

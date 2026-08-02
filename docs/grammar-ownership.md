@@ -97,7 +97,7 @@ There is deliberately no `define widget` alternative.
 | `ident body` value | `typed_object` |
 | `sql_expr body` value | `configured_expression` containing `sql_property_expression` |
 | `typed_ref` value | `typed_reference` |
-| `value sql_expr` | `visual_value` |
+| `(encoded | direct) sql_expr` | `channel_value` with named `mode` and `expression` fields |
 | `dim qual` | `dimension_value` |
 | `pattern body` | `pattern_value` |
 | `env string` | `environment_value` |
@@ -107,7 +107,7 @@ There is deliberately no `define widget` alternative.
 | self-identifying named projection list | `sql_named_projection_list` |
 | ordinary terminated expression | `sql_property_expression` |
 | `terminator` | hidden choice between structural `body` and `;` |
-| `array`, `elem` | `array`, `array_element`, and `sql_array_expression` |
+| `array`, `elem` | `array`, `array_element`, and `sql_array_expression`; channel qualifiers are not array elements |
 | structurally terminated action expression | `sql_terminated_expression` |
 | transform output source terminated by top-level `as` | `sql_aliased_expression` |
 

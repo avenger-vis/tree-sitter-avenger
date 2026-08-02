@@ -17,8 +17,8 @@ chart cartesian {
   tool_ref: tool inspect;
   widget_ref: widget slider;
   resource_ref: resource tiles;
-  fill: value '#2563eb';
-  size: value 4 { legend: none; }
+  fill: direct '#2563eb';
+  size: encoded 4 { legend: none; }
   dimension: dim repeat.row;
   configured_dimension: dim repeat.column { padding: 2; }
   texture: pattern { width: 4; }
@@ -173,13 +173,15 @@ chart cartesian {
             (identifier))))
       (property
         (property_name)
-        (visual_value
+        (channel_value
+          (channel_mode)
           (sql_property_expression
             (literal
               (single_quoted_string)))))
       (property
         (property_name)
-        (visual_value
+        (channel_value
+          (channel_mode)
           (sql_property_expression
             (literal
               (number)))
@@ -221,6 +223,130 @@ chart cartesian {
       (property
         (property_name)
         (none_value)))))
+
+==================
+Explicit channel modes and ordered conditions
+==================
+
+avenger 1;
+chart cartesian {
+  mark symbol {
+    x: encoded log10("amount" + 1) { scale: linear {} }
+    opacity: direct coalesce("row_opacity", $default_opacity);
+    fill: encoded "region" {
+      when { predicate: "selected"; direct: '#2563eb'; }
+      when { predicate: "alert"; encoded: "alert_category"; }
+      otherwise: { direct: '#94a3b8'; }
+      legend: { title: 'Region'; }
+    }
+  }
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body
+      (mark_declaration
+        (qualified_name
+          (identifier))
+        (body
+          (property
+            (property_name)
+            (channel_value
+              (channel_mode)
+              (sql_property_expression
+                (function_call
+                  (qualified_name
+                    (name
+                      (identifier)))
+                  (function_argument
+                    (binary_expression
+                      (qualified_name
+                        (name
+                          (quoted_identifier)))
+                      (literal
+                        (number))))))
+              (body
+                (property
+                  (property_name)
+                  (typed_object
+                    (identifier)
+                    (body))))))
+          (property
+            (property_name)
+            (channel_value
+              (channel_mode)
+              (sql_property_expression
+                (function_call
+                  (qualified_name
+                    (name
+                      (identifier)))
+                  (function_argument
+                    (qualified_name
+                      (name
+                        (quoted_identifier))))
+                  (function_argument
+                    (binding_reference
+                      (identifier)))))))
+          (property
+            (property_name)
+            (channel_value
+              (channel_mode)
+              (sql_property_expression
+                (qualified_name
+                  (name
+                    (quoted_identifier))))
+              (body
+                (when_declaration
+                  (body
+                    (property
+                      (property_name)
+                      (sql_property_expression
+                        (qualified_name
+                          (name
+                            (quoted_identifier)))))
+                    (property
+                      (property_name)
+                      (sql_property_expression
+                        (literal
+                          (single_quoted_string))))))
+                (when_declaration
+                  (body
+                    (property
+                      (property_name)
+                      (sql_property_expression
+                        (qualified_name
+                          (name
+                            (quoted_identifier)))))
+                    (property
+                      (property_name)
+                      (sql_property_expression
+                        (qualified_name
+                          (name
+                            (quoted_identifier)))))))
+                (property
+                  (property_name)
+                  (anonymous_object
+                    (body
+                      (property
+                        (property_name)
+                        (sql_property_expression
+                          (literal
+                            (single_quoted_string)))))))
+                (property
+                  (property_name)
+                  (anonymous_object
+                    (body
+                      (property
+                        (property_name)
+                        (sql_property_expression
+                          (literal
+                            (single_quoted_string)))))))))))))))
 
 ==================
 SQL projection-list properties
@@ -300,7 +426,7 @@ avenger 1;
 chart cartesian {
   values: [
     {name: 'anonymous';},
-    value 'literal',
+    'literal',
     pattern { width: 4; },
     none,
     [1, 2, coalesce(3, 4)],
@@ -335,10 +461,9 @@ line { }, ; [ ]$$,
                     (literal
                       (single_quoted_string)))))))
           (array_element
-            (array_visual_value
-              (sql_array_expression
-                (literal
-                  (single_quoted_string)))))
+            (sql_array_expression
+              (literal
+                (single_quoted_string))))
           (array_element
             (array_pattern_value
               (body

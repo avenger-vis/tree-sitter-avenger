@@ -12,8 +12,13 @@ export chart custom as demo {
   equality { id { field: "id"; value: 1; } }
   projected: plot($width);
   expressions: sum("value") AS Total;
+  query: SELECT encoded, direct FROM input;
   mark acme.custom_mark as points {
-    x: coalesce($width@start, 0);
+    x: encoded coalesce($width@start, 0);
+    fill: direct '#2563eb' {
+      when { predicate: true; encoded: "category"; }
+      otherwise: { direct: '#94a3b8'; }
+    }
   }
   on pointermove as hover {
     set cursor = 'crosshair';

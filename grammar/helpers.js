@@ -29,7 +29,7 @@ export const DSL_KEYWORDS = [
   "fields", "scale_edit", "scale_hint", "dimension", "clause", "equality",
   "interval", "slot", "channel", "output", "export", "match", "set", "cursor",
   "private", "public", "nullable", "at", "replacing", "scopes", "from", "as",
-  "target", "scope", "surface", "value", "dim", "pattern", "env", "none",
+  "target", "scope", "surface", "encoded", "direct", "dim", "pattern", "env", "none",
   "marks", "subplot", "subplots", "legend", "expr", "expr_list", "literal",
   "string", "boolean", "enum", "function", "ref", "block", "column", "item",
 ];
