@@ -134,10 +134,10 @@
 (identifier) @variable
 
 ; Keep binding captures after the generic identifier rule so the sigil and
-; every path component resolve to one semantic family. `variable.special` is
-; preferred when a theme defines it; `variable.parameter` is the fallback.
+; every path component match the `variable.parameter` style used by their
+; declarations.
 (binding_reference
-  "$" @variable.parameter @variable.special
-  root: (identifier) @variable.parameter @variable.special)
+  "$" @variable.parameter
+  root: (identifier) @variable.parameter)
 (binding_reference
-  member: (identifier) @variable.parameter @variable.special)
+  member: (identifier) @variable.parameter)

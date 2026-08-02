@@ -26,7 +26,7 @@ for (const [capture, text] of [
   ["type", "`vega`"],
   ["variable.parameter", "`m`"],
   ["property", "`x`"],
-  ["variable.special", "`width`"],
+  ["variable.parameter", "`width`"],
   ["attribute", "`@start`"],
   ["function", "`coalesce`"],
   ["constant", "`none`"],

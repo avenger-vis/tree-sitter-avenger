@@ -39,8 +39,7 @@ fn composed_highlights_capture_sql_and_structural_roles() {
         ("function", "coalesce"),
         ("function", "plot"),
         ("variable.parameter", "$"),
-        ("variable.special", "$"),
-        ("variable.special", "width"),
+        ("variable.parameter", "width"),
         ("constant", "encoded"),
         ("constant", "direct"),
         ("attribute", "@start"),
@@ -56,6 +55,7 @@ fn composed_highlights_capture_sql_and_structural_roles() {
             "missing {expected:?}; observed: {observed:#?}"
         );
     }
+    assert!(!observed.contains(&("variable.special", "width")));
 }
 
 #[test]
