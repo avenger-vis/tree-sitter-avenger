@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "source_repository": "https://github.com/avenger-vis/tree-sitter-avenger-sql",
-  "source_revision": "1d674cb93f66a4331432f67fa59aea8916378aea",
+  "source_revision": "005679d80e91578ccbaf5ede87a2cd854f8abc8b",
   "package": "@avenger-vis/tree-sitter-avenger-sql@0.1.0",
   "scanner_sha256": "5f7892e548984819495cafb112c4a88b77394cdc0fbd567450242f5fd5ba50c1",
-  "highlights_sha256": "03dd6eac4b8700c594c6d3b45e0ddb78b2046582043d99247f93c7cd787117bf",
+  "highlights_sha256": "5c8457076cc216e0f104b46ecc2c05d751f78307ee4f31c233719198a7e327ed",
   "keywords_sha256": "f2d0f131ad65fb459337e70bf86a4b7a5677a23478be0c1662c9103e79c051ea",
   "scanner_harness_sha256": "cea566d4d4ceeff5832234f235261794ba99c93077a4f0329dcbec02aa94c626"
 }

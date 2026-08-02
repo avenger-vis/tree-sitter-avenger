@@ -87,17 +87,28 @@
 (escaped_string) @string.escape
 (dollar_quoted_string) @string
 (hex_binary_literal) @string.special
-(quoted_identifier) @variable
+; Avenger reserves double-quoted identifiers for column/field references in
+; expression positions. More specific function, relation, alias, and CTE roles
+; below override this field-colored default.
+(quoted_identifier) @property
 
 (function_call
   function: (qualified_name
     name: (name
       (identifier) @function)))
+(function_call
+  function: (qualified_name
+    name: (name
+      (quoted_identifier) @function)))
 
 (relation
   value: (qualified_name
     name: (name
       (identifier) @type)))
+(relation
+  value: (qualified_name
+    name: (name
+      (quoted_identifier) @type)))
 
 (alias name: (identifier) @variable.parameter)
 (alias name: (quoted_identifier) @variable.parameter)
