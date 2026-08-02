@@ -58,23 +58,6 @@
   "output"
 ] @keyword
 
-(channel_mode) @keyword
-
-(when_declaration
-  (body
-    (property
-      name: (property_name) @keyword
-      (#match? @keyword "^(encoded|direct)$"))))
-
-(property
-  name: (property_name) @_otherwise
-  (#eq? @_otherwise "otherwise")
-  value: (anonymous_object
-    (body
-      (property
-        name: (property_name) @keyword
-        (#match? @keyword "^(encoded|direct)$")))))
-
 [
   (theme_kind)
   (param_kind)
@@ -126,6 +109,26 @@
 (set_action target: (qualified_name) @variable)
 (predicate_entry name: (identifier) @property)
 (property name: (property_name) @property)
+
+; Channel modes act as operators over their following expressions. Keep these
+; captures after the generic property rule so conditional mode keys retain the
+; operator style as well.
+(channel_mode) @operator
+
+(when_declaration
+  (body
+    (property
+      name: (property_name) @operator
+      (#match? @operator "^(encoded|direct)$"))))
+
+(property
+  name: (property_name) @_otherwise
+  (#eq? @_otherwise "otherwise")
+  value: (anonymous_object
+    (body
+      (property
+        name: (property_name) @operator
+        (#match? @operator "^(encoded|direct)$")))))
 (block_splice name: (property_name) @variable.parameter)
 (typed_object kind: (identifier) @type)
 (typed_reference kind: (reference_kind) @type)

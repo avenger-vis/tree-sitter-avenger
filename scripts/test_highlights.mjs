@@ -112,6 +112,17 @@ for (const [capture, text] of [
     throw new Error(`missing expected ${capture} capture for ${text}:\n${structural.stdout}`);
   }
 }
+for (const mode of ["encoded", "direct"]) {
+  const lines = structural.stdout.split("\n").filter(line =>
+    line.includes(`text: \`${mode}\``)
+  );
+  if (!lines.some(line => line.includes("- operator,"))) {
+    throw new Error(`channel mode ${mode} is not highlighted as an operator:\n${structural.stdout}`);
+  }
+  if (lines.some(line => line.includes("- keyword,"))) {
+    throw new Error(`channel mode ${mode} is still highlighted as a keyword:\n${structural.stdout}`);
+  }
+}
 if (!structural.stdout.split("\n").some(line =>
   line.includes("- comment.doc,")
   && line.includes("text: `-- | A chart-level documentation comment.")
