@@ -102,6 +102,7 @@ for (const [capture, text] of [
   ["type.builtin", "`utf8`"],
   ["keyword", "`store`"],
   ["type", "`group`"],
+  ["type", "`movies`"],
   ["type.builtin", "`row`"],
   ["property", "`id`"],
   ["variable.parameter", "`x`"],

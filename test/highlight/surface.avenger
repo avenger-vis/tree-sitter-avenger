@@ -4,6 +4,7 @@ import { catalog as data } from './catalog.avenger' sha256 'abc123';
 import * as acme from 'native:acme';
 
 export chart custom as demo {
+  data: { table: data.movies; }
   public param 640 as width;
   param store as rows { field utf8 id; }
   param selection as picked {}

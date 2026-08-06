@@ -133,6 +133,16 @@
 
 (identifier) @variable
 
+; A table-source value is a statically resolved relation path rather than a
+; scalar SQL expression. Keep the grammar shared with ordinary qualified SQL
+; names and refine the capture from its structural property context.
+(property
+  name: (property_name) @_table_property
+  value: (sql_property_expression
+    expression: (qualified_name
+      (name (identifier) @type)))
+  (#eq? @_table_property "table"))
+
 ; Keep binding captures after the generic identifier rule so the sigil and
 ; every path component match the `variable.parameter` style used by their
 ; declarations.
