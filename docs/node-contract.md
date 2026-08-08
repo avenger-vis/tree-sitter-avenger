@@ -30,12 +30,12 @@ schema, and module-item legality belong to the compiler.
 
 ## Declarations
 
-The declaration nodes below are the post-unification, pre-1.0 contract. This
-intentionally removes the former source-oriented `store_declaration`,
-`selection_declaration`, `group_declaration`, `overlay_declaration`,
-`dimension_declaration`, and `channel_parameter_declaration` nodes. Those
-concepts now appear through the unified nodes and closed kind fields described
-below; consumers must not retain compatibility matches for the removed nodes.
+The declaration nodes below are the post-unification, pre-1.0 contract.
+Scalar params, stores, and selections are peer declarations: `param` owns a
+SQL initializer, while `store` and `selection` are already complete categories
+and have dedicated nodes. Logical groups remain ordinary mark declarations;
+overlay, keyed predicate, and channel-slot concepts use their parent-owned
+structural forms rather than standalone declaration nodes.
 
 All open kind values are structural `qualified_name` nodes unless the syntax
 itself closes the set. Native and third-party marks, transforms, tools, widgets, views,
@@ -43,7 +43,10 @@ coordinates, resources, and data providers therefore require no grammar edit.
 
 | Family | Stable fields and named children |
 | --- | --- |
-| `param_declaration` | required `type` (`arrow_type` or closed `param_kind`), direct `name` after the structural `as` token, and `body: param_body` |
+| `param_declaration` | required SQL `initializer`, direct `name` after structural `as`, and either `;` or `body: param_body` |
+| `store_declaration` | direct `name` after structural `as` and required `body: param_body` |
+| `selection_declaration` | direct `name` after structural `as` and required `body: param_body` |
+| `obsolete_state_param` | recovery-only node for removed `param store` / `param selection` headers; never canonical source |
 | `resource_declaration` | `kind`, `body`; required `as_clause` |
 | `theme_declaration` | `kind`, and either `source` plus optional `hash`, or `value` |
 | `mark_declaration` | `kind: qualified_name`, including contextual SQL `group`; required `body`; optional `as_clause` |
@@ -67,7 +70,7 @@ coordinates, resources, and data providers therefore require no grammar edit.
 | `match_declaration` | `name`, `body: match_body`; ordered `match_arm` children each expose `name` and `body` |
 | `block_splice` | `name: property_name` | A definition block slot invocation. The `property_name` leaf permits the same contextual spelling as properties. |
 
-`visibility_modifier`, `definition_kind`, `theme_kind`, `param_kind`,
+`visibility_modifier`, `definition_kind`, `theme_kind`,
 `variable_role`, `adjust_kind`, and `slot_shape` are closed
 named keyword nodes. The grammar preserves definition items in source order
 but does not enforce interface-before-implementation ordering.

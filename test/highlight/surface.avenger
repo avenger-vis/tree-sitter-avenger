@@ -6,8 +6,8 @@ import * as acme from 'native:acme';
 export chart custom as demo {
   data: { table: data.movies; }
   public param 640 as width;
-  param store as rows { field utf8 id; }
-  param selection as picked {}
+  store as rows { field utf8 id; }
+  selection as picked {}
   mark group as panel {}
   variable row sample {}
   equality { id { field: "id"; value: 1; } }

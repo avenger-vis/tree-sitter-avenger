@@ -5,8 +5,8 @@ Complete chart declaration surface
 avenger 1;
 chart custom as demo {
   private param 1 as threshold { sharing: free; }
-  public param store as rows { field int64 id; }
-  param selection as brush {}
+  public store as rows { field int64 id; }
+  selection as brush {}
   resource tiles as osm {}
   theme css from './theme.css' sha256 'abc123';
   theme css: 'mark { color: red; }';
@@ -72,17 +72,15 @@ chart custom as demo {
               (qualified_name
                 (name
                   (identifier)))))))
-      (param_declaration
+      (store_declaration
         (visibility_modifier)
-        (param_kind)
         (identifier)
         (param_body
           (field_declaration
             (arrow_type
               (primitive_arrow_type))
             (identifier))))
-      (param_declaration
-        (param_kind)
+      (selection_declaration
         (identifier)
         (param_body))
       (resource_declaration

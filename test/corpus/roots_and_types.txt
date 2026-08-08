@@ -66,7 +66,7 @@ Recursive physical Arrow types
 
 avenger 1;
 chart cartesian {
-  param store as primitives {
+  store as primitives {
     field boolean flag;
     field int8 signed;
     field int16 signed16;
@@ -86,7 +86,7 @@ chart cartesian {
     field date32 date32_value;
     field date64 date;
   }
-  param store as nested_fields {
+  store as nested_fields {
     field struct(
       field(time32(millisecond), 't32'),
       field(time32(second), 't32_second'),
@@ -111,7 +111,7 @@ chart cartesian {
     field struct() empty;
     field large_list(float64) large;
   }
-  param selection as brush {}
+  selection as brush {}
 }
 
 ---
@@ -123,8 +123,7 @@ chart cartesian {
     (qualified_name
       (identifier))
     (body
-      (param_declaration
-        (param_kind)
+      (store_declaration
         (identifier)
         (param_body
           (field_declaration
@@ -199,8 +198,7 @@ chart cartesian {
             (arrow_type
               (primitive_arrow_type))
             (identifier))))
-      (param_declaration
-        (param_kind)
+      (store_declaration
         (identifier)
         (param_body
           (field_declaration
@@ -379,7 +377,6 @@ chart cartesian {
                   (arrow_type
                     (primitive_arrow_type)))))
             (identifier))))
-      (param_declaration
-        (param_kind)
+      (selection_declaration
         (identifier)
         (param_body)))))

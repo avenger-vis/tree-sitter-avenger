@@ -2,8 +2,8 @@ avenger 1;
 
 chart custom as demo {
   private param 1 as threshold { sharing: free; }
-  public param store as rows { field int64 id; }
-  param selection as brush {}
+  public store as rows { field int64 id; }
+  selection as brush {}
   resource tiles as osm {}
   theme css from './theme.css' sha256 'abc123';
   theme css: 'mark { color: red; }';

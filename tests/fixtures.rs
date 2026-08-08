@@ -18,14 +18,21 @@ struct Fixture {
 
 #[derive(Deserialize)]
 struct BoundaryManifest {
+    sites: Vec<BoundarySite>,
     boundary_cases: Vec<BoundaryCase>,
     structural_cases: Vec<StructuralCase>,
 }
 
 #[derive(Deserialize)]
+struct BoundarySite {
+    name: String,
+    context: String,
+}
+
+#[derive(Deserialize)]
 struct BoundaryCase {
     id: String,
-    context: String,
+    site: String,
     source: String,
     outer: String,
     accepted: bool,
@@ -178,8 +185,8 @@ fn strict_invalid_sources_are_errors_or_documented_editor_tolerance() {
     assert_eq!(checked, expected_checked);
 }
 
-fn wrap_boundary(case: &BoundaryCase) -> String {
-    match case.context.as_str() {
+fn wrap_boundary(case: &BoundaryCase, context: &str) -> String {
+    match context {
         "query_property" => format!("avenger 1; chart custom {{ sql: {} }}", case.source),
         "projection_property" => {
             format!("avenger 1; chart custom {{ expressions: {} }}", case.source)
@@ -219,7 +226,12 @@ fn compiler_owned_sql_boundary_contract_matches_the_combined_parser() {
     ))
     .unwrap();
     for case in &manifest.boundary_cases {
-        let source = wrap_boundary(case);
+        let context = manifest
+            .sites
+            .iter()
+            .find(|site| site.name == case.site)
+            .unwrap_or_else(|| panic!("unknown boundary site {}", case.site));
+        let source = wrap_boundary(case, &context.context);
         let tree = parse(&source, None);
         assert_eq!(
             !tree.root_node().has_error(),

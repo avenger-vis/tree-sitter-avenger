@@ -44,7 +44,8 @@ frozen. Hidden choice/list plumbing may change without changing these roles.
 | definition output `export` | `export_declaration` (distinct from top-level `exported_module_item`) |
 | `match_block`, `match_arm` | `match_declaration`, `match_arm` |
 | `splice` | `block_splice` |
-| scalar `param`, store, selection | one `param_declaration` with direct `type`, `name`, and specialized param body; store/selection use `param_kind` |
+| scalar `param` | `param_declaration` with SQL `initializer`, direct `name`, and optional sharing body |
+| store, selection | peer `store_declaration` / `selection_declaration` nodes with direct `name` and required body |
 | `res` | `resource_declaration` |
 | `theme` | `theme_declaration` |
 | logical groups | ordinary `mark_declaration` with contextual `group` kind |

@@ -130,3 +130,38 @@ chart custom {
     (identifier)
     (keyword_as)
     (identifier)))
+
+==================
+Removed state-param headers are recovery-only nodes
+==================
+
+avenger 1;
+chart custom {
+  param store as rows {}
+  param selection as picked {}
+  mark symbol as after {}
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body
+      (obsolete_state_param
+        (obsolete_state_kind)
+        (identifier)
+        (param_body))
+      (obsolete_state_param
+        (obsolete_state_kind)
+        (identifier)
+        (param_body))
+      (mark_declaration
+        (qualified_name
+          (identifier))
+        (as_clause
+          (identifier))
+        (body)))))

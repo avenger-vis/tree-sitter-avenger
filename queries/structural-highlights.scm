@@ -9,6 +9,8 @@
   "schema"
   "table"
   "param"
+  "store"
+  "selection"
   "resource"
   "theme"
   "mark"
@@ -60,7 +62,6 @@
 
 [
   (theme_kind)
-  (param_kind)
   (variable_role)
   (adjust_kind)
 ] @keyword
@@ -80,6 +81,9 @@
 (table_declaration kind: (qualified_name) @type)
 (as_clause name: (identifier) @variable)
 (param_declaration name: (identifier) @variable.parameter)
+(store_declaration name: (identifier) @variable.parameter)
+(selection_declaration name: (identifier) @variable.parameter)
+(obsolete_state_param name: (identifier) @variable.parameter)
 (resource_declaration kind: (qualified_name) @type)
 (mark_declaration kind: (qualified_name) @type)
 (transform_declaration kind: (qualified_name) @type)

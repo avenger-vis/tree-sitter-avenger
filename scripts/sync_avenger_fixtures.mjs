@@ -19,7 +19,7 @@ const avengerRoot = resolve(process.argv[argument + 1]);
 const revision = execFileSync("git", ["-C", avengerRoot, "rev-parse", "HEAD"], {
   encoding: "utf8",
 }).trim();
-const pinned = "6090de63104c8890772a1b854792055b17697382";
+const pinned = "5a814e78f5f6ed35fc561e976509e49735a93096";
 if (revision !== pinned) {
   throw new Error(`Avenger checkout is ${revision}; expected pinned ${pinned}`);
 }

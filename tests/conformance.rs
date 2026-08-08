@@ -173,10 +173,10 @@ fn exported_queries_compile() {
 fn arrow_types_are_structural_only_in_type_slots() {
     let tree = parse(
         "avenger 1; chart cartesian {\n\
-         param struct(field(list(decimal128(38, -2)), 'values')) as config {\n\
-           value: NULL;\n\
+         store as config {\n\
+           field struct(field(list(decimal128(38, -2)), 'values')) value;\n\
          }\n\
-         param selection as brush {}\n\
+         selection as brush {}\n\
          }",
     );
     let root = tree.root_node();
@@ -184,11 +184,7 @@ fn arrow_types_are_structural_only_in_type_slots() {
     assert!(find(root, "arrow_struct_field").is_some());
     assert!(find(root, "arrow_signed_integer").is_some());
 
-    let mut selection = find(root, "param_kind").unwrap();
-    while selection.kind() != "param_declaration" {
-        selection = selection.parent().unwrap();
-    }
-    assert!(find(selection, "param_kind").is_some());
+    let selection = find(root, "selection_declaration").unwrap();
     assert!(find(selection, "arrow_type").is_none());
 }
 
@@ -303,11 +299,19 @@ fn complete_declaration_surface_has_stable_nodes_and_fields() {
     assert_field(cell, "placement", "body");
     assert_field(cell, "body", "body");
 
-    assert_eq!(count(root, "param_declaration"), 3);
+    assert_eq!(count(root, "param_declaration"), 1);
     let scalar = find(root, "param_declaration").unwrap();
-    assert_field(scalar, "type", "arrow_type");
+    assert_field(scalar, "initializer", "literal");
     assert_field(scalar, "name", "identifier");
     assert_field(scalar, "body", "param_body");
+
+    let store = find(root, "store_declaration").unwrap();
+    assert_field(store, "name", "identifier");
+    assert_field(store, "body", "param_body");
+
+    let selection = find(root, "selection_declaration").unwrap();
+    assert_field(selection, "name", "identifier");
+    assert_field(selection, "body", "param_body");
 
     let group = find(root, "mark_declaration").expect("fixture must contain mark group");
     assert_field(group, "kind", "qualified_name");
@@ -344,11 +348,18 @@ fn definition_interfaces_and_actions_have_stable_fields() {
 
 #[test]
 fn syntactically_invalid_definition_heads_recover_without_hiding_following_roots() {
+    let removed_state_params =
+        parse("avenger 1; chart custom { param store as rows {} param selection as picked {} }");
+    assert!(!removed_state_params.root_node().has_error());
+    assert_eq!(
+        count(removed_state_params.root_node(), "obsolete_state_param"),
+        2
+    );
+
     for source in [
         "avenger 1; define widget custom {} chart custom {}",
         "avenger 1; chart custom { id legacy {} mark symbol {} }",
         "avenger 1; chart custom { param as width { type: float64; default: 1; } }",
-        "avenger 1; chart custom { store as rows {} selection as picked {} }",
         "avenger 1; chart custom { group {} overlay {} dimension as x {} }",
         "avenger 1; chart custom { container group {} container overlay {} }",
         "avenger 1; chart custom { on click { set param width = 1; } }",

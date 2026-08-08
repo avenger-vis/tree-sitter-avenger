@@ -1,4 +1,4 @@
 avenger 1;
 chart cartesian {
-  param selection as brush {}
+  selection as brush {}
 }

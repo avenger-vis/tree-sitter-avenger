@@ -57,7 +57,10 @@ export default {
 
   _body_item: $ => choice(
     $.property,
+    $.obsolete_state_param,
     $.param_declaration,
+    $.store_declaration,
+    $.selection_declaration,
     $.resource_declaration,
     $.theme_declaration,
     $.catalog_declaration,
@@ -103,21 +106,33 @@ export default {
   param_declaration: $ => seq(
     visibility($),
     "param",
-    choice(
-      seq(
-        field("initializer", $._expression),
-        "as",
-        field("name", $._structural_identifier),
-        choice(";", field("body", $.param_body)),
-      ),
-      prec(2, seq(
-        field("type", alias(choice("store", "selection"), $.param_kind)),
-        "as",
-        field("name", $._structural_identifier),
-        field("body", $.param_body),
-      )),
-    ),
+    field("initializer", $._expression),
+    "as",
+    field("name", $._structural_identifier),
+    choice(";", field("body", $.param_body)),
   ),
+  store_declaration: $ => seq(
+    visibility($),
+    "store",
+    "as",
+    field("name", $._structural_identifier),
+    field("body", $.param_body),
+  ),
+  selection_declaration: $ => seq(
+    visibility($),
+    "selection",
+    "as",
+    field("name", $._structural_identifier),
+    field("body", $.param_body),
+  ),
+  obsolete_state_param: $ => prec(10, seq(
+    visibility($),
+    "param",
+    field("category", alias(choice("store", "selection"), $.obsolete_state_kind)),
+    "as",
+    field("name", $._structural_identifier),
+    field("body", $.param_body),
+  )),
   resource_declaration: $ => seq(
     visibility($), "resource", field("kind", structuralPath($)), $.as_clause,
     field("body", $.body),

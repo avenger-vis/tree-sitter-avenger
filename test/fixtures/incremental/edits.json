@@ -87,6 +87,7 @@
     },
     {
       "id": "cast_param_initializer",
+      "initial_must_error": false,
       "initial": "avenger 1;\nchart custom { param 1 as width; }",
       "start_byte": 32,
       "old_end_byte": 33,
@@ -123,13 +124,13 @@
     },
     {
       "id": "insert_field_type",
-      "initial": "avenger 1;\nchart custom { param store as rows { field  id; } }",
-      "start_byte": 54,
-      "old_end_byte": 54,
-      "start_position": { "row": 1, "column": 43 },
-      "old_end_position": { "row": 1, "column": 43 },
+      "initial": "avenger 1;\nchart custom { store as rows { field  id; } }",
+      "start_byte": 48,
+      "old_end_byte": 48,
+      "start_position": { "row": 1, "column": 37 },
+      "old_end_position": { "row": 1, "column": 37 },
       "replacement": "float64",
-      "final": "avenger 1;\nchart custom { param store as rows { field float64 id; } }",
+      "final": "avenger 1;\nchart custom { store as rows { field float64 id; } }",
       "final_node": "field_declaration",
       "max_changed_ranges": 4
     },
@@ -230,6 +231,19 @@
       "replacement": "encoded",
       "final": "avenger 1;\nchart cartesian { mark symbol { x: encoded \"amount\"; } }",
       "final_node": "channel_value",
+      "max_changed_ranges": 4
+    },
+    {
+      "id": "remove_obsolete_store_param_prefix",
+      "initial_must_error": false,
+      "initial": "avenger 1;\nchart custom { param store as rows {} }",
+      "start_byte": 26,
+      "old_end_byte": 32,
+      "start_position": { "row": 1, "column": 15 },
+      "old_end_position": { "row": 1, "column": 21 },
+      "replacement": "",
+      "final": "avenger 1;\nchart custom { store as rows {} }",
+      "final_node": "store_declaration",
       "max_changed_ranges": 4
     },
     {
