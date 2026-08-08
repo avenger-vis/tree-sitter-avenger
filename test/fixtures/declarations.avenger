@@ -18,10 +18,20 @@ chart custom as demo {
     target: marks [panel.points,];
     scope: subplot grid.left;
     surface: legend color;
-    set threshold at current replacing scopes = 2;
-    set rows at start = replace_rows { source: $rows; }
-    set brush = clear;
-    set cursor = 'crosshair';
+    set threshold at current replacing scopes to 2;
+    replace rows at start replacing scopes { row { id: 1; } }
+    insert rows { row { id: 2; } }
+    upsert rows { row { id: 3; } }
+    patch rows { key { id: 3; } fields { id: 4; } }
+    delete rows { key { id: 4; } }
+    toggle rows { row { id: 5; } }
+    clear rows at start replacing scopes;
+    clear brush;
+    replace brush within level(1) { clause { id: 'range'; } }
+    upsert brush from scene { geometry: polygon(event.path); }
+    toggle brush from scene { geometry: polygon(event.path); }
+    delete brush within free { ids: ['range']; }
+    set cursor to 'crosshair';
   }
   cell cartesian as left at { row: 0; column: 0; } {}
   plot cartesian {}

@@ -1,0 +1,62 @@
+avenger 1;
+import { vega } from '../catalog.avenger';
+
+-- | Vega-Lite gallery: Histogram with Global Mean (`layer_histogram_global_mean`).
+chart cartesian as layer_histogram_global_mean {
+  data: { table: vega.movies; }
+  layout: {
+    canvas: { height: 347.0; width: 362.0; }
+    plot: { height: 300.0; width: 300.0; }
+  }
+  transform select as ratings {
+    expressions: CAST("IMDB Rating" AS DOUBLE) AS rating;
+  }
+  transform filter {
+    predicate: "rating" IS NOT NULL;
+  }
+  transform join_aggregate as global_mean {
+    expressions: avg("rating") AS mean_rating;
+  }
+  transform bin as rating_bins {
+    field: "rating";
+    step: 1.0;
+    nice: false;
+    extent: [1.0, 10.0];
+    anchor: 0.0;
+    name: 'rating_bin';
+  }
+  transform aggregate as rating_summary {
+    group_by: ["rating_bin_start", "rating_bin_end"];
+    expressions:
+      count(*) AS count,
+      min("mean_rating") AS global_mean_rating;
+  }
+  transform sql {
+    query: SELECT * FROM input ORDER BY "rating_bin_start";
+  }
+  mark group as layers {
+    mark rect as histogram {
+      fill: direct '#4c78a8';
+      stroke: direct 'white';
+      stroke_width: direct 1.0;
+      x: encoded "rating_bin_start" {
+        axis: { title: 'IMDB Rating (binned)'; }
+        scale: linear { domain: [1.0, 10.0]; nice: false; zero: false; }
+      }
+      x2: encoded "rating_bin_end";
+      y: encoded 0.0 {
+        axis: { format: ',.0f'; title: 'Count of Records'; }
+        scale: linear { zero: true; }
+      }
+      y2: encoded "count";
+    }
+    mark rule as mean {
+      stroke: direct 'red';
+      stroke_width: direct 5.0;
+      x: encoded "global_mean_rating";
+      x2: encoded "global_mean_rating";
+      y: direct 0.0;
+      y2: direct 300.0;
+    }
+  }
+}

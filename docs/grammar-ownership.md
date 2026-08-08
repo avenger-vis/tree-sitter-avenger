@@ -85,8 +85,9 @@ There is deliberately no `define widget` alternative.
 | `event_target` | `event_targets` or `typed_reference` selected by `target:` |
 | `event_scope` | `event_scope` selected by `scope:` |
 | `event_surface` | `event_surface` selected by `surface:` |
-| `action` | `set_action` |
-| `state_action`, `cursor_action` | one `set_action` with `target:` and `value:` fields; the compiler resolves target category and cursor restrictions |
+| `action` | `state_action` |
+| scalar/cursor assignment | `state_action` with `operation: set`, `target`, route modifiers, and SQL `value` after `to` |
+| store/selection mutation | `state_action` with an operation verb, `target`, optional route/source/scope modifiers, and an optional direct `body` |
 | `typed_ref`, `ref_kind` | `typed_reference` and contextual kind token |
 
 ## Properties and values

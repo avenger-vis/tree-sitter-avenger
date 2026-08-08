@@ -1,0 +1,158 @@
+avenger 1;
+import { vega } from '../catalog.avenger';
+
+-- | Vega-Lite gallery: Nested Concatenation with Aligned Axes (`nested_concat_align`).
+chart grid_concat as nested_concat_align {
+  data: { table: vega.movies; }
+  layout: {
+    canvas: { height: 216.0; width: 454.0; }
+    plot: { height: 130.0; width: 370.0; }
+  }
+  rows: 2;
+  columns: 2;
+  spacing: 55;
+  column_widths: [px(150), px(150)];
+  row_heights: [px(50), px(50)];
+
+  cell cartesian as rotten_tomatoes at { row: 0; column: 0; } {
+    label: 'Ratings';
+    mark group as histogram {
+      transform select as values {
+        expressions: CAST("Rotten Tomatoes Rating" AS DOUBLE) AS value;
+      }
+      transform filter { predicate: "value" IS NOT NULL; }
+      transform bin as bins {
+        field: "value";
+        step: 5.0;
+        nice: false;
+        extent: [0.0, 100.0];
+        anchor: 0.0;
+        name: 'bin';
+      }
+      transform aggregate as counts_by_bin {
+        group_by: ["bin_start", "bin_end"];
+        expressions: count(*) AS count;
+      }
+      mark rect as counts {
+        fill: direct '#4c78a8';
+        stroke_width: direct 0.0;
+        x: encoded "bin_start" {
+          axis: { format: '.0f'; tick_count: 3; title: 'Rotten Tomatoes Rati...'; }
+          scale: linear { domain: [0.0, 100.0]; nice: false; zero: true; }
+        }
+        x2: encoded "bin_end";
+        y: encoded 0.0 {
+          axis: { format: '.0f'; title: 'Count'; tick_count: 3; }
+          scale: linear { domain: [0.0, 120.0]; nice: false; zero: true; }
+        }
+        y2: encoded "count";
+      }
+    }
+  }
+
+  cell cartesian as imdb at { row: 0; column: 1; } {
+    mark group as histogram {
+      transform select as values {
+        expressions: CAST("IMDB Rating" AS DOUBLE) AS value;
+      }
+      transform filter { predicate: "value" IS NOT NULL; }
+      transform bin as bins {
+        field: "value";
+        step: 0.5;
+        nice: false;
+        extent: [1.0, 9.5];
+        anchor: 0.0;
+        name: 'bin';
+      }
+      transform aggregate as counts_by_bin {
+        group_by: ["bin_start", "bin_end"];
+        expressions: count(*) AS count;
+      }
+      mark rect as counts {
+        fill: direct '#4c78a8';
+        stroke_width: direct 0.0;
+        x: encoded "bin_start" {
+          axis: { format: '.1f'; tick_count: 5; title: 'IMDB Rating (binned)'; }
+          scale: linear { domain: [1.0, 9.5]; nice: false; zero: false; }
+        }
+        x2: encoded "bin_end";
+        y: encoded 0.0 {
+          axis: { format: '.0f'; title: 'Count'; tick_count: 3; }
+          scale: linear { domain: [0.0, 500.0]; nice: false; zero: true; }
+        }
+        y2: encoded "count";
+      }
+    }
+  }
+
+  cell cartesian as us_gross at { row: 1; column: 0; } {
+    label: 'Gross';
+    mark group as histogram {
+      transform select as values {
+        expressions: CAST("US Gross" AS DOUBLE) AS value;
+      }
+      transform filter { predicate: "value" IS NOT NULL; }
+      transform bin as bins {
+        field: "value";
+        step: 50000000.0;
+        nice: false;
+        extent: [0.0, 800000000.0];
+        anchor: 0.0;
+        name: 'bin';
+      }
+      transform aggregate as counts_by_bin {
+        group_by: ["bin_start", "bin_end"];
+        expressions: count(*) AS count;
+      }
+      mark rect as counts {
+        fill: direct '#4c78a8';
+        stroke_width: direct 0.0;
+        x: encoded "bin_start" {
+          axis: { format: ',.0f'; tick_count: 2; title: 'US Gross (binned)'; }
+          scale: linear { domain: [0.0, 800000000.0]; nice: false; zero: true; }
+        }
+        x2: encoded "bin_end";
+        y: encoded 0.0 {
+          axis: { format: ',.0f'; title: 'Count'; tick_count: 3; }
+          scale: linear { domain: [0.0, 2500.0]; nice: false; zero: true; }
+        }
+        y2: encoded "count";
+      }
+    }
+  }
+
+  cell cartesian as worldwide_gross at { row: 1; column: 1; } {
+    mark group as histogram {
+      transform select as values {
+        expressions: CAST("Worldwide Gross" AS DOUBLE) AS value;
+      }
+      transform filter { predicate: "value" IS NOT NULL; }
+      transform bin as bins {
+        field: "value";
+        step: 200000000.0;
+        nice: false;
+        extent: [0.0, 3000000000.0];
+        anchor: 0.0;
+        name: 'bin';
+      }
+      transform aggregate as counts_by_bin {
+        group_by: ["bin_start", "bin_end"];
+        expressions: count(*) AS count;
+      }
+      mark rect as counts {
+        fill: direct '#4c78a8';
+        stroke_width: direct 0.0;
+        x: encoded "bin_start" {
+          axis: { format: ',.0f'; tick_count: 2; title: 'Worldwide Gross (bin...'; }
+          scale: linear { domain: [0.0, 3000000000.0]; nice: false; zero: true; }
+        }
+        x2: encoded "bin_end";
+        y: encoded 0.0 {
+          axis: { format: ',.0f'; title: 'Count'; tick_count: 3; }
+          scale: linear { domain: [0.0, 3000.0]; nice: false; zero: true; }
+        }
+        y2: encoded "count";
+      }
+    }
+  }
+}

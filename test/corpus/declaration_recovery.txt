@@ -36,7 +36,7 @@ avenger 1;
 chart custom {
   on pointermove {
     set width at = ;
-    set cursor = 'crosshair';
+    set cursor to 'crosshair';
   }
 }
 
@@ -58,7 +58,51 @@ chart custom {
             (ERROR
               (qualified_name
                 (identifier))))
-          (set_action
+          (state_action
+            (state_action_operation)
+            (qualified_name
+              (identifier))
+            (sql_terminated_expression
+              (literal
+                (single_quoted_string)))))))))
+
+==================
+Removed assignment-shaped actions recover before a canonical action
+==================
+
+avenger 1;
+chart custom {
+  on click {
+    set width = 2;
+    set rows = upsert_rows;
+    set cursor to 'crosshair';
+  }
+}
+
+---
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body
+      (event_declaration
+        (qualified_name
+          (identifier))
+        (body
+          (block_splice
+            (property_name)
+            (ERROR
+              (identifier)
+              (number)
+              (identifier)
+              (identifier)
+              (qualified_name
+                (identifier))))
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (sql_terminated_expression

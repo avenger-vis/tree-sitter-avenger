@@ -1,0 +1,87 @@
+avenger 1;
+import { vega } from '../catalog.avenger';
+
+-- | Vega-Lite gallery: Normalized Stacked Area Chart (`stacked_area_normalize`).
+chart cartesian as stacked_area_normalize {
+  data: {
+    table: vega.unemployment_across_industries;
+  }
+  layout: {
+    canvas: { height: 360.0; width: 620.0; }
+    plot: { height: 240.0; width: 360.0; }
+  }
+  transform calculate as monthly_fields {
+    expressions:
+      DATE_TRUNC('month', "date") AS month,
+      CASE "series"
+        WHEN 'Wholesale and Retail Trade' THEN 0
+        WHEN 'Transportation and Utilities' THEN 1
+        WHEN 'Self-employed' THEN 2
+        WHEN 'Other' THEN 3
+        WHEN 'Mining and Extraction' THEN 4
+        WHEN 'Manufacturing' THEN 5
+        WHEN 'Leisure and hospitality' THEN 6
+        WHEN 'Information' THEN 7
+        WHEN 'Government' THEN 8
+        WHEN 'Finance' THEN 9
+        WHEN 'Education and Health' THEN 10
+        WHEN 'Construction' THEN 11
+        WHEN 'Business services' THEN 12
+        ELSE 13
+      END AS stack_order;
+  }
+  transform aggregate as monthly_counts {
+    group_by: ["month", "series", "stack_order"];
+    expressions: sum(CAST("count" AS DOUBLE)) AS total_count;
+  }
+  transform stack as normalized_monthly_counts {
+    field: "total_count";
+    group_by: "month";
+    sort_by: -"stack_order";
+    offset: normalize;
+    name: 'count_stack';
+  }
+  transform sql {
+    query: SELECT * FROM input ORDER BY "series", "month";
+  }
+  mark area as industries {
+    fill: encoded "series" {
+      legend: { title: 'series'; }
+      scale: ordinal {
+        domain: [
+          'Agriculture', 'Business services', 'Construction',
+          'Education and Health', 'Finance', 'Government', 'Information',
+          'Leisure and hospitality', 'Manufacturing', 'Mining and Extraction',
+          'Other', 'Self-employed', 'Transportation and Utilities',
+          'Wholesale and Retail Trade'
+        ];
+        range: [
+          '#393b79', '#5254a3', '#6b6ecf', '#9c9ede',
+          '#637939', '#8ca252', '#b5cf6b', '#cedb9c',
+          '#8c6d31', '#bd9e39', '#e7ba52', '#e7cb94',
+          '#843c39', '#ad494a'
+        ];
+      }
+    }
+    order: direct "month";
+    stroke_width: direct 0.0;
+    x: encoded "month" {
+      axis: {
+        datetime_format: 'yyyy';
+        grid: false;
+        tick_count: 6;
+        title: 'date (year-month)';
+      }
+      scale: time;
+    }
+    y: encoded normalized_monthly_counts.end {
+      axis: { visible: false; }
+      scale: linear {
+        domain: [0.0, 1.0];
+        nice: false;
+        zero: true;
+      }
+    }
+    y2: encoded normalized_monthly_counts.start;
+  }
+}

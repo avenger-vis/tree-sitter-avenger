@@ -40,13 +40,17 @@
   "slot"
   "export"
   "match"
-  "set"
+  "to"
   "at"
   "current"
   "start"
   "replacing"
   "scopes"
   "from"
+  "scene"
+  "within"
+  "shared"
+  "free"
   "nullable"
   "private"
   "public"
@@ -97,7 +101,6 @@
 (variable_declaration name: (identifier) @variable)
 (adjust_declaration kind: (qualified_name) @type)
 (derive_declaration kind: (qualified_name) @type)
-(action_block kind: (qualified_name) @type)
 (part_declaration name: (identifier) @variable)
 (layer_declaration name: (identifier) @variable)
 (match_declaration name: (identifier) @variable)
@@ -110,7 +113,8 @@
 (output_declaration name: (identifier) @variable)
 (export_declaration source: (qualified_name) @variable)
 (export_declaration alias: (identifier) @variable)
-(set_action target: (qualified_name) @variable)
+(state_action operation: (state_action_operation) @keyword)
+(state_action target: (qualified_name) @variable)
 (predicate_entry name: (identifier) @property)
 (property name: (property_name) @property)
 

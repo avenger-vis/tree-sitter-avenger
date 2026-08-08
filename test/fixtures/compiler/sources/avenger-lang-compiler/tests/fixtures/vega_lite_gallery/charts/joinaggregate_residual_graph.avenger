@@ -1,0 +1,66 @@
+avenger 1;
+import { vega } from '../catalog.avenger';
+
+-- | Vega-Lite gallery: Calculate Residuals (`joinaggregate_residual_graph`).
+chart cartesian as joinaggregate_residual_graph {
+  data: {
+    table: vega.movies;
+  }
+  layout: {
+    canvas: {
+      height: 440.0;
+      width: 500.0;
+    }
+    plot: {
+      height: 300.0;
+      width: 300.0;
+    }
+  }
+  transform filter {
+    predicate: "IMDB Rating" IS NOT NULL
+      AND EXTRACT(YEAR FROM "Release Date") <= 2019;
+  }
+  transform join_aggregate as rating_summary {
+    expressions: avg("IMDB Rating") AS average_rating;
+  }
+  transform calculate as movie_residuals {
+    expressions:
+      "Release Date" AS release_date,
+      "IMDB Rating" - rating_summary.average_rating AS rating_delta;
+  }
+  transform sql {
+    query: SELECT * FROM input ORDER BY "release_date", "rating_delta";
+  }
+  mark symbol as movies {
+    fill: direct '#ffffff';
+    stroke: encoded "rating_delta" {
+      legend: {
+        title: 'Rating Delta';
+      }
+      scale: linear {
+        domain: [-5.0, 5.0];
+        nice: false;
+        range: ['#b35806', '#f7f7f7', '#4393c3'];
+        zero: true;
+      }
+    }
+    size: direct 20.0;
+    stroke_width: direct 1.5;
+    x: encoded "release_date" {
+      axis: {
+        title: 'Release Date';
+      }
+      scale: time;
+    }
+    y: encoded "rating_delta" {
+      axis: {
+        title: 'Rating Delta';
+      }
+      scale: linear {
+        domain: [-5.0, 3.0];
+        nice: false;
+        zero: true;
+      }
+    }
+  }
+}

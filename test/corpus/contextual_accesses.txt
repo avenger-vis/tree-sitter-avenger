@@ -21,14 +21,14 @@ chart cartesian as chart {
   }
   on pointermove as inspect {
     filter: datum."id" IS NOT NULL;
-    set drag_x = event.coord.x;
-    set canonicalized_x = EVENT.COORD.X;
-    set start_x = event.start.coord.x;
-    set domain_lo = event.domain.x.start;
-    set domain_hi = event.domain.x.end;
-    set drag_points = event.path;
-    set facet_component = event.facet[1];
-    set legend_hit = event.legend.value;
+    set drag_x to event.coord.x;
+    set canonicalized_x to EVENT.COORD.X;
+    set start_x to event.start.coord.x;
+    set domain_lo to event.domain.x.start;
+    set domain_hi to event.domain.x.end;
+    set drag_points to event.path;
+    set facet_component to event.facet[1];
+    set legend_hit to event.legend.value;
   }
 }
 
@@ -151,7 +151,8 @@ chart cartesian as chart {
                 (keyword_is)
                 (keyword_not)
                 (keyword_null))))
-          (set_action
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (sql_terminated_expression
@@ -161,7 +162,8 @@ chart cartesian as chart {
                   (identifier))
                 (name
                   (identifier)))))
-          (set_action
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (sql_terminated_expression
@@ -171,19 +173,8 @@ chart cartesian as chart {
                   (identifier))
                 (name
                   (identifier)))))
-          (set_action
-            (qualified_name
-              (identifier))
-            (sql_terminated_expression
-              (qualified_name
-                (identifier)
-                (name
-                  (identifier))
-                (name
-                  (identifier))
-                (name
-                  (identifier)))))
-          (set_action
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (sql_terminated_expression
@@ -195,7 +186,8 @@ chart cartesian as chart {
                   (identifier))
                 (name
                   (identifier)))))
-          (set_action
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (sql_terminated_expression
@@ -207,7 +199,21 @@ chart cartesian as chart {
                   (identifier))
                 (name
                   (identifier)))))
-          (set_action
+          (state_action
+            (state_action_operation)
+            (qualified_name
+              (identifier))
+            (sql_terminated_expression
+              (qualified_name
+                (identifier)
+                (name
+                  (identifier))
+                (name
+                  (identifier))
+                (name
+                  (identifier)))))
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (sql_terminated_expression
@@ -215,7 +221,8 @@ chart cartesian as chart {
                 (identifier)
                 (name
                   (identifier)))))
-          (set_action
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (sql_terminated_expression
@@ -225,7 +232,8 @@ chart cartesian as chart {
                   (identifier))
                 (literal
                   (number)))))
-          (set_action
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (sql_terminated_expression
@@ -235,3 +243,59 @@ chart cartesian as chart {
                   (identifier))
                 (name
                   (identifier))))))))))
+
+================================================================================
+Strict compiler fixtures retain contextual SQL forms
+================================================================================
+
+avenger 1;
+chart cartesian {
+  rows: [{ from: -0.25; to: 2.9; }];
+  year: EXTRACT(year FROM "date");
+  upper: stack.end;
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (version_directive
+    (number))
+  (chart_declaration
+    (qualified_name
+      (identifier))
+    (body
+      (property
+        (property_name)
+        (array
+          (array_element
+            (anonymous_object
+              (body
+                (property
+                  (property_name)
+                  (sql_property_expression
+                    (unary_expression
+                      (literal
+                        (number)))))
+                (property
+                  (property_name)
+                  (sql_property_expression
+                    (literal
+                      (number)))))))))
+      (property
+        (property_name)
+        (sql_property_expression
+          (extract_expression
+            (keyword_extract)
+            (identifier)
+            (keyword_from)
+            (qualified_name
+              (name
+                (quoted_identifier))))))
+      (property
+        (property_name)
+        (sql_property_expression
+          (qualified_name
+            (name
+              (identifier))
+            (name
+              (identifier))))))))

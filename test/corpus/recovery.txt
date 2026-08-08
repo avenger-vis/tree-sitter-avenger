@@ -84,8 +84,7 @@ chart cartesian {
             (property_name)
             (sql_property_expression
               (qualified_name
-                (name
-                  (identifier))))))))))
+                (identifier)))))))))
 
 ==================
 Removed typed param form recovers before a canonical param
@@ -167,7 +166,7 @@ Incomplete event coordinate preserves following action
 avenger 1;
 chart cartesian {
   on pointermove {
-    set drag_x = event.coord.;
+    set drag_x to event.coord.;
     surface: plot;
   }
 }
@@ -185,7 +184,8 @@ chart cartesian {
         (qualified_name
           (identifier))
         (body
-          (set_action
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (sql_terminated_expression
@@ -207,7 +207,7 @@ Incomplete event facet subscript preserves following action
 avenger 1;
 chart cartesian {
   on pointermove {
-    set facet = event.facet[1;
+    set facet to event.facet[1;
     surface: plot;
   }
 }
@@ -225,7 +225,8 @@ chart cartesian {
         (qualified_name
           (identifier))
         (body
-          (set_action
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (sql_terminated_expression

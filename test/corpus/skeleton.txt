@@ -49,7 +49,7 @@ avenger 1;
 chart cartesian {
   sql: FROM vega.movies AS m SELECT m."title";
   x: $width@start { enabled: true; }
-  on click { set cursor = coalesce($cursor_name, 'default'); }
+  on click { set cursor to coalesce($cursor_name, 'default'); }
   output coalesce($width, 0) as count;
   values: [coalesce(1, 2), none];
 }
@@ -105,7 +105,8 @@ chart cartesian {
         (qualified_name
           (identifier))
         (body
-          (set_action
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (sql_terminated_expression

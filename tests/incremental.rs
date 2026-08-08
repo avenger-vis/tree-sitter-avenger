@@ -341,7 +341,7 @@ fn scanner_binding_and_temporal_delimiters_repair_incrementally() {
 
 #[test]
 fn keyword_binder_operator_and_boundary_tokens_repair_incrementally() {
-    let source = "avenger 1;\nchart custom as demo {\n  param float64 as width { value: 10; }\n  sql: FROM vega.movies SELECT title;\n  on click { set width at start = $width@previous + 1; }\n  mark symbol as points {}\n}\n";
+    let source = "avenger 1;\nchart custom as demo {\n  param CAST(10 AS DOUBLE) as width;\n  sql: FROM vega.movies SELECT title;\n  on click { set width at start to $width@previous + 1; }\n  mark symbol as points {}\n}\n";
     let clean = parse(source, None);
     assert!(
         !clean.root_node().has_error(),
@@ -354,14 +354,14 @@ fn keyword_binder_operator_and_boundary_tokens_repair_incrementally() {
         "chart",
         " as ",
         "param",
-        "float64",
+        "DOUBLE",
         "sql:",
         "FROM",
         "SELECT",
         "on",
         "set",
         " at start",
-        " = ",
+        " to ",
         "$width",
         "@previous",
         "+",

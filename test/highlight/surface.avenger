@@ -22,7 +22,7 @@ export chart custom as demo {
     }
   }
   on pointermove as hover {
-    set cursor = 'crosshair';
+    set cursor to 'crosshair';
   }
 }
 

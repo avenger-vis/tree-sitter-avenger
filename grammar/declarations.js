@@ -9,6 +9,18 @@ const VARIABLE_ROLES = ["row", "column", "item"];
 
 const visibility = $ => optional($.visibility_modifier);
 const structuralPath = $ => alias($._structural_qualified_name, $.qualified_name);
+const actionOperation = ($, operations) => {
+  const choices = operations.map(operation => dslKeyword($, operation));
+  return field(
+    "operation",
+    alias(choices.length === 1 ? choices[0] : choice(...choices), $.state_action_operation),
+  );
+};
+const actionTarget = $ => field("target", structuralPath($));
+const actionRoute = $ => seq(
+  optional(field("time", $.action_time)),
+  optional(field("replacing", $.replacing_scopes_modifier)),
+);
 
 export default {
   chart_declaration: $ => seq(
@@ -94,7 +106,7 @@ export default {
     $.output_declaration,
     $.export_declaration,
     $.match_declaration,
-    $.set_action,
+    $.state_action,
     $.block_splice,
   ),
 
@@ -309,28 +321,42 @@ export default {
     ";",
   )),
 
-  set_action: $ => seq(
-    visibility($),
-    "set",
-    field("target", structuralPath($)),
-    optional(field("time", $.action_time)),
-    optional($.replacing_scopes_modifier),
-    "=",
-    choice(
-      prec.dynamic(20, seq(
-        field(
+  state_action: $ => choice(
+    seq(
+      visibility($),
+      actionOperation($, ["set"]),
+      actionTarget($),
+      actionRoute($),
+      "to",
+      choice(
+        prec.dynamic(20, field(
           "value",
           alias($.set_contextual_expression, $.sql_terminated_expression),
-        ),
-        ";",
-      )),
-      prec.dynamic(10, seq(field("value", $.sql_terminated_expression), ";")),
-      field("value", $.action_block),
+        )),
+        prec.dynamic(10, field("value", $.sql_terminated_expression)),
+      ),
+      ";",
+    ),
+    seq(
+      visibility($),
+      actionOperation($, ["clear"]),
+      actionTarget($),
+      actionRoute($),
+      optional(field("within", $.within_modifier)),
+      ";",
+    ),
+    seq(
+      visibility($),
+      actionOperation($, ["insert", "replace", "upsert", "patch", "delete", "toggle"]),
+      actionTarget($),
+      actionRoute($),
+      optional(field("source", $.scene_source_modifier)),
+      optional(field("within", $.within_modifier)),
+      field("body", $.body),
     ),
   ),
   action_time: _ => seq("at", choice("current", "start")),
-  // A bare qualified SQL name and an action-block kind share the same prefix
-  // after `=`. Give the contextual access roots an explicit lookahead path so
+  // Give contextual access roots an explicit lookahead path so
   // direct forms such as `event.coord.x;` remain SQL-shaped without requiring
   // authors to add parentheses. All other expressions use the inherited SQL
   // production above.
@@ -378,8 +404,14 @@ export default {
     "]",
   )),
   replacing_scopes_modifier: _ => seq("replacing", "scopes"),
-  action_block: $ => seq(
-    field("kind", structuralPath($)),
-    field("body", $.body),
+  scene_source_modifier: _ => seq("from", "scene"),
+  within_modifier: $ => seq(
+    "within",
+    field("scope", $.coordination_scope),
+  ),
+  coordination_scope: $ => choice(
+    "shared",
+    "free",
+    seq("level", "(", field("level", $.number), ")"),
   ),
 };

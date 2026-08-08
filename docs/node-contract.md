@@ -82,11 +82,12 @@ component concern; top-level visibility is rejected by the strict compiler.
 
 ## Actions
 
-`set_action` exposes a structural qualified `target`, optional `time`, optional
-`replacing_scopes_modifier`, and required `value`. The resolved target decides
-whether the action updates a scalar param, store, selection, or the reserved
-unqualified cursor. The value is either an SQL expression or `action_block`;
-target category and modifier legality remain compiler-owned.
+`state_action` exposes a named `operation`, structural qualified `target`, and
+the applicable optional `time`, `replacing`, `source`, and
+`within` fields. Scalar and cursor `set` actions expose an SQL `value` after
+`to`. Store and selection mutation verbs expose their payload as a direct
+`body`; `clear` is terminated by `;`. The resolved target decides the state
+category, and target/verb/modifier legality remains compiler-owned.
 
 ## Properties and values
 
@@ -122,7 +123,7 @@ contain ordinary SQL expressions directly and never accept a channel mode.
 | `sql_projection_list` | SQL `projection` | Reserved `expressions:` property colon and final semicolon |
 | `sql_named_projection_list` | one or more `sql_named_projection_item` nodes | Arbitrary property colon and final semicolon; every item owns a required explicit `AS` alias |
 | `sql_property_expression` | SQL expression node | Property colon and semicolon or configuration body |
-| `sql_terminated_expression` | SQL expression node | Declaration/action colon or equals and final semicolon |
+| `sql_terminated_expression` | SQL expression node | Action `to` or another structural expression boundary and final semicolon |
 | `sql_aliased_expression` | SQL expression node | Output keyword on the left and top-level structural `as <name>;` on the right |
 | `sql_array_expression` | SQL expression node | Outer Avenger array brackets and commas |
 

@@ -1,0 +1,73 @@
+avenger 1;
+import { vega } from '../catalog.avenger';
+
+-- | Vega-Lite gallery: Relative Frequency Histogram (`histogram_rel_freq`).
+chart cartesian as histogram_rel_freq {
+  data: {
+    table: vega.cars;
+  }
+  layout: {
+    canvas: {
+      height: 380.0;
+      width: 420.0;
+    }
+    plot: {
+      height: 300.0;
+      width: 300.0;
+    }
+  }
+  transform select as horsepower_values {
+    expressions: CAST("Horsepower" AS DOUBLE) AS horsepower;
+  }
+  transform filter {
+    predicate: "horsepower" IS NOT NULL;
+  }
+  transform bin as horsepower_bins {
+    field: "horsepower";
+    step: 20.0;
+    nice: false;
+    extent: [40.0, 240.0];
+    anchor: 0.0;
+    name: 'horsepower_bin';
+  }
+  transform aggregate as bin_counts {
+    group_by: ["horsepower_bin_start", "horsepower_bin_end"];
+    expressions: count(*) AS count;
+  }
+  transform join_aggregate as total_count {
+    expressions: sum("count") AS total_count;
+  }
+  transform calculate as relative_frequency {
+    expressions: CAST("count" AS DOUBLE) / "total_count" AS relative_frequency;
+  }
+  transform sql {
+    query: SELECT * FROM input ORDER BY "horsepower_bin_start";
+  }
+  mark rect as bins {
+    fill: direct '#4c78a8';
+    stroke: direct 'white';
+    stroke_width: direct 1.0;
+    x: encoded "horsepower_bin_start" {
+      axis: {
+        title: 'Horsepower';
+      }
+      scale: linear {
+        domain: [40.0, 240.0];
+        nice: false;
+        zero: false;
+      }
+    }
+    x2: encoded "horsepower_bin_end";
+    y: encoded 0.0 {
+      axis: {
+        format: '.0%';
+        title: 'Relative Frequency';
+      }
+      scale: linear {
+        nice: true;
+        zero: true;
+      }
+    }
+    y2: encoded "relative_frequency";
+  }
+}

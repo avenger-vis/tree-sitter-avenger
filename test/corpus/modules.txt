@@ -346,8 +346,7 @@ chart cartesian as recovered {}
   (version_directive
     (number))
   (ERROR
-    (identifier)
-    (keyword_from))
+    (identifier))
   (chart_declaration
     (qualified_name
       (identifier))
@@ -369,8 +368,7 @@ chart cartesian as recovered {}
     (number))
   (exported_module_item
     (ERROR
-      (identifier)
-      (keyword_from))
+      (identifier))
     (chart_declaration
       (qualified_name
         (identifier))

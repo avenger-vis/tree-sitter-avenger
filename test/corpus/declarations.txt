@@ -21,10 +21,20 @@ chart custom as demo {
     target: marks [panel.points,];
     scope: subplot grid.left;
     surface: legend color;
-    set threshold at current replacing scopes = 2;
-    set rows at start = replace_rows { source: $rows; }
-    set brush = clear;
-    set cursor = 'crosshair';
+    set threshold at current replacing scopes to 2;
+    replace rows at start replacing scopes { row { id: 1; } }
+    insert rows { row { id: 2; } }
+    upsert rows { row { id: 3; } }
+    patch rows { key { id: 3; } fields { id: 4; } }
+    delete rows { key { id: 4; } }
+    toggle rows { row { id: 5; } }
+    clear rows at start replacing scopes;
+    clear brush;
+    replace brush within level(1) { clause { id: 'range'; } }
+    upsert brush from scene { geometry: polygon(event.path); }
+    toggle brush from scene { geometry: polygon(event.path); }
+    delete brush within free { ids: ['range']; }
+    set cursor to 'crosshair';
   }
   cell cartesian as left at { row: 0; column: 0; } {}
   plot cartesian {}
@@ -70,8 +80,7 @@ chart custom as demo {
             (property_name)
             (sql_property_expression
               (qualified_name
-                (name
-                  (identifier)))))))
+                (identifier))))))
       (store_declaration
         (visibility_modifier)
         (identifier)
@@ -158,7 +167,8 @@ chart custom as demo {
             (property_name)
             (event_surface
               (identifier)))
-          (set_action
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (action_time)
@@ -166,27 +176,166 @@ chart custom as demo {
             (sql_terminated_expression
               (literal
                 (number))))
-          (set_action
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (action_time)
-            (action_block
-              (qualified_name
-                (identifier))
-              (body
-                (property
-                  (property_name)
-                  (sql_property_expression
-                    (binding_reference
-                      (identifier)))))))
-          (set_action
+            (replacing_scopes_modifier)
+            (body
+              (row_declaration
+                (body
+                  (property
+                    (property_name)
+                    (sql_property_expression
+                      (literal
+                        (number))))))))
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
-            (sql_terminated_expression
-              (qualified_name
-                (name
-                  (identifier)))))
-          (set_action
+            (body
+              (row_declaration
+                (body
+                  (property
+                    (property_name)
+                    (sql_property_expression
+                      (literal
+                        (number))))))))
+          (state_action
+            (state_action_operation)
+            (qualified_name
+              (identifier))
+            (body
+              (row_declaration
+                (body
+                  (property
+                    (property_name)
+                    (sql_property_expression
+                      (literal
+                        (number))))))))
+          (state_action
+            (state_action_operation)
+            (qualified_name
+              (identifier))
+            (body
+              (key_declaration
+                (body
+                  (property
+                    (property_name)
+                    (sql_property_expression
+                      (literal
+                        (number))))))
+              (fields_declaration
+                (body
+                  (property
+                    (property_name)
+                    (sql_property_expression
+                      (literal
+                        (number))))))))
+          (state_action
+            (state_action_operation)
+            (qualified_name
+              (identifier))
+            (body
+              (key_declaration
+                (body
+                  (property
+                    (property_name)
+                    (sql_property_expression
+                      (literal
+                        (number))))))))
+          (state_action
+            (state_action_operation)
+            (qualified_name
+              (identifier))
+            (body
+              (row_declaration
+                (body
+                  (property
+                    (property_name)
+                    (sql_property_expression
+                      (literal
+                        (number))))))))
+          (state_action
+            (state_action_operation)
+            (qualified_name
+              (identifier))
+            (action_time)
+            (replacing_scopes_modifier))
+          (state_action
+            (state_action_operation)
+            (qualified_name
+              (identifier)))
+          (state_action
+            (state_action_operation)
+            (qualified_name
+              (identifier))
+            (within_modifier
+              (coordination_scope
+                (number)))
+            (body
+              (clause_declaration
+                (body
+                  (property
+                    (property_name)
+                    (sql_property_expression
+                      (literal
+                        (single_quoted_string))))))))
+          (state_action
+            (state_action_operation)
+            (qualified_name
+              (identifier))
+            (scene_source_modifier)
+            (body
+              (property
+                (property_name)
+                (sql_property_expression
+                  (function_call
+                    (qualified_name
+                      (name
+                        (identifier)))
+                    (function_argument
+                      (qualified_name
+                        (name
+                          (identifier))
+                        (name
+                          (identifier)))))))))
+          (state_action
+            (state_action_operation)
+            (qualified_name
+              (identifier))
+            (scene_source_modifier)
+            (body
+              (property
+                (property_name)
+                (sql_property_expression
+                  (function_call
+                    (qualified_name
+                      (name
+                        (identifier)))
+                    (function_argument
+                      (qualified_name
+                        (name
+                          (identifier))
+                        (name
+                          (identifier)))))))))
+          (state_action
+            (state_action_operation)
+            (qualified_name
+              (identifier))
+            (within_modifier
+              (coordination_scope))
+            (body
+              (property
+                (property_name)
+                (array
+                  (array_element
+                    (sql_array_expression
+                      (literal
+                        (single_quoted_string))))))))
+          (state_action
+            (state_action_operation)
             (qualified_name
               (identifier))
             (sql_terminated_expression

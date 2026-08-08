@@ -1,0 +1,91 @@
+avenger 1;
+import { vega } from '../catalog.avenger';
+
+-- | Vega-Lite gallery: Normalized Stacked Bar Chart With Labels (`stacked_bar_h_normalized_labeled`).
+chart cartesian as stacked_bar_h_normalized_labeled {
+  data: {
+    table: vega.population;
+  }
+  layout: {
+    canvas: {
+      height: 440.0;
+      width: 500.0;
+    }
+    plot: {
+      height: 340.0;
+      width: 300.0;
+    }
+  }
+  transform filter {
+    predicate: "year" = 2000;
+  }
+  transform calculate as population_fields {
+    expressions:
+      CASE WHEN "sex" = 2 THEN 'Female' ELSE 'Male' END AS gender,
+      CASE WHEN "sex" = 2 THEN 0 ELSE 1 END AS stack_order;
+  }
+  transform aggregate as population_totals {
+    group_by: ["age", "gender", "stack_order"];
+    expressions: sum(CAST("people" AS DOUBLE)) AS population;
+  }
+  transform stack as normalized_population {
+    field: "population";
+    group_by: "age";
+    sort_by: -"stack_order";
+    offset: normalize;
+    name: 'population_stack';
+  }
+  transform sql {
+    query: SELECT * FROM input ORDER BY "age", "stack_order";
+  }
+  mark group as population {
+    mark rect as bars {
+      fill: encoded "gender" {
+        legend: {
+          title: 'gender';
+        }
+        scale: ordinal {
+          domain: ['Female', 'Male'];
+          range: ['#675193', '#ca8861'];
+        }
+      }
+      stroke_width: direct 0.0;
+      x: encoded normalized_population.start {
+        axis: {
+          format: '.0%';
+          title: 'population';
+        }
+        scale: linear {
+          domain: [0.0, 1.0];
+          nice: false;
+          zero: true;
+        }
+      }
+      x2: encoded normalized_population.end;
+      y: encoded "age" {
+        axis: {
+          title: 'age';
+        }
+        band: 0.0;
+        scale: band {
+          domain: [90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5, 0];
+          padding_inner: 0.05;
+          padding_outer: 0.025;
+        }
+      }
+      y2: encoded channel.y {
+        band: 1.0;
+      }
+    }
+    mark text as labels {
+      align: direct 'center';
+      baseline: direct 'middle';
+      color: direct '#ffffff';
+      text: direct CAST(CAST("population" AS BIGINT) AS VARCHAR);
+      x: encoded normalized_population.mid;
+      y: encoded "age" {
+        band: 0.5;
+      }
+    }
+  }
+}

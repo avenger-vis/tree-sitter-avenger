@@ -128,7 +128,6 @@ fn strict_invalid_sources_are_errors_or_documented_editor_tolerance() {
         "avenger-lang-core/tests/fixtures/parse/invalid/import-only.avenger",
         "avenger-lang-core/tests/fixtures/parse/invalid/invalid-slot-shape.avenger",
         "avenger-lang-core/tests/fixtures/parse/invalid/late-interface.avenger",
-        "avenger-lang-core/tests/fixtures/parse/invalid/malformed-action.avenger",
     ];
     let expected_checked = manifest
         .sources
@@ -170,7 +169,7 @@ fn strict_invalid_sources_are_errors_or_documented_editor_tolerance() {
         {
             "definition_declaration"
         } else if fixture.path.ends_with("malformed-action.avenger") {
-            "set_action"
+            "ERROR"
         } else {
             "chart_declaration"
         };
@@ -194,7 +193,7 @@ fn wrap_boundary(case: &BoundaryCase, context: &str) -> String {
         "property_expression" => format!("avenger 1; chart custom {{ x: {} }}", case.source),
         "terminated_expression" => {
             format!(
-                "avenger 1; chart custom {{ on click {{ set cursor = {} }} }}",
+                "avenger 1; chart custom {{ on click {{ set cursor to {} }} }}",
                 case.source
             )
         }

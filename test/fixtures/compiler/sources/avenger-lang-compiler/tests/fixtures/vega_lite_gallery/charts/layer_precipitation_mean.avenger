@@ -1,0 +1,62 @@
+avenger 1;
+import { vega } from '../catalog.avenger';
+
+-- | Vega-Lite gallery: Monthly Precipitation with Global Mean (`layer_precipitation_mean`).
+chart cartesian as layer_precipitation_mean {
+  data: { table: vega.seattle_weather; }
+  layout: {
+    canvas: { height: 347.0; width: 291.0; }
+    plot: { height: 300.0; width: 240.0; }
+  }
+  transform filter {
+    predicate: "date" IS NOT NULL AND "precipitation" IS NOT NULL;
+  }
+  transform calculate as calendar_fields {
+    expressions:
+      CAST(EXTRACT(MONTH FROM "date") AS BIGINT) AS month_number,
+      CASE CAST(EXTRACT(MONTH FROM "date") AS BIGINT)
+        WHEN 1 THEN 'Jan' WHEN 2 THEN 'Feb' WHEN 3 THEN 'Mar'
+        WHEN 4 THEN 'Apr' WHEN 5 THEN 'May' WHEN 6 THEN 'Jun'
+        WHEN 7 THEN 'Jul' WHEN 8 THEN 'Aug' WHEN 9 THEN 'Sep'
+        WHEN 10 THEN 'Oct' WHEN 11 THEN 'Nov' ELSE 'Dec'
+      END AS month;
+  }
+  transform join_aggregate as global_statistics {
+    expressions: avg("precipitation") AS global_mean;
+  }
+  transform aggregate as precipitation_summary {
+    group_by: ["month_number", "month"];
+    expressions:
+      avg("precipitation") AS monthly_mean,
+      min("global_mean") AS overall_mean;
+  }
+  mark group as layers {
+    mark rect as months {
+      fill: direct '#4c78a8';
+      stroke_width: direct 0.0;
+      x: encoded "month" {
+        axis: { label_angle: 0.0; title: 'date (month)'; }
+        band: 0.0;
+        scale: band {
+          domain: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          padding_inner: 0.1;
+          padding_outer: 0.05;
+        }
+      }
+      x2: encoded channel.x { band: 1.0; }
+      y: encoded "monthly_mean" {
+        axis: { title: 'Mean of precipitation'; }
+        scale: linear { domain: [0.0, 5.5]; nice: false; zero: true; }
+      }
+      y2: encoded 0.0;
+    }
+    mark rule as global_mean {
+      stroke: direct 'red';
+      stroke_width: direct 3.0;
+      x: direct 0.0;
+      x2: direct 240.0;
+      y: encoded precipitation_summary.overall_mean;
+      y2: encoded precipitation_summary.overall_mean;
+    }
+  }
+}

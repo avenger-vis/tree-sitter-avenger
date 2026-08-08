@@ -1,31 +1,5 @@
 [
   {
-    "type": "action_block",
-    "named": true,
-    "fields": {
-      "body": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "body",
-            "named": true
-          }
-        ]
-      },
-      "kind": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "qualified_name",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "action_time",
     "named": true,
     "fields": {}
@@ -196,6 +170,10 @@
         },
         {
           "type": "exists_expression",
+          "named": true
+        },
+        {
+          "type": "extract_expression",
           "named": true
         },
         {
@@ -450,6 +428,10 @@
             "named": true
           },
           {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
             "type": "function_call",
             "named": true
           },
@@ -544,6 +526,10 @@
             "named": true
           },
           {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
             "type": "function_call",
             "named": true
           },
@@ -635,6 +621,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -753,6 +743,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -965,6 +959,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -1212,11 +1210,11 @@
           "named": true
         },
         {
-          "type": "set_action",
+          "type": "slot_declaration",
           "named": true
         },
         {
-          "type": "slot_declaration",
+          "type": "state_action",
           "named": true
         },
         {
@@ -1292,6 +1290,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -1389,6 +1391,10 @@
             "named": true
           },
           {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
             "type": "function_call",
             "named": true
           },
@@ -1483,6 +1489,10 @@
             "named": true
           },
           {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
             "type": "function_call",
             "named": true
           },
@@ -1574,6 +1584,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -1710,6 +1724,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -2066,6 +2084,22 @@
     }
   },
   {
+    "type": "coordination_scope",
+    "named": true,
+    "fields": {
+      "level": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "data_type",
     "named": true,
     "fields": {},
@@ -2233,11 +2267,11 @@
           "named": true
         },
         {
-          "type": "set_action",
+          "type": "slot_declaration",
           "named": true
         },
         {
-          "type": "slot_declaration",
+          "type": "state_action",
           "named": true
         },
         {
@@ -2634,6 +2668,134 @@
     }
   },
   {
+    "type": "extract_expression",
+    "named": true,
+    "fields": {
+      "field": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "array_expression",
+            "named": true
+          },
+          {
+            "type": "between_expression",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "binding_reference",
+            "named": true
+          },
+          {
+            "type": "case_expression",
+            "named": true
+          },
+          {
+            "type": "cast_expression",
+            "named": true
+          },
+          {
+            "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "in_expression",
+            "named": true
+          },
+          {
+            "type": "interval_expression",
+            "named": true
+          },
+          {
+            "type": "is_expression",
+            "named": true
+          },
+          {
+            "type": "json_access_expression",
+            "named": true
+          },
+          {
+            "type": "literal",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "postfix_cast_expression",
+            "named": true
+          },
+          {
+            "type": "qualified_name",
+            "named": true
+          },
+          {
+            "type": "struct_expression",
+            "named": true
+          },
+          {
+            "type": "subquery_expression",
+            "named": true
+          },
+          {
+            "type": "subscript_expression",
+            "named": true
+          },
+          {
+            "type": "typed_string_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "􏿿",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "keyword_extract",
+          "named": true
+        },
+        {
+          "type": "keyword_from",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "field_declaration",
     "named": true,
     "fields": {
@@ -2729,6 +2891,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -2843,6 +3009,10 @@
         },
         {
           "type": "exists_expression",
+          "named": true
+        },
+        {
+          "type": "extract_expression",
           "named": true
         },
         {
@@ -3001,6 +3171,10 @@
             "named": true
           },
           {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
             "type": "function_call",
             "named": true
           },
@@ -3093,6 +3267,10 @@
         },
         {
           "type": "exists_expression",
+          "named": true
+        },
+        {
+          "type": "extract_expression",
           "named": true
         },
         {
@@ -3233,6 +3411,10 @@
           "named": true
         },
         {
+          "type": "extract_expression",
+          "named": true
+        },
+        {
           "type": "function_call",
           "named": true
         },
@@ -3333,6 +3515,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -3512,6 +3698,10 @@
             "named": true
           },
           {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
             "type": "function_call",
             "named": true
           },
@@ -3604,6 +3794,10 @@
         },
         {
           "type": "exists_expression",
+          "named": true
+        },
+        {
+          "type": "extract_expression",
           "named": true
         },
         {
@@ -3835,6 +4029,10 @@
             "named": true
           },
           {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
             "type": "function_call",
             "named": true
           },
@@ -3948,6 +4146,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -4066,6 +4268,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -4244,6 +4450,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -4442,6 +4652,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -4890,6 +5104,10 @@
             "named": true
           },
           {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
             "type": "function_call",
             "named": true
           },
@@ -5020,6 +5238,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -5300,11 +5522,11 @@
           "named": true
         },
         {
-          "type": "set_action",
+          "type": "slot_declaration",
           "named": true
         },
         {
-          "type": "slot_declaration",
+          "type": "state_action",
           "named": true
         },
         {
@@ -5390,6 +5612,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -5539,6 +5765,10 @@
           "named": true
         },
         {
+          "type": "extract_expression",
+          "named": true
+        },
+        {
           "type": "function_call",
           "named": true
         },
@@ -5667,6 +5897,10 @@
         },
         {
           "type": "exists_expression",
+          "named": true
+        },
+        {
+          "type": "extract_expression",
           "named": true
         },
         {
@@ -5832,6 +6066,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -6347,6 +6585,11 @@
     }
   },
   {
+    "type": "scene_source_modifier",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "schema_declaration",
     "named": true,
     "fields": {
@@ -6460,6 +6703,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -6613,60 +6860,6 @@
       "multiple": false,
       "required": false,
       "types": [
-        {
-          "type": "visibility_modifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "set_action",
-    "named": true,
-    "fields": {
-      "target": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "qualified_name",
-            "named": true
-          }
-        ]
-      },
-      "time": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "action_time",
-            "named": true
-          }
-        ]
-      },
-      "value": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "action_block",
-            "named": true
-          },
-          {
-            "type": "sql_terminated_expression",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "replacing_scopes_modifier",
-          "named": true
-        },
         {
           "type": "visibility_modifier",
           "named": true
@@ -6832,6 +7025,10 @@
             "named": true
           },
           {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
             "type": "function_call",
             "named": true
           },
@@ -6929,6 +7126,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -7039,6 +7240,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -7175,6 +7380,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -7334,6 +7543,10 @@
             "named": true
           },
           {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
             "type": "function_call",
             "named": true
           },
@@ -7395,6 +7608,102 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "state_action",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "body",
+            "named": true
+          }
+        ]
+      },
+      "operation": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "state_action_operation",
+            "named": true
+          }
+        ]
+      },
+      "replacing": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "replacing_scopes_modifier",
+            "named": true
+          }
+        ]
+      },
+      "source": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "scene_source_modifier",
+            "named": true
+          }
+        ]
+      },
+      "target": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "qualified_name",
+            "named": true
+          }
+        ]
+      },
+      "time": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "action_time",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "sql_terminated_expression",
+            "named": true
+          }
+        ]
+      },
+      "within": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "within_modifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "visibility_modifier",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -7500,6 +7809,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -7633,6 +7946,10 @@
             "named": true
           },
           {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
             "type": "function_call",
             "named": true
           },
@@ -7724,6 +8041,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -7821,6 +8142,10 @@
             "named": true
           },
           {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
             "type": "function_call",
             "named": true
           },
@@ -7912,6 +8237,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -8270,6 +8599,10 @@
             "named": true
           },
           {
+            "type": "extract_expression",
+            "named": true
+          },
+          {
             "type": "function_call",
             "named": true
           },
@@ -8499,6 +8832,10 @@
           "named": true
         },
         {
+          "type": "extract_expression",
+          "named": true
+        },
+        {
           "type": "function_call",
           "named": true
         },
@@ -8724,6 +9061,10 @@
           },
           {
             "type": "exists_expression",
+            "named": true
+          },
+          {
+            "type": "extract_expression",
             "named": true
           },
           {
@@ -8963,6 +9304,22 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "within_modifier",
+    "named": true,
+    "fields": {
+      "scope": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "coordination_scope",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -9231,6 +9588,10 @@
     "named": false
   },
   {
+    "type": "free",
+    "named": false
+  },
+  {
     "type": "from",
     "named": false
   },
@@ -9348,6 +9709,10 @@
   },
   {
     "type": "keyword_exists",
+    "named": true
+  },
+  {
+    "type": "keyword_extract",
     "named": true
   },
   {
@@ -9708,6 +10073,10 @@
     "named": false
   },
   {
+    "type": "scene",
+    "named": false
+  },
+  {
     "type": "schema",
     "named": false
   },
@@ -9724,11 +10093,11 @@
     "named": false
   },
   {
-    "type": "set",
+    "type": "sha256",
     "named": false
   },
   {
-    "type": "sha256",
+    "type": "shared",
     "named": false
   },
   {
@@ -9742,6 +10111,10 @@
   {
     "type": "start",
     "named": false
+  },
+  {
+    "type": "state_action_operation",
+    "named": true
   },
   {
     "type": "store",
@@ -9770,6 +10143,10 @@
   {
     "type": "theme_kind",
     "named": true
+  },
+  {
+    "type": "to",
+    "named": false
   },
   {
     "type": "tool",
@@ -9817,6 +10194,10 @@
   },
   {
     "type": "widget",
+    "named": false
+  },
+  {
+    "type": "within",
     "named": false
   },
   {

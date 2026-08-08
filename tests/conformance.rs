@@ -25,6 +25,20 @@ fn find<'tree>(node: Node<'tree>, kind: &str) -> Option<Node<'tree>> {
     None
 }
 
+fn find_with_field<'tree>(node: Node<'tree>, kind: &str, field: &str) -> Option<Node<'tree>> {
+    if node.kind() == kind && node.child_by_field_name(field).is_some() {
+        return Some(node);
+    }
+
+    let mut cursor = node.walk();
+    for child in node.children(&mut cursor) {
+        if let Some(found) = find_with_field(child, kind, field) {
+            return Some(found);
+        }
+    }
+    None
+}
+
 fn count(node: Node<'_>, kind: &str) -> usize {
     let own = usize::from(node.kind() == kind);
     let mut cursor = node.walk();
@@ -117,6 +131,26 @@ fn obsolete_import_forms_recover_without_losing_later_charts() {
 }
 
 #[test]
+fn removed_assignment_actions_recover_without_hiding_canonical_actions() {
+    for removed in ["set width = 2;", "set rows = upsert_rows;"] {
+        let source = format!(
+            "avenger 1; chart custom {{ on click {{ {removed} set cursor to 'crosshair'; }} }}"
+        );
+        let tree = parse(&source);
+        let root = tree.root_node();
+        assert!(root.has_error(), "removed form parsed cleanly: {removed}");
+        assert_eq!(
+            count(root, "state_action"),
+            1,
+            "canonical action was lost: {}",
+            root.to_sexp()
+        );
+        assert_eq!(count(root, "set_action"), 0);
+        assert_eq!(count(root, "action_block"), 0);
+    }
+}
+
+#[test]
 fn malformed_header_and_body_recover_locally() {
     let missing_number = parse("avenger ;\nchart cartesian { value: 1; }");
     assert!(find(missing_number.root_node(), "ERROR").is_some());
@@ -136,7 +170,7 @@ fn sql_boundaries_have_direct_inherited_children() {
         "avenger 1; chart cartesian {\n\
          sql: FROM vega.movies SELECT title;\n\
          x: $width@start { enabled: true; }\n\
-         on click { set cursor = coalesce($cursor_name, 'default'); }\n\
+         on click { set cursor to coalesce($cursor_name, 'default'); }\n\
          output coalesce($width, 0) as count;\n\
          values: [coalesce(1, 2), none];\n\
          }",
@@ -341,9 +375,15 @@ fn definition_interfaces_and_actions_have_stable_fields() {
     assert!(find(definition, "output_declaration").is_some());
     assert!(find(definition, "export_declaration").is_some());
 
-    let action = find(root, "set_action").expect("fixture must contain an action");
+    let action = find(root, "state_action").expect("fixture must contain an action");
+    assert_field(action, "operation", "state_action_operation");
     assert_field(action, "target", "qualified_name");
-    assert!(action.child_by_field_name("value").is_some());
+    assert_field(action, "time", "action_time");
+    assert_field(action, "replacing", "replacing_scopes_modifier");
+    assert_field(action, "value", "sql_terminated_expression");
+    assert!(find_with_field(root, "state_action", "body").is_some());
+    assert!(find_with_field(root, "state_action", "source").is_some());
+    assert!(find_with_field(root, "state_action", "within").is_some());
 }
 
 #[test]
@@ -362,7 +402,7 @@ fn syntactically_invalid_definition_heads_recover_without_hiding_following_roots
         "avenger 1; chart custom { param as width { type: float64; default: 1; } }",
         "avenger 1; chart custom { group {} overlay {} dimension as x {} }",
         "avenger 1; chart custom { container group {} container overlay {} }",
-        "avenger 1; chart custom { on click { set param width = 1; } }",
+        "avenger 1; chart custom { on click { set param width to 1; } }",
         "avenger 1; define mark sample { slot expr as x; channel x; }",
         "avenger 1; chart custom { variable row as x {} field x: float64; adjust {} }",
         "avenger 1; define transform sample { output result: value + 1; }",
